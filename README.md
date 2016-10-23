@@ -24,7 +24,7 @@ npm test
 ##Screenshot
 
 
-![](src/assets/demo.gif)
+![](src/assets/demo.gif?1477232397)
 
 
 
