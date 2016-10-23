@@ -140,7 +140,6 @@ export default {
     }
   },
   mounted () {
-    console.info(this.$slots)
     this._blur = (e) => {
       if (!this.$el.contains(e.target) && this.hasInput) this.close()
     }
@@ -380,9 +379,7 @@ export default {
             text: firstYearOfDecade + i + p * 10
           })
         }
-
         this.dateRange[p] = []
-
         const currMonthFirstDay = new Date(time.year, time.month, 1)
         let firstDayWeek = currMonthFirstDay.getDay() + 1
         if (firstDayWeek === 0) {
