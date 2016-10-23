@@ -78,7 +78,7 @@ src/components/Calendar.vue
 | borderWidth           | `Number`   | 2              | This value is for calculating the pane width                                                                                |
 | onDayClick            | `Function` |                | Only for `hasInput` set false                                                                                               |
 | specialDays           | `Object`   |                | To repalce the day text                                                                                                     |
-| changePane            | 'Function' |                | For pane change parameter (year, month, pane) month[0,11], demo `/src/modules/Docs.vue`                                                                                                                          |
+| changePane            | `Function` |                | For pane change parameter (year, month, pane) month[0,11], demo `/src/modules/Docs.vue`                                                                                                                          |
 
 
 
