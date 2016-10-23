@@ -1,6 +1,6 @@
 # vue2-calendar
 
-> vue2 calendar
+> vue 2 calendar, datepicker component which supported lunar or date event
 
 ## Build Setup
 
@@ -37,21 +37,31 @@ src/components/Calendar.vue
 
 
 ```html
-<calendar
-  :value="value"
-  :disabled-days-of-week="disabled"
-  :format="format"
-  :clear-button="clear"
-  :placeholder="placeholder"
-  :pane="2"
-  :has-input="false"
-  :on-day-click="onDayClick2"
-  :special-days="_dateMap"
-  :sync-content="syncContent"
-></calendar>
+  <calendar
+    :value="value"
+    :disabled-days-of-week="disabled"
+    :format="format"
+    :clear-button="clear"
+    :placeholder="placeholder"
+    :pane="2"
+    :has-input="false"
+    :on-day-click="onDayClick2"
+    :special-days="_dateMap"
+  ></calendar>
 
 ```
 
+###use slot to render async data
+
+```html
+
+  <calendar class="event-calendar" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick3" :changePane="changePane">
+    <div v-for="evt in events" :slot="evt.date">
+        ${{evt.content}} <i :class="{low : evt.low}" v-if="evt.low">↓</i>
+    </div>
+  </calendar>
+
+```
 
 ###Props
 
@@ -67,7 +77,6 @@ src/components/Calendar.vue
 | pane                  | `Number`   | 1              | pane count                                                                                                                  |
 | borderWidth           | `Number`   | 2              | This value is for calculating the pane width                                                                                |
 | onDayClick            | `Function` |                | Only for `hasInput` set false                                                                                               |
-| syncContent           | `Function` |                | sync content                                                                                                                |
 | specialDays           | `Object`   |                | To repalce the day text                                                                                                     |
 
 
@@ -114,10 +123,6 @@ src/components/Calendar.vue
       default: 2
     },
     onDayClick: {
-      type: Function,
-      default: function () {}
-    },
-    syncContent: {
       type: Function,
       default: function () {}
     },

@@ -22,7 +22,14 @@
               <span v-for="w in text.daysOfWeek">{{w}}</span>
             </div>
             <div class="datepicker-dateRange">
-              <span v-for="d in dateRange[pan]" :class="d.sclass" @click="daySelect(d.date, $event)">{{getSpecailDay(d.date) || d.text}}</span>
+              <span v-for="d in dateRange[pan]" :class="d.sclass" @click="daySelect(d.date, $event)"><div>
+                <template v-if="d.sclass !== 'datepicker-item-gray'">
+                  {{getSpecailDay(d.date) || d.text}}
+                </template>
+                <template v-else>
+                    {{d.text}}
+                </template>
+                <div v-if="d.sclass !== 'datepicker-item-gray'"><slot :name="stringify(d.date)"></slot></div></div></span>
             </div>
           </div>
         </div>
@@ -121,7 +128,7 @@ export default {
       type: Function,
       default: function () {}
     },
-    syncContent: {
+    changePane: {
       type: Function,
       default: function () {}
     },
@@ -133,6 +140,7 @@ export default {
     }
   },
   mounted () {
+    console.info(this.$slots)
     this._blur = (e) => {
       if (!this.$el.contains(e.target) && this.hasInput) this.close()
     }
@@ -140,6 +148,9 @@ export default {
     this.inputValue = this.value
     this.dateFormat = this.format
     this.currDate = this.parse(this.inputValue) || this.parse(new Date())
+    const year = this.currDate.getFullYear()
+    const month = this.currDate.getMonth()
+    this.changePane(year, month, this.pane)
     if (!this.hasInput) {
       this.displayDayView = true
       this.updatePaneStyle()
@@ -236,9 +247,11 @@ export default {
       if (flag === 0) {
         const preMonth = this.getYearMonth(year, month - 1)
         this.currDate = new Date(preMonth.year, preMonth.month, date)
+        this.changePane(preMonth.year, preMonth.month, this.pane)
       } else {
         const nextMonth = this.getYearMonth(year, month + 1)
         this.currDate = new Date(nextMonth.year, nextMonth.month, date)
+        this.changePane(nextMonth.year, nextMonth.month, this.pane)
       }
     },
     preNextYearClick (flag) {

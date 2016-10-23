@@ -6,8 +6,8 @@
       <a href="/" title=""><img src="~assets/logo.png"></a>
     </div>
     <hello :msg="msg" :show-link="false" ></hello>
-    <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2"></calendar>
-    <div>
+    <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
+    <div class="lorem">
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
       quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -19,7 +19,7 @@
        <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2"></calendar>
     </div>
 
-    <div>
+    <div class="lorem">
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
       quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -52,8 +52,7 @@
 
       <p>{{date1}}</p>
     </div>
-
-    <div>
+    <div class="lorem">
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
       quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -68,13 +67,11 @@
     </div>
 
     <div style="height: 300px;">
-      <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick2" :special-days="_dateMap" :sync-content="syncContent"></calendar>
-
+      <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick2" :special-days="_dateMap">
+      </calendar>
       <p>{{date2}}</p>
     </div>
-
-
-    <div>
+    <div class="lorem">
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
       quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -102,6 +99,43 @@
       cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
       proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </div>
+    <div style="height: 600px;">
+      <calendar class="event-calendar" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick3" :changePane="changePane">
+        <div class="event" v-for="evt in events" :slot="evt.date">
+            ${{evt.content}} <i :class="{low : evt.low}" v-if="evt.low">↓</i>
+        </div>
+      </calendar>
+      <p>{{date3}}</p>
+    </div>
+    <div class="lorem">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </div>
+
   </div>
   </div>
 </template>
@@ -118,6 +152,8 @@ export default {
       value: '2015-06-10',
       date1: '',
       date2: '',
+      date3: '',
+      events: [],
       format: 'yyyy-MM-dd',
       clear: true,
       isHoliday: true,
@@ -152,7 +188,6 @@ export default {
     Calendar
   },
   mounted () {
-    console.info(this._dateMap)
   },
   computed: {
     _dateMap () {
@@ -212,10 +247,47 @@ export default {
       this.date1 = str
     },
     onDayClick2 (date, str) {
-      console.info(this)
-      this.date2 = this.getDateInfo(str)
+      this.date2 = this.getDateInfo(str) || str
     },
-    syncContent (content) {
+    onDayClick3 (date, str) {
+      this.date3 = str
+    },
+    changePane (year, month, pane) {
+      // ajax data or ...
+      setTimeout(() => {
+        this.events = this.getEventContent(year, month, pane)
+      }, 0)
+    },
+    getDayCount (year, month) {
+      const dict = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+      if (month === 1) {
+        if ((year % 400 === 0) || (year % 4 === 0 && year % 100 !== 0)) {
+          return 29
+        }
+      }
+      return dict[month]
+    },
+    random (min, max) {
+      if (max == null) {
+        max = min
+        min = 0
+      }
+      return min + Math.floor(Math.random() * (max - min + 1))
+    },
+    getEventContent (year, month, pane) {
+      const data = []
+      for (let p = 0; p < pane; p++) {
+        let date = new Date(year, month + p)
+        let monthCounts = this.getDayCount(date.getFullYear(), date.getMonth())
+        for (let i = 1; i <= monthCounts; i++) {
+          data.push({
+            date: this.stringify(new Date(year, month + p, i)),
+            content: this.random(100, 1000),
+            low: this.random(1)
+          })
+        }
+      }
+      return data
     }
 
   }
@@ -232,5 +304,27 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.lorem{
+  visibility: hidden;
+}
+.event-calendar {
+  .datepicker-inner{
+    width: 440px;
+  }
+  .datepicker-body{
+    span{
+      width: 60px;
+      height: 60px;
+      vertical-align: top;
+    }
+    .event{
+      color: #E56700;
+    }
+    .low{
+      color: red;
+      font-weight: bold;
+    }
+  }
 }
 </style>
