@@ -100,7 +100,7 @@
       proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </div>
     <div style="height: 600px;">
-      <calendar class="event-calendar" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick3" :changePane="changePane">
+      <calendar class="event-calendar" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick3" :change-pane="changePane">
         <div class="event" v-for="evt in events" :slot="evt.date">
             ${{evt.content}} <i :class="{low : evt.low}" v-if="evt.low">↓</i>
         </div>

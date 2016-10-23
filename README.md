@@ -55,7 +55,7 @@ src/components/Calendar.vue
 
 ```html
 
-  <calendar class="event-calendar" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick3" :changePane="changePane">
+  <calendar class="event-calendar" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick3" :change-pane="changePane">
     <div v-for="evt in events" :slot="evt.date">
         ${{evt.content}} <i :class="{low : evt.low}" v-if="evt.low">↓</i>
     </div>
@@ -78,6 +78,7 @@ src/components/Calendar.vue
 | borderWidth           | `Number`   | 2              | This value is for calculating the pane width                                                                                |
 | onDayClick            | `Function` |                | Only for `hasInput` set false                                                                                               |
 | specialDays           | `Object`   |                | To repalce the day text                                                                                                     |
+| changePane            | 'Function' |                | For pane change parameter (year, month, pane) month[0,11], demo `/src/modules/Docs.vue`                                                                                                                          |
 
 
 
@@ -123,6 +124,10 @@ src/components/Calendar.vue
       default: 2
     },
     onDayClick: {
+      type: Function,
+      default: function () {}
+    },
+    changePane: {
       type: Function,
       default: function () {}
     },
