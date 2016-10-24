@@ -6,7 +6,6 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-var pp = require('../package')
 var path = require('path')
 var env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -21,7 +20,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     path: config.doc.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
-    publicPath: path.join('/', pp.name, '/')
+    publicPath: config.doc.assetsPublicPath
   },
   vue: {
     loaders: utils.cssLoaders({

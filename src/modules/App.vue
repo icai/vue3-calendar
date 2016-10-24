@@ -1,9 +1,7 @@
 <template>
 
   <div id="app">
-    <div>
-      <a href="/" title=""><img src="~assets/logo.png"></a>
-    </div>
+    <logo></logo>
     <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" ></calendar>
     <hello :show-link="true" ></hello>
     <div :class="'markdown'">
@@ -14,6 +12,7 @@
 </template>
 
 <script>
+import Logo from 'components/Logo'
 import Hello from 'components/Hello'
 import Calendar from 'components/Calendar'
 import html from 'root/README.md'
@@ -30,6 +29,7 @@ export default {
     }
   },
   components: {
+    Logo,
     Hello,
     Calendar
   }
