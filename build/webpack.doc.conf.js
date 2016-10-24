@@ -10,22 +10,22 @@ var pp = require('../package')
 var path = require('path')
 var env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
-  : config.build.env
+  : config.doc.env
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
-    loaders: utils.styleLoaders({ sourceMap: config.build.productionSourceMap, extract: true })
+    loaders: utils.styleLoaders({ sourceMap: config.doc.productionSourceMap, extract: true })
   },
-  devtool: config.build.productionSourceMap ? '#source-map' : false,
+  devtool: config.doc.productionSourceMap ? '#source-map' : false,
   output: {
-    path: config.build.assetsRoot,
+    path: config.doc.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
     publicPath: path.join('/', pp.name, '/')
   },
   vue: {
     loaders: utils.cssLoaders({
-      sourceMap: config.build.productionSourceMap,
+      sourceMap: config.doc.productionSourceMap,
       extract: true
     })
   },
@@ -48,7 +48,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: process.env.NODE_ENV === 'testing'
         ? 'index.html'
-        : config.build.index,
+        : config.doc.index,
       template: 'index.html',
       inject: true,
       minify: {
@@ -64,7 +64,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: process.env.NODE_ENV === 'testing'
         ? 'index.html'
-        : config.build.demo,
+        : config.doc.demo,
       template: 'index.html',
       inject: true,
       minify: {
@@ -101,7 +101,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   ]
 })
 
-if (config.build.productionGzip) {
+if (config.doc.productionGzip) {
   var CompressionWebpackPlugin = require('compression-webpack-plugin')
 
   webpackConfig.plugins.push(
@@ -110,7 +110,7 @@ if (config.build.productionGzip) {
       algorithm: 'gzip',
       test: new RegExp(
         '\\.(' +
-        config.build.productionGzipExtensions.join('|') +
+        config.doc.productionGzipExtensions.join('|') +
         ')$'
       ),
       threshold: 10240,

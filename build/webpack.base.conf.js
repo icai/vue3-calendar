@@ -24,6 +24,7 @@ module.exports = {
     fallback: [path.join(__dirname, '../node_modules')],
     alias: {
       'vue$': 'vue/dist/vue',
+      'root': path.resolve(__dirname, '..'),
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'components': path.resolve(__dirname, '../src/components'),
@@ -79,6 +80,16 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
+      },
+      {
+        test: /\.html$/,
+        loader: 'html',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.md$/,
+        loader: 'html!markdown',
+        exclude: /node_modules/
       }
     ]
   },

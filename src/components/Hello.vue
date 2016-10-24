@@ -4,9 +4,8 @@
     <div v-if="link">
       <h2>Essential Links</h2>
       <ul>
-        <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-        <li><a href="/demo/" >Demo</a></li>
-        <li><a href="https://github.com/icai/vue-calendar/" target="_blank">Github</a></li>
+        <li><a href="./demo/" >Demo</a></li>
+        <li><a href="https://github.com/icai/vue2-calendar/" target="_blank">Github</a></li>
       </ul>
     </div>
 

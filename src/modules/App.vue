@@ -6,16 +6,22 @@
     </div>
     <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" ></calendar>
     <hello :show-link="true" ></hello>
+    <div :class="'markdown'">
+      <div class="markdown-body" v-html="html">
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Hello from 'components/Hello'
 import Calendar from 'components/Calendar'
+import html from 'root/README.md'
 export default {
   name: 'app',
   data () {
     return {
+      html: html,
       disabled: [],
       value: '2015-06-10',
       format: 'yyyy-MM-dd',
@@ -32,7 +38,6 @@ export default {
 
 
 <style lang="scss">
-
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -41,4 +46,18 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+* {
+    box-sizing: border-box;
+}
+
+.markdown {
+    width: 980px;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: left;
+}
+
+@import "~assets/sass/markdown.scss"
+
 </style>

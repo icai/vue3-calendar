@@ -123,18 +123,12 @@
       quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
       consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
       cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit,
     </div>
+    <div class="text-center">
+      Happy 1024!
+    </div>
+    <p class="lorem">consectetur adipisicing elit,</p>
 
   </div>
   </div>
@@ -147,9 +141,9 @@ export default {
   name: 'docs',
   data () {
     return {
-      msg: 'Component API Docs',
+      msg: 'Component Demo',
       disabled: [],
-      value: '2015-06-10',
+      value: '2016-10-24',
       date1: '',
       date2: '',
       date3: '',
@@ -325,6 +319,14 @@ export default {
       color: red;
       font-weight: bold;
     }
+    .datepicker-monthRange span{
+      width: 100px;
+      height: 100px;
+      vertical-align: middle;
+      line-height: 100px;
+      // font-weight: 600;
+    }
   }
+
 }
 </style>

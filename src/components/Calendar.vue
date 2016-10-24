@@ -294,6 +294,7 @@ export default {
       this.displayMonthView = false
       this.displayDayView = true
       this.currDate = new Date(year, index, this.currDate.getDate())
+      this.changePane(year, index, this.pane)
     },
     getYearMonth (year, month) {
       if (month > 11) {

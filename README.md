@@ -21,7 +21,7 @@ npm run unit
 npm test
 ```
 
-##Screenshot
+## Screenshot
 
 
 ![](src/assets/demo.gif?1477232397)
@@ -32,7 +32,7 @@ npm test
 
 Component path:
 
-src/components/Calendar.vue
+**src/components/Calendar.vue**
 
 
 
@@ -51,7 +51,10 @@ src/components/Calendar.vue
 
 ```
 
-###use slot to render async data
+### Use slot to render async data
+
+we can use slot attribute to do this
+
 
 ```html
 
@@ -63,7 +66,11 @@ src/components/Calendar.vue
 
 ```
 
-###Props
+
+### Props
+
+Options/Props
+
 
 |          Name         |    Type    |    Default     |                                                         Description                                                         |
 | --------------------- | ---------- | -------------- | --------------------------------------------------------------------------------------------------------------------------- |
@@ -79,7 +86,6 @@ src/components/Calendar.vue
 | onDayClick            | `Function` |                | Only for `hasInput` set false                                                                                               |
 | specialDays           | `Object`   |                | To repalce the day text                                                                                                     |
 | changePane            | `Function` |                | For pane change parameter (year, month, pane) month[0,11], demo `/src/modules/Docs.vue`                                                                                                                          |
-
 
 
 ```javascript
@@ -141,7 +147,7 @@ src/components/Calendar.vue
 ```
 
 
-##Credits
+## Credits
 
 
 Inspired by [vue-strap](https://github.com/yuche/vue-strap) datepicker component.
