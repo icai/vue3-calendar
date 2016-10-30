@@ -12,10 +12,17 @@
     <lorem :len="10"></lorem>
     <div style="height: 300px;">
       <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick1"></calendar>
-
       <p>{{date1}}</p>
     </div>
     <lorem :len="3"></lorem>
+
+    <div style="height: 300px;">
+    <!-- range-bus example -->
+      <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :range-bus="getBus" :range-status="1"></calendar>
+       <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :range-bus="getBus" :range-status="2"></calendar>
+    </div>
+    <lorem :len="3"></lorem>
+
 
     <div style="height: 300px;">
       <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick2" :special-days="_dateMap">
@@ -40,10 +47,13 @@
   </div>
 </template>
 <script>
+import Vue from 'vue'
 import Logo from 'components/Logo'
 import Hello from 'components/Hello'
 import Lorem from 'components/Lorem'
 import Calendar from 'components/Calendar'
+
+window.eventbus = new Vue()
 export default {
   name: 'docs',
   data () {
@@ -90,7 +100,11 @@ export default {
     Lorem,
     Calendar
   },
+  created () {
+    this.bus = new Vue()
+  },
   mounted () {
+
   },
   computed: {
     _dateMap () {
@@ -98,6 +112,9 @@ export default {
     }
   },
   methods: {
+    getBus () {
+      return this.bus
+    },
     getDateInfo (v) {
       var iDiff = -1
       var sNowDate = this.stringify(new Date())

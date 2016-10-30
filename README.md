@@ -53,7 +53,6 @@ Component path:
 
 ### Use slot to render async data
 
-we can use slot attribute to do this
 
 
 ```html
@@ -65,6 +64,22 @@ we can use slot attribute to do this
   </calendar>
 
 ```
+
+
+### Range Hover Status
+
+```html
+
+  <calendar :value="value" :disabled-days-of-week="disabled" :format="format"
+   :clear-button="clear" :placeholder="placeholder" :pane="2"
+   :range-bus="getBus" :range-status="1"></calendar>
+
+  <calendar :value="value" :disabled-days-of-week="disabled" :format="format"
+   :clear-button="clear" :placeholder="placeholder" :pane="2"
+   :range-bus="getBus" :range-status="2"></calendar>
+
+```
+
 
 
 ### Props
@@ -85,7 +100,9 @@ Options/Props
 | borderWidth           | `Number`   | 2              | This value is for calculating the pane width                                                                                |
 | onDayClick            | `Function` |                | Only for `hasInput` set false                                                                                               |
 | specialDays           | `Object`   |                | To repalce the day text                                                                                                     |
-| changePane            | `Function` |                | For pane change parameter (year, month, pane) month[0,11], demo `/src/modules/Docs.vue`                                                                                                                          |
+| changePane            | `Function` |                | For pane change parameter (year, month, pane) month[0,11], demo `/src/modules/Docs.vue`                                     |
+| rangeBus              | `Function` |                | should return `new Vue()` as sibling component communication events bus                                                                   |
+| rangeStatus           | `Number`   | 0              | Default is `disabled` range hover effect,  currently only support [0,1,2] `1` will communicate with `2`                                                                                                                         |
 
 
 ```javascript
@@ -139,9 +156,19 @@ Options/Props
     },
     specialDays: {
       type: Object,
-      default: function () {
+      default () {
         return {}
       }
+    },
+    rangeBus: {
+      type: Function,
+      default: function () {
+        // return new Vue()
+      }
+    },
+    rangeStatus: {
+      type: Number,
+      default: 0
     }
   }
 ```

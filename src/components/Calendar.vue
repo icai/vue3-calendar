@@ -9,7 +9,7 @@
         <span>&times;</span>
       </button>
     </template>
-    <div class="datepicker-popup" :style="paneStyle" v-show="displayDayView">
+    <div class="datepicker-popup" :style="paneStyle" @mouseover="handleMouseOver" @mouseout="handleMouseOver" v-show="displayDayView">
       <div class="datepicker-ctrl">
         <span class="datepicker-preBtn glyphicon glyphicon-chevron-left" aria-hidden="true" @click="preNextMonthClick(0)"></span>
         <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextMonthClick(1)"></span>
@@ -22,14 +22,15 @@
               <span v-for="w in text.daysOfWeek">{{w}}</span>
             </div>
             <div class="datepicker-dateRange">
-              <span v-for="d in dateRange[pan]" :class="d.sclass" @click="daySelect(d.date, $event)"><div>
+              <span v-for="d in dateRange[pan]" class="day-cell" :class="getItemClasses(d)" :data-date="stringify(d.date)" @click="daySelect(d.date, $event)"><div>
                 <template v-if="d.sclass !== 'datepicker-item-gray'">
                   {{getSpecailDay(d.date) || d.text}}
                 </template>
                 <template v-else>
                     {{d.text}}
                 </template>
-                <div v-if="d.sclass !== 'datepicker-item-gray'"><slot :name="stringify(d.date)"></slot></div></div></span>
+                <div v-if="d.sclass !== 'datepicker-item-gray'"><slot :name="stringify(d.date)"></slot></div></div>
+              </span>
             </div>
           </div>
         </div>
@@ -46,7 +47,7 @@
             <p @click="switchDecadeView">{{stringifyYearHeader(currDate, pan)}}</p>
             <div class="datepicker-monthRange">
               <template v-for="(m, $index) in text.months">
-                <span   :class="{'datepicker-dateRange-item-active':
+                <span :class="{'datepicker-dateRange-item-active':
                     (text.months[parse(value).getMonth()]  === m) &&
                     currDate.getFullYear() + pan === parse(value).getFullYear()}"
                     @click="monthSelect(stringifyYearHeader(currDate, pan), $index)"
@@ -134,9 +135,19 @@ export default {
     },
     specialDays: {
       type: Object,
-      default: function () {
+      default () {
         return {}
       }
+    },
+    rangeBus: {
+      type: Function,
+      default: function () {
+        // return new Vue()
+      }
+    },
+    rangeStatus: {
+      type: Number,
+      default: 0
     }
   },
   mounted () {
@@ -144,8 +155,8 @@ export default {
       if (!this.$el.contains(e.target) && this.hasInput) this.close()
     }
     this.$emit('child-created', this)
-    this.inputValue = this.value
-    this.dateFormat = this.format
+    // this.inputValue = this.value
+    // this.dateFormat = this.format
     this.currDate = this.parse(this.inputValue) || this.parse(new Date())
     const year = this.currDate.getFullYear()
     const month = this.currDate.getMonth()
@@ -154,15 +165,33 @@ export default {
       this.displayDayView = true
       this.updatePaneStyle()
     }
+    if (this.rangeStatus) {
+      this.eventbus = this.rangeBus()
+      if (typeof this.eventbus === 'object' && !this.eventbus.$on) {
+        console.warn('Calendar rangeBus doesn\'t exist')
+        this.rangeStatus = 0
+      }
+    }
+    if (this.rangeStatus === 2) {
+      this._updateRangeStart = (date) => {
+        this.rangeStart = date
+        this.currDate = date
+        this.inputValue = this.stringify(this.currDate)
+      }
+      this.eventbus.$on('calendar-rangestart', this._updateRangeStart)
+    }
     document.addEventListener('click', this._blur)
   },
   beforeDestroy () {
     document.removeEventListener('click', this._blur)
+    if (this.rangeStatus === 2) {
+      this.eventbus.$off('calendar-rangestart', this._updateRangeStart)
+    }
   },
   data () {
     return {
-      inputValue: '',
-      dateFormat: '',
+      inputValue: this.value,
+      dateFormat: this.format,
       currDate: new Date(),
       dateRange: [],
       decadeRange: [],
@@ -171,7 +200,9 @@ export default {
       },
       displayDayView: false,
       displayMonthView: false,
-      displayYearView: false
+      displayYearView: false,
+      rangeStart: false,
+      rangeEnd: false
     }
   },
   watch: {
@@ -185,6 +216,43 @@ export default {
     }
   },
   methods: {
+    handleMouseOver (event) {
+      let target = event.target
+      // this.rangeEnd = false
+      if (!this.rangeStart) {
+        return true
+      }
+      if (event.type === 'mouseout') {
+        return true
+      }
+      while (this.$el.contains(target) && !~target.className.indexOf('day-cell')) {
+        target = target.parentNode
+      }
+      if (~target.className.indexOf('day-cell') && !~target.className.indexOf('datepicker-item-gray')) {
+        const rangeEnd = target.getAttribute('data-date')
+        if (this.rangeStart < this.parse(rangeEnd)) {
+          this.rangeEnd = this.parse(rangeEnd)
+        }
+      }
+    },
+    getItemClasses (d) {
+      const clazz = []
+      clazz.push(d.sclass)
+      if (this.rangeStart && this.rangeEnd && d.sclass !== 'datepicker-item-gray') {
+        if (d.date > this.rangeStart && d.date < this.rangeEnd) {
+          clazz.push('daytoday-range')
+        }
+        /* eslint-disable eqeqeq */
+        if (this.stringify(d.date) == this.stringify(this.rangeStart)) {
+          clazz.push('daytoday-start')
+        }
+        /* eslint-disable eqeqeq */
+        if (this.stringify(d.date) == this.stringify(this.rangeEnd)) {
+          clazz.push('daytoday-end')
+        }
+      }
+      return clazz.join(' ')
+    },
     translations (lang) {
       lang = lang || 'en'
       let text = {
@@ -277,6 +345,9 @@ export default {
           this.currDate = date
           this.inputValue = this.stringify(this.currDate)
           this.displayDayView = false
+          if (this.rangeStatus === 1) {
+            this.eventbus.$emit('calendar-rangestart', this.currDate)
+          }
         } else {
           this.onDayClick(date, this.stringify(date))
         }
@@ -351,6 +422,7 @@ export default {
         date = new Date(str.substring(6, 10), str.substring(3, 5), str.substring(0, 2))
       } else {
         date = new Date(str)
+        date.setHours(0, 0, 0)
       }
       return isNaN(date.getFullYear()) ? new Date() : date
     },
@@ -498,7 +570,7 @@ input.datepicker-input.with-reset-button {
   width: 28px;
   line-height: 28px;
   height: 28px;
-  border-radius: 4px;
+  // border-radius: 4px;
 }
 .datepicker-ctrl p {
   width: 65%;
@@ -544,6 +616,19 @@ input.datepicker-input.with-reset-button {
 .datepicker-dateRange span:hover,
 .datepicker-dateRange-item-hover {
   background-color : #eeeeee;
+}
+.datepicker-dateRange {
+  .daytoday-start,
+  .daytoday-start:hover,
+  .daytoday-end,
+  .daytoday-end:hover{
+    background: rgb(50, 118, 177)!important;
+    color: white!important;
+  }
+}
+.datepicker-dateRange .daytoday-range,
+.datepicker-dateRange .daytoday-range:hover{
+  background-color: #ddd;
 }
 .datepicker-weekRange span{
   font-weight: bold;
