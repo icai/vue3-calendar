@@ -52,8 +52,6 @@ import Logo from 'components/Logo'
 import Hello from 'components/Hello'
 import Lorem from 'components/Lorem'
 import Calendar from 'components/Calendar'
-
-window.eventbus = new Vue()
 export default {
   name: 'docs',
   data () {

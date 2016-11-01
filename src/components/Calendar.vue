@@ -127,11 +127,11 @@ export default {
     },
     onDayClick: {
       type: Function,
-      default: function () {}
+      default () {}
     },
     changePane: {
       type: Function,
-      default: function () {}
+      default () {}
     },
     specialDays: {
       type: Object,
@@ -141,7 +141,7 @@ export default {
     },
     rangeBus: {
       type: Function,
-      default: function () {
+      default () {
         // return new Vue()
       }
     },

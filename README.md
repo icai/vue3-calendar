@@ -148,11 +148,11 @@ Options/Props
     },
     onDayClick: {
       type: Function,
-      default: function () {}
+      default () {}
     },
     changePane: {
       type: Function,
-      default: function () {}
+      default () {}
     },
     specialDays: {
       type: Object,
@@ -162,7 +162,7 @@ Options/Props
     },
     rangeBus: {
       type: Function,
-      default: function () {
+      default () {
         // return new Vue()
       }
     },
