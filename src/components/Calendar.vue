@@ -479,12 +479,15 @@ export default {
             if (week === parseInt(el, 10)) sclass = 'datepicker-item-disable'
           })
           if (i === this.currDate.getDate()) {
+            var valueDate = null
             if (this.inputValue) {
-              const valueDate = this.parse(this.inputValue)
-              if (valueDate) {
-                if (valueDate.getFullYear() === time.year && valueDate.getMonth() === time.month) {
-                  sclass = 'datepicker-dateRange-item-active'
-                }
+              valueDate = this.parse(this.inputValue)
+            } else {
+              valueDate = this.currDate
+            }
+            if (valueDate) {
+              if (valueDate.getFullYear() === time.year && valueDate.getMonth() === time.month) {
+                sclass = 'datepicker-dateRange-item-active'
               }
             }
           }
