@@ -419,7 +419,7 @@ export default {
     parse (str = this.inputValue) {
       let date
       if (str.length === 10 && (this.dateFormat === 'dd-MM-yyyy' || this.dateFormat === 'dd/MM/yyyy')) {
-        date = new Date(str.substring(6, 10), str.substring(3, 5), str.substring(0, 2))
+        date = new Date(str.substring(6, 10), str.substring(3, 5) - 1, str.substring(0, 2))
       } else {
         date = new Date(str)
         date.setHours(0, 0, 0)
