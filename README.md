@@ -20,6 +20,7 @@ npm run unit
 # run all tests
 npm test
 ```
+Chinese user: [![cnpm](https://npm.taobao.org/badge/v/cnpmjs.org.svg)](https://npm.taobao.org/)
 
 ## Screenshot
 

@@ -38,6 +38,16 @@
       </calendar>
       <p>{{date3}}</p>
     </div>
+    <lorem :len="3"></lorem>
+    <div style="height: 600px;">
+      <calendar class="event-calendar" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick4" :change-pane="changePane2">
+        <div class="event" v-for="evt in lurevents" :slot="evt.date">
+            <div style="font-size:12px;" v-html="evt.content"></div>
+        </div>
+      </calendar>
+      <p>{{date4}}</p>
+    </div>
+
     <lorem :len="6"></lorem>
     <div class="text-center">
       Happy 1024!
@@ -52,6 +62,7 @@ import Logo from 'components/Logo'
 import Hello from 'components/Hello'
 import Lorem from 'components/Lorem'
 import Calendar from 'components/Calendar'
+import lunar from 'utils/lunar'
 export default {
   name: 'docs',
   data () {
@@ -62,7 +73,9 @@ export default {
       date1: '',
       date2: '',
       date3: '',
+      date4: '',
       events: [],
+      lurevents: [],
       format: 'yyyy-MM-dd',
       clear: true,
       isHoliday: true,
@@ -175,6 +188,66 @@ export default {
       setTimeout(() => {
         this.events = this.getEventContent(year, month, pane)
       }, 0)
+    },
+    onDayClick4 (date, str) {
+      this.date4 = str
+    },
+    changePane2 (year, month, pane) {
+      var Today = new Date()
+      var ty = parseInt(Today.getFullYear())
+      var tm = parseInt(Today.getMonth())
+      var td = parseInt(Today.getDate())
+      var days = []
+      for (var i = 0; i < pane; i++) {
+        var date = new Date(year, month + i)
+        var r = new lunar.Calendar(date.getFullYear(), date.getMonth(), ty, tm, td)
+        days = days.concat([].slice.call(r, 0))
+      }
+      for (var j = 0; j < days.length; j++) {
+        days[j].date = this.stringify(new Date(days[j].sYear, days[j].sMonth - 1, days[j].sDay))
+        days[j].content = this.foramtDay(days[j])
+      }
+      this.lurevents = days
+    },
+    foramtDay (el) {
+      /* eslint-disable */
+      var S = "",
+          J, I;
+      if (el.lDay == 1) {
+          S = "<b>" + (el.isLeap ? "\u95f0" : "") + el.lMonth + "\u6708" + (lunar.monthDays(el.lYear, el.lMonth) == 29 ? "\u5c0f" : "\u5927") + "</b>";
+      } else {
+          S = lunar.cDay(el.lDay);
+      }
+      I = el.lunarFestival;
+      if (el.lMonth == "4" && I.indexOf("\u7aef\u5348\u8282") != -1) {
+          I = "";
+          el.lunarFestival = ""
+      }
+      if (I.length > 0) {
+          if (I.length > 7) {
+              // I = I.substr(0, 5) + "\u2026"
+              I = I.split(' ')[0]
+          }
+          I = I.fontcolor("#909090");
+      } else {
+          // I = el.solarFestival;
+          // if (I.length > 0) {
+          //     J = (I.charCodeAt(0) > 0 && I.charCodeAt(0) < 128) ? 9 : 5;
+          //     if (I.length > J + 1) {
+          //         I = I.substr(0, J - 1) + "\u2026"
+          //     }
+          //     I = I.fontcolor("#909090");
+          // } else {
+          //     I = el.solarTerms;
+          //     if (I.length > 0) {
+          //         I = I.fontcolor("#ff7200") // 节日
+          //     }
+          // }
+      }
+      if (I.length > 0) {
+          S = I
+      }
+      return S;
     },
     getDayCount (year, month) {
       const dict = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]

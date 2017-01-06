@@ -26,6 +26,7 @@ module.exports = {
       'vue$': 'vue/dist/vue',
       'root': path.resolve(__dirname, '..'),
       'src': path.resolve(__dirname, '../src'),
+      'utils': path.resolve(__dirname, '../src/utils'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'components': path.resolve(__dirname, '../src/components'),
       "bootstrap-sass$": path.resolve(__dirname,"../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss"),
