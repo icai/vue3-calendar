@@ -244,7 +244,7 @@ export default {
     getItemClasses (d) {
       const clazz = []
       clazz.push(d.sclass)
-      if (this.disabledDates.includes(this.stringify(d.date)) || d.date < this.currDate) {
+      if (this.disabledDates.includes(this.stringify(d.date))) {
         clazz.push('datepicker-item-disable')
       }
       if (this.rangeStart && this.rangeEnd && d.sclass !== 'datepicker-item-gray') {
