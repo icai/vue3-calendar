@@ -4,34 +4,34 @@
   <div class="container">
     <logo></logo>
     <hello :msg="msg" :show-link="false" ></hello>
-    <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
+    <calendar :disabledDates="disabledDates" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
     <lorem :len="5"></lorem>
     <div class="text-right">
-       <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2"></calendar>
+       <calendar :disabledDates="disabledDates" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2"></calendar>
     </div>
     <lorem :len="10"></lorem>
     <div style="height: 300px;">
-      <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick1"></calendar>
+      <calendar :disabledDates="disabledDates" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick1"></calendar>
       <p>{{date1}}</p>
     </div>
     <lorem :len="3"></lorem>
 
     <div style="height: 300px;">
     <!-- range-bus example -->
-      <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :range-bus="getBus" :range-status="1"></calendar>
-       <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :range-bus="getBus" :range-status="2"></calendar>
+      <calendar :disabledDates="disabledDates" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :range-bus="getBus" :range-status="1"></calendar>
+       <calendar :disabledDates="disabledDates" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :range-bus="getBus" :range-status="2"></calendar>
     </div>
     <lorem :len="3"></lorem>
 
 
     <div style="height: 300px;">
-      <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick2" :special-days="_dateMap">
+      <calendar :disabledDates="disabledDates" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick2" :special-days="_dateMap">
       </calendar>
       <p>{{date2}}</p>
     </div>
     <lorem :len="3"></lorem>
     <div style="height: 600px;">
-      <calendar class="event-calendar" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick3" :change-pane="changePane">
+      <calendar class="event-:calendar" :disabledDates="disabledDates" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick3" :change-pane="changePane">
         <div class="event" v-for="evt in events" :slot="evt.date">
             ${{evt.content}} <i :class="{low : evt.low}" v-if="evt.low">↓</i>
         </div>
@@ -40,7 +40,7 @@
     </div>
     <lorem :len="3"></lorem>
     <div style="height: 600px;">
-      <calendar class="event-calendar" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick4" :change-pane="changePane2">
+      <calendar class="event-:calendar" :disabledDates="disabledDates" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick4" :change-pane="changePane2">
         <div class="event" v-for="evt in lurevents" :slot="evt.date">
             <div style="font-size:12px;" v-html="evt.content"></div>
         </div>
@@ -69,6 +69,7 @@ export default {
     return {
       msg: 'Component Demo',
       disabled: [],
+      disabledDates: ['2016-10-28', '2016-10-27'],
       value: '2016-10-24',
       date1: '',
       date2: '',
