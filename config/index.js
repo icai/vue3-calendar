@@ -1,6 +1,10 @@
+
+'use strict'
+// Template version: 1.1.1
 // see http://vuejs-templates.github.io/webpack for documentation.
-var path = require('path')
-var pp = require('../package')
+
+const path = require('path')
+const pp = require('../package')
 
 module.exports = {
   build: {
@@ -17,11 +21,16 @@ module.exports = {
     // npm install --save-dev compression-webpack-plugin
     productionGzip: false,
     productionGzipExtensions: ['js', 'css'],
-    publicPath: 'http://localhost:8080/'
+    // Run the build command with an extra argument to
+    // View the bundle analyzer report after build finishes:
+    // `npm run build --report`
+    // Set to `true` or `false` to always turn it on or off
+    bundleAnalyzerReport: process.env.npm_config_report
   },
   dev: {
     env: require('./dev.env'),
-    port: 8080,
+    port: process.env.PORT || 4000,
+    autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},
@@ -46,9 +55,11 @@ module.exports = {
     // npm install --save-dev compression-webpack-plugin
     productionGzip: false,
     productionGzipExtensions: ['js', 'css'],
+    bundleAnalyzerReport: process.env.npm_config_report,
+
     publicPath: 'http://localhost:8080/',
 
-    port: 8080,
+    port: process.env.PORT || 4000,
     assetsDemoDirectory: 'demo',
     proxyTable: {},
     // CSS Sourcemaps off by default because relative paths are "buggy"
@@ -58,4 +69,5 @@ module.exports = {
     // just be aware of this issue when enabling this option.
     cssSourceMap: false
   }
+
 }

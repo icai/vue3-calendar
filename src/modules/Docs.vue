@@ -142,7 +142,7 @@ export default {
           break
       }
       !this._dateMap && this.isHoliday && (this._dateMap = this._createDateMap())
-      return this._dateMap && this._dateMap[v] || sDateName[iDiff]
+      return (this._dateMap && this._dateMap[v]) || sDateName[iDiff]
     },
     _createDateMap () {
       var oTmp = {}

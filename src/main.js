@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import App from './modules/App'
 import Docs from './modules/Docs'
-require('bootstrap-sass')
+import 'bootstrap-sass'
+import pp from '../package.json'
 
-var pp = require('../package.json')
-
-var routemaps = {
+const routemaps = {
   '/': function () {
     /* eslint-disable no-new */
     new Vue({
@@ -24,12 +23,12 @@ var routemaps = {
   }
 }
 
-var prefix = pp.name
+const prefix = pp.name
 var route = ''
 if (window.location.pathname.indexOf(prefix)) {
   route = window.location.pathname.replace('/' + prefix, '')
 } else {
   route = window.location.pathname
 }
-var app = routemaps[route]
+const app = routemaps[route]
 app && app()
