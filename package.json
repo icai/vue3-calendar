@@ -13,6 +13,11 @@
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
+  "main": "lib/calendar.min.js",
+  "files": [
+    "lib/calendar.js",
+    "lib/Calendar.vue"
+  ],
   "dependencies": {
     "bootstrap-sass": "^3.3.7",
     "vue": "^2.5.2"

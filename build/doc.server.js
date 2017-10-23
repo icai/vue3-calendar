@@ -6,6 +6,7 @@ var path = require('path')
 var express = require('express')
 var opn = require('opn')
 var proxyMiddleware = require('http-proxy-middleware')
+var fs = require('fs');
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.doc.port
@@ -26,12 +27,22 @@ Object.keys(proxyTable).forEach(function (context) {
 })
 
 
+
+
 // serve pure static assets
 var staticPath = path.posix.join(config.doc.assetsPublicPath, config.doc.assetsSubDirectory)
 var demoPath = path.posix.join(config.doc.assetsPublicPath, config.doc.assetsDemoDirectory)
 app.use(staticPath, express.static('./docs/static'))
 app.use('/vue2-calendar/static', express.static('./docs/static'))
-app.use("/*", express.static('./docs'))
+
+app.get('*',function(req, res, next){
+  try {
+    res.sendFile(path.join(__dirname , '../docs', req.url ,'index.html'));
+  } catch(e){
+    next();
+  }
+});
+
 
 module.exports = app.listen(port, function (err) {
   if (err) {
