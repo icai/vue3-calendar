@@ -92,6 +92,12 @@ export default {
     format: {
       default: 'MM/dd/yyyy'
     },
+    disabledDates: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
     disabledDaysOfWeek: {
       type: Array,
       default () {
@@ -238,6 +244,9 @@ export default {
     getItemClasses (d) {
       const clazz = []
       clazz.push(d.sclass)
+      if (this.disabledDates.includes(this.stringify(d.date))) {
+        clazz.push('datepicker-item-disable')
+      }
       if (this.rangeStart && this.rangeEnd && d.sclass !== 'datepicker-item-gray') {
         if (d.date > this.rangeStart && d.date < this.rangeEnd) {
           clazz.push('daytoday-range')
@@ -589,6 +598,10 @@ input.datepicker-input.with-reset-button {
 .datepicker-item-disable {
   background-color: white!important;
   cursor: not-allowed!important;
+  pointer-events: none!important;
+}
+.datepicker-item-disable:hover {
+  background-color: gray!important;
 }
 .decadeRange span:first-child,
 .decadeRange span:last-child,
