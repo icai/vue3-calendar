@@ -2,6 +2,28 @@
 
 > vue 2 calendar, datepicker component which supported lunar or date event
 
+
+## Install
+
+### Import using module
+```JavaScript
+import 'vue2-calendar/lib/calendar.min.css';
+// in ES6 modules
+import Calendar from 'vue2-calendar';
+
+// in CommonJS
+const Calendar = require('vue2-calendar');
+
+// in Global variable
+const VueCalendar = Calendar;
+```
+
+### Import using script tag
+``` HTML
+<link rel="stylesheet" href="../node-modules/vue2-calendar/lib/calendar.min.css" >
+<script src="../node-modules/vue2-calendar/lib/calendar.min.js"></script>
+```
+
 ## Build Setup
 
 ``` bash
@@ -30,10 +52,6 @@ Chinese user: [![cnpm](https://npm.taobao.org/badge/v/cnpmjs.org.svg)](https://n
 
 
 ## Usage
-
-Component path:
-
-**src/components/Calendar.vue**
 
 
 
