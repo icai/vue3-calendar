@@ -5,14 +5,21 @@
 
 ## Install
 
+
+```bash
+$ npm install vue2-slot-calendar
+```
+
 ### Import using module
 ```JavaScript
-import 'vue2-calendar/lib/calendar.min.css';
+
+import 'bootstrap-sass' // alias
+import 'vue2-slot-calendar/lib/calendar.min.css';
 // in ES6 modules
-import Calendar from 'vue2-calendar';
+import Calendar from 'vue2-slot-calendar';
 
 // in CommonJS
-const Calendar = require('vue2-calendar');
+const Calendar = require('vue2-slot-calendar');
 
 // in Global variable
 const VueCalendar = Calendar;
@@ -20,8 +27,8 @@ const VueCalendar = Calendar;
 
 ### Import using script tag
 ``` HTML
-<link rel="stylesheet" href="../node-modules/vue2-calendar/lib/calendar.min.css" >
-<script src="../node-modules/vue2-calendar/lib/calendar.min.js"></script>
+<link rel="stylesheet" href="../node-modules/tvue2-calendar/lib/calendar.min.css" >
+<script src="../node-modules/tvue2-calendar/lib/calendar.min.js"></script>
 ```
 
 ## Build Setup
