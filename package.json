@@ -9,14 +9,14 @@
     "doc": "node build/docs.js",
     "docs": "node build/doc.server.js",
     "build": "node build/build.js",
+    "lib": "node build/npm.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "main": "lib/calendar.min.js",
   "files": [
-    "lib/calendar.js",
-    "lib/Calendar.vue"
+    "lib"
   ],
   "dependencies": {
     "bootstrap-sass": "^3.3.7",

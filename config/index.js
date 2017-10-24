@@ -41,6 +41,10 @@ module.exports = {
     // just be aware of this issue when enabling this option.
     cssSourceMap: false
   },
+  npm: {
+    assetsRoot: path.resolve(__dirname, '../lib'),
+    productionSourceMap: true
+  },
   doc: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../docs/index.html'),

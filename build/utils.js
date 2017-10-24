@@ -10,13 +10,15 @@ exports.assetsPath = function (_path) {
   return path.posix.join(assetsSubDirectory, _path)
 }
 
-exports.cssLoaders = function (options) {
+exports.cssLoaders = function (options, minimize) {
   options = options || {}
-
+  if (typeof minimize === 'undefined'){
+    minimize = process.env.NODE_ENV === 'production'
+  }
   const cssLoader = {
     loader: 'css-loader',
     options: {
-      minimize: process.env.NODE_ENV === 'production',
+      minimize: minimize,
       sourceMap: options.sourceMap
     }
   }
@@ -58,9 +60,9 @@ exports.cssLoaders = function (options) {
 }
 
 // Generate loaders for standalone style files (outside of .vue)
-exports.styleLoaders = function (options) {
+exports.styleLoaders = function (options, minimize) {
   const output = []
-  const loaders = exports.cssLoaders(options)
+  const loaders = exports.cssLoaders(options, minimize)
   for (const extension in loaders) {
     const loader = loaders[extension]
     output.push({
