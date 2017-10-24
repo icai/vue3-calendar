@@ -13,7 +13,7 @@ $ npm install vue2-slot-calendar
 ### Import using module
 ```JavaScript
 
-import 'bootstrap-sass' // alias
+import 'bootstrap-sass' // alias css
 import 'vue2-slot-calendar/lib/calendar.min.css';
 // in ES6 modules
 import Calendar from 'vue2-slot-calendar';
@@ -54,7 +54,7 @@ Chinese user: [![cnpm](https://npm.taobao.org/badge/v/cnpmjs.org.svg)](https://n
 ## Screenshot
 
 
-![](src/assets/demo.gif?1477232397)
+![](https://raw.githubusercontent.com/icai/vue2-calendar/master/src/assets/demo.gif?1477232397)
 
 
 
