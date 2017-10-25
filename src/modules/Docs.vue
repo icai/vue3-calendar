@@ -69,7 +69,7 @@ export default {
     return {
       msg: 'Component Demo',
       disabled: [],
-      value: '2016-10-24',
+      value: '2017-10-25',
       date1: '',
       date2: '',
       date3: '',

@@ -22,7 +22,7 @@ export default {
     return {
       html: html,
       disabled: [],
-      value: '2015-06-10',
+      value: '2017-10-25',
       format: 'yyyy-MM-dd',
       clear: true,
       placeholder: 'placeholder is displayed when value is null or empty'

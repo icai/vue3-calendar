@@ -1,6 +1,7 @@
 {
   "name": "vue2-slot-calendar",
-  "version": "2.0.1",
+  "aliasName": "vue2-calendar",
+  "version": "2.0.2",
   "description": "vue2 bootstrap style calendar",
   "author": "Terry <gidcai@gmail.com>",
   "scripts": {
@@ -9,14 +10,15 @@
     "doc": "node build/docs.js",
     "docs": "node build/doc.server.js",
     "build": "node build/build.js",
-    "lib": "node build/npm.js",
+    "lib": "cross-env BABEL_ENV=npm node build/npm.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
-  "main": "lib/calendar.min.js",
+  "main": "./index.js",
   "files": [
-    "lib"
+    "lib",
+    "example"
   ],
   "dependencies": {
     "bootstrap-sass": "^3.3.7",
@@ -99,5 +101,23 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/icai/vue2-calendar.git"
+  },
+  "keywords": [
+    "vue2",
+    "calendar",
+    "slot"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/icai/vue2-calendar/issues"
+  },
+  "homepage": "https://github.com/icai/vue2-calendar#readme"
 }

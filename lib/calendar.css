@@ -1,0 +1,146 @@
+/*!
+ * vue2-calendar v2.0.2
+ * (c) 2017 Terry <gidcai@gmail.com>
+ * https://github.com/icai/vue2-calendar#readme
+ */
+
+.datepicker {
+  position: relative;
+  display: inline-block;
+}
+input.datepicker-input.with-reset-button {
+  padding-right: 25px;
+}
+.datepicker > button.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  outline: none;
+  z-index: 2;
+  display: block;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+}
+.datepicker > button.close:focus {
+  opacity: .2;
+}
+.datepicker-popup {
+  position: absolute;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  margin-top: 2px;
+  z-index: 1000;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+.datepicker-popup:before, .datepicker-popup:after {
+    content: " ";
+    display: table;
+}
+.datepicker-popup:after {
+    clear: both;
+}
+.datepicker-inner {
+  width: 218px;
+  float: left;
+}
+.datepicker-body {
+  padding: 10px 10px;
+  text-align: center;
+}
+.datepicker-ctrl p,
+.datepicker-ctrl span,
+.datepicker-body span {
+  display: inline-block;
+  width: 28px;
+  line-height: 28px;
+  height: 28px;
+}
+.datepicker-ctrl p {
+  width: 65%;
+}
+.datepicker-ctrl span {
+  position: absolute;
+}
+.datepicker-body span {
+  text-align: center;
+}
+.datepicker-monthRange span {
+  width: 48px;
+  height: 50px;
+  line-height: 45px;
+}
+.datepicker-item-disable {
+  background-color: white !important;
+  cursor: not-allowed !important;
+}
+.decadeRange span:first-child,
+.decadeRange span:last-child,
+.datepicker-item-disable,
+.datepicker-item-gray {
+  color: #999;
+}
+.datepicker-dateRange-item-active:hover,
+.datepicker-dateRange-item-active {
+  background: #3276b1 !important;
+  color: white !important;
+}
+.datepicker-monthRange {
+  margin-top: 10px;
+}
+.datepicker-monthRange span,
+.datepicker-ctrl span,
+.datepicker-ctrl p,
+.datepicker-dateRange span {
+  cursor: pointer;
+}
+.datepicker-monthRange span:hover,
+.datepicker-ctrl p:hover,
+.datepicker-ctrl i:hover,
+.datepicker-dateRange span:hover,
+.datepicker-dateRange-item-hover {
+  background-color: #eeeeee;
+}
+.datepicker-dateRange .daytoday-start,
+.datepicker-dateRange .daytoday-start:hover,
+.datepicker-dateRange .daytoday-end,
+.datepicker-dateRange .daytoday-end:hover {
+  background: #3276b1 !important;
+  color: white !important;
+}
+.datepicker-dateRange .daytoday-range,
+.datepicker-dateRange .daytoday-range:hover {
+  background-color: #ddd;
+}
+.datepicker-weekRange span {
+  font-weight: bold;
+}
+.datepicker-label {
+  background-color: #f8f8f8;
+  font-weight: 700;
+  padding: 7px 0;
+  text-align: center;
+}
+.datepicker-ctrl {
+  position: relative;
+  /*height: 30px;*/
+  line-height: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+.month-btn {
+  font-weight: bold;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.datepicker-preBtn {
+  left: 2px;
+}
+.datepicker-nextBtn {
+  right: 2px;
+}

@@ -42,6 +42,7 @@ module.exports = {
     cssSourceMap: false
   },
   npm: {
+    env: require('./npm.env'),
     assetsRoot: path.resolve(__dirname, '../lib'),
     productionSourceMap: true
   },

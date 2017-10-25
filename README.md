@@ -27,9 +27,12 @@ const VueCalendar = Calendar;
 
 ### Import using script tag
 ``` HTML
-<link rel="stylesheet" href="../node-modules/vue2-slot-calendar/lib/calendar.min.css" >
-<script src="../node-modules/vue2-slot-calendar/lib/calendar.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="../node_modules/vue2-slot-calendar/lib/calendar.min.css" >
+<script src="../node_modules/vue2-slot-calendar/lib/calendar.min.js"></script>
 ```
+
+Also see the demo file, `example/demo.html`
 
 ## Build Setup
 
