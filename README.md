@@ -14,7 +14,12 @@ $ npm install vue2-slot-calendar
 ```JavaScript
 
 import 'bootstrap-sass' // alias css
+
+// js file
 import 'vue2-slot-calendar/lib/calendar.min.css';
+import calendar from 'vue2-slot-calendar/lib/calendar';
+
+// vue file
 // in ES6 modules
 import Calendar from 'vue2-slot-calendar';
 
