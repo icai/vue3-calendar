@@ -3,6 +3,9 @@
 > vue 2 calendar, datepicker component which supported lunar or date event
 
 
+- This project is not only a vue component, but also a webpack **multi-page** project in action.
+ 
+
 ## Install
 
 

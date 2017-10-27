@@ -29,6 +29,9 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
+    index: path.resolve(__dirname, '../dist/index.html'),
+    demo: path.resolve(__dirname, '../dist/demo/index.html'),
+    assetsRoot: path.resolve(__dirname, '../dist'),
     port: process.env.PORT || 4000,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
