@@ -4,7 +4,7 @@
 
 
 - This project is not only a vue component, but also a webpack **multi-page** project in action.
- 
+
 
 ## Install
 
@@ -140,6 +140,10 @@ Options/Props
 | changePane            | `Function` |                | For pane change parameter (year, month, pane) month[0,11], demo `/src/modules/Docs.vue`                                     |
 | rangeBus              | `Function` |                | should return `new Vue()` as sibling component communication events bus                                                                   |
 | rangeStatus           | `Number`   | 0              | Default is `disabled` range hover effect,  currently only support [0,1,2] `1` will communicate with `2`                                                                                                                         |
+| onDrawDate            | `Function` |                | DrawDate Function  `allowSelect` to update date cell style |
+| showDateOnly          | `Boolean`  | false          | show Date Only |
+| transfer              | `Boolean`  | false          | transfer popup to `body` |
+| elementId             | `String`   |                | elementId to label for |
 
 
 ```javascript
@@ -206,7 +210,21 @@ Options/Props
     rangeStatus: {
       type: Number,
       default: 0
-    }
+    },
+    onDrawDate: {
+      type: Function,
+      default () {}
+    },
+    showDateOnly: {
+      type: Boolean,
+      default: false
+    },
+    transfer: {
+      type: Boolean,
+      default: false
+    },
+    elementId: [String]
+
   }
 ```
 
