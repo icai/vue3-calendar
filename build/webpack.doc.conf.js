@@ -27,7 +27,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     path: config.doc.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
-    publicPath: path.join('/', pp.name, '/')
+    publicPath: path.join('/', pp.aliasName, '/')
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
@@ -88,7 +88,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       chunks: ['vendor', 'manifest', 'demo/index'],
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
-      // Allows to control how chunks should be sorted before they are included to the html. 
+      // Allows to control how chunks should be sorted before they are included to the html.
       // Allowed values: 'none' | 'auto' | 'dependency' |'manual' | {function} - default: 'auto'
     }),
     // keep module.id stable when vender modules does not change
