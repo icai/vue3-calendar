@@ -3,7 +3,48 @@
 > vue 2 calendar, datepicker component which supported lunar or date event
 
 
+<p align="center">
+  <a href="https://github.com/icai/vue2-calendar">
+    <img src="https://img.shields.io/github/stars/icai/vue2-calendar.svg?style=social&label=Star" alt="">
+  </a>
+  <a href="https://github.com/icai/vue2-calendar">
+    <img src="https://img.shields.io/github/forks/icai/vue2-calendar.svg?style=social&label=Fork" alt="">
+  </a>
+  <a href="https://github.com/icai/vue2-calendar">
+    <img src="https://img.shields.io/github/watchers/icai/vue2-calendar.svg?style=social&label=Watch" alt="">
+  </a>
+  <br>
+  <br>
+  <a href="https://github.com/icai/vue2-calendar/issues">
+    <img src="https://img.shields.io/github/issues/icai/vue2-calendar.svg?style=flat-square" alt="">
+  </a>
+  <a href="https://github.com/icai/vue2-calendar/issues">
+    <img src="http://isitmaintained.com/badge/resolution/icai/vue2-calendar.svg?style=flat-square" alt="">
+  </a>
+  <a href="https://github.com/icai/vue2-calendar/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/icai/vue2-calendar.svg?style=flat-square" alt="">
+  </a>
+  <br>
+  <a href="https://www.npmjs.com/package/vue2-slot-calendar">
+    <img src="https://img.shields.io/npm/l/vue2-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <a href="https://www.npmjs.com/package/vue2-slot-calendar">
+    <img src="https://img.shields.io/npm/v/vue2-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <a href="https://www.npmjs.com/package/vue2-slot-calendar">
+    <img src="https://img.shields.io/npm/dm/vue2-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <a href="https://www.npmjs.com/package/vue2-slot-calendar">
+    <img src="https://img.shields.io/npm/dt/vue2-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <br>
+  <br>
+</p>
+
+
 - This project is not only a vue component, but also a webpack **multi-page** project in action.
+
+
 
 
 ## Install
@@ -141,9 +182,9 @@ Options/Props
 | rangeBus              | `Function` |                | should return `new Vue()` as sibling component communication events bus                                                                   |
 | rangeStatus           | `Number`   | 0              | Default is `disabled` range hover effect,  currently only support [0,1,2] `1` will communicate with `2`                                                                                                                         |
 | onDrawDate            | `Function` |                | DrawDate Function  `allowSelect` to update date cell style |
-| showDateOnly          | `Boolean`  | false          | show Date Only |
-| transfer              | `Boolean`  | false          | transfer popup to `body` |
-| elementId             | `String`   |                | elementId to label for |
+| showDateOnly          | `Boolean`  | false          | show date pane only |
+| transfer              | `Boolean`  | false          | transfer popup to `document.body` |
+| elementId             | `String`   |                | elementId for label tag `for` attribute |
 
 
 ```javascript
