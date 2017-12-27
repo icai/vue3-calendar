@@ -6,6 +6,10 @@
     <hello :msg="msg" :show-link="false" ></hello>
     <calendar v-model="value" showDateOnly :onDrawDate="onDrawDate" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
     <lorem :len="5"></lorem>
+
+    <calendar v-model="value" showDateOnly minDate="2017-12-29" maxDate="2018-01-27" @drawdate="onDrawDate2" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
+    <lorem :len="5"></lorem>
+
     <div class="col-sm-offset-8">
       <form class="form-horizontal">
         <div class="form-group">
@@ -150,6 +154,13 @@ export default {
       if (new Date().getTime() > date.getTime()) {
         e.allowSelect = false
       }
+    },
+    onDrawDate2 (e) {
+      console.info(e)
+      // let date = e.date
+      // if (new Date().getTime() > date.getTime()) {
+      //   e.allowSelect = false
+      // }
     },
     getDateInfo (v) {
       var iDiff = -1

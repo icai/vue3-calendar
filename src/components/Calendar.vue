@@ -224,6 +224,12 @@ export default {
       type: Function,
       default () {}
     },
+    maxDate: {
+      type: String
+    },
+    minDate: {
+      type: String
+    },
     showDateOnly: {
       type: Boolean,
       default: false
@@ -340,9 +346,26 @@ export default {
         }
       }
     },
+    __OnDrawDate (e) {
+      let date = e.date
+      let maxDate = this.parse(this.maxDate, false)
+      let minDate = this.parse(this.minDate, false)
+      if (this.isDate(maxDate)) {
+        if (date.getTime() > maxDate.getTime()) {
+          e.allowSelect = false
+        }
+      }
+      if (this.isDate(minDate)) {
+        if (date.getTime() < minDate.getTime()) {
+          e.allowSelect = false
+        }
+      }
+      this.$emit('drawdate', e)
+      this.onDrawDate(e)
+    },
     getItemClasses (d) {
       d.allowSelect = true
-      this.onDrawDate(d)
+      this.__OnDrawDate(d)
       const clazz = []
       clazz.push(d.sclass)
       if (this.rangeStart && this.rangeEnd && d.sclass !== 'datepicker-item-gray') {
@@ -487,7 +510,7 @@ export default {
     },
     switchMonthView () {
       if (this.showDateOnly) {
-        return
+        return true
       }
       this.displayDayView = false
       this.displayMonthView = true
@@ -534,8 +557,11 @@ export default {
     stringifyYearHeader (date, year = 0) {
       return date.getFullYear() + year
     },
+    isDate (value) {
+      return !!(value && value.getFullYear)
+    },
     stringify (date, format = this.dateFormat) {
-      if (!date) date = this.parse()
+      if (!date) date = this.parse(this.inputValue)
       if (!date) return ''
       const year = date.getFullYear()
       const month = date.getMonth() + 1
@@ -551,15 +577,17 @@ export default {
       .replace(/M(?!a)/g, month)
       .replace(/d/g, day)
     },
-    parse (str = this.inputValue) {
-      let date
-      if (str.length === 10 && (this.dateFormat === 'dd-MM-yyyy' || this.dateFormat === 'dd/MM/yyyy')) {
-        date = new Date(str.substring(6, 10), str.substring(3, 5) - 1, str.substring(0, 2))
-      } else {
-        date = new Date(str)
-        date.setHours(0, 0, 0)
-      }
-      return isNaN(date.getFullYear()) ? new Date() : date
+    parse (str, safe = true) {
+      if (typeof str == 'string') {
+        let date
+        if (str.length === 10 && (this.dateFormat === 'dd-MM-yyyy' || this.dateFormat === 'dd/MM/yyyy')) {
+          date = new Date(str.substring(6, 10), str.substring(3, 5) - 1, str.substring(0, 2))
+        } else {
+          date = new Date(str)
+          date.setHours(0, 0, 0)
+        }
+        return isNaN(date.getFullYear()) ? (safe ? new Date() : date) : date
+      } else return str
     },
     getDayCount (year, month) {
       const dict = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]

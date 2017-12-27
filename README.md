@@ -4,6 +4,11 @@
 
 
 <p align="center">
+  <a href="http://blog.w3cub.com/vue2-calendar/?x-page=github">
+    Live Demo >>
+  </a>
+  <br>
+  <br>
   <a href="https://github.com/icai/vue2-calendar">
     <img src="https://img.shields.io/github/stars/icai/vue2-calendar.svg?style=social&label=Star" alt="">
   </a>
@@ -185,6 +190,17 @@ Options/Props
 | showDateOnly          | `Boolean`  | false          | show date pane only |
 | transfer              | `Boolean`  | false          | transfer popup to `document.body` |
 | elementId             | `String`   |                | elementId for label tag `for` attribute |
+
+
+### Events
+
+
+|          Name        |   Description                  |
+| -------------------- | ---------------------------------------------------------|
+| drawdate             | drawdate Event like  `onDrawDate`                        |
+
+
+
 
 
 ```javascript
