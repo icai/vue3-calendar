@@ -1,5 +1,5 @@
 /*!
- * vue2-calendar v2.0.2
+ * vue2-calendar v2.1.0
  * (c) 2017 Terry <gidcai@gmail.com>
  * https://github.com/icai/vue2-calendar#readme
  */
@@ -26,13 +26,15 @@ input.datepicker-input.with-reset-button {
 .datepicker > button.close:focus {
   opacity: .2;
 }
-.datepicker-popup {
+.datepicker-wrapper {
   position: absolute;
+  z-index: 1000;
+}
+.datepicker-popup {
   border: 1px solid #ccc;
   border-radius: 5px;
   background: #fff;
   margin-top: 2px;
-  z-index: 1000;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
@@ -87,6 +89,10 @@ input.datepicker-input.with-reset-button {
 .datepicker-dateRange-item-active {
   background: #3276b1 !important;
   color: white !important;
+}
+.datepicker-item-disabled {
+  color: #aaa;
+  text-decoration: line-through;
 }
 .datepicker-monthRange {
   margin-top: 10px;

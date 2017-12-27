@@ -64,7 +64,7 @@ function build(name) {
         }
       ]
     },
-    plugins: [        
+    plugins: [
       new webpack.DefinePlugin({
         'process.env': env
       }),
@@ -75,7 +75,7 @@ function build(name) {
     ]
   }
   webpackConfig.entry = {};
-  webpackConfig.entry[name.replace(/\.(js|vue)/, '')] = "./"
+  webpackConfig.entry[name.replace(/\.(js|vue)/, '')] = "./src/components/Calendar.vue"
   webpackConfig = merge(webpackConfig, {
     module: {
       rules: utils.styleLoaders({

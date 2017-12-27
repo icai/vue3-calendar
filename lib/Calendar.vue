@@ -1,7 +1,7 @@
 <template>
   <div class="datepicker">
     <template v-if="hasInput">
-      <input class="form-control datepicker-input" :class="{'with-reset-button': clearButton}" type="text" :placeholder="placeholder"
+      <input :id="elementId" class="form-control datepicker-input" :class="{'with-reset-button': clearButton}" type="text" :placeholder="placeholder"
           :style="{width:width}"
           @click="inputClick"
           v-model="inputValue"/>
@@ -9,85 +9,156 @@
         <span>&times;</span>
       </button>
     </template>
-    <div class="datepicker-popup" :style="paneStyle" @mouseover="handleMouseOver" @mouseout="handleMouseOver" v-show="displayDayView">
-      <div class="datepicker-ctrl">
-        <span class="datepicker-preBtn glyphicon glyphicon-chevron-left" aria-hidden="true" @click="preNextMonthClick(0)"></span>
-        <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextMonthClick(1)"></span>
-      </div>
-      <template v-for="(p, pan) in pane" >
-        <div class="datepicker-inner">
-          <div class="datepicker-body">
-            <p @click="switchMonthView">{{stringifyDayHeader(currDate, pan)}}</p>
-            <div class="datepicker-weekRange">
-              <span v-for="w in text.daysOfWeek">{{w}}</span>
+    <div class="datepicker-wrapper" ref="popup" v-transfer="transfer" v-show="isWrapperShow" :style="paneStyle" >
+      <div class="datepicker-popup"  @mouseover="handleMouseOver" @mouseout="handleMouseOver" v-show="displayDayView">
+        <div class="datepicker-ctrl">
+          <span class="datepicker-preBtn glyphicon glyphicon-chevron-left" aria-hidden="true" @click="preNextMonthClick(0)"></span>
+          <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextMonthClick(1)"></span>
+        </div>
+        <template v-for="(p, pan) in pane" >
+          <div class="datepicker-inner">
+            <div class="datepicker-body">
+              <p @click="switchMonthView">{{stringifyDayHeader(currDate, pan)}}</p>
+              <div class="datepicker-weekRange">
+                <span v-for="w in text.daysOfWeek">{{w}}</span>
+              </div>
+              <div class="datepicker-dateRange">
+                <span v-for="d in dateRange[pan]" class="day-cell" :class="getItemClasses(d)" :data-date="stringify(d.date)" @click="daySelect(d, $event)"><div>
+                  <template v-if="d.sclass !== 'datepicker-item-gray'">
+                    {{getSpecailDay(d.date) || d.text}}
+                  </template>
+                  <template v-else>
+                      {{d.text}}
+                  </template>
+                  <div v-if="d.sclass !== 'datepicker-item-gray'"><slot :name="stringify(d.date)"></slot></div></div>
+                </span>
+              </div>
             </div>
-            <div class="datepicker-dateRange">
-              <span v-for="d in dateRange[pan]" class="day-cell" :class="getItemClasses(d)" :data-date="stringify(d.date)" @click="daySelect(d.date, $event)"><div>
-                <template v-if="d.sclass !== 'datepicker-item-gray'">
-                  {{getSpecailDay(d.date) || d.text}}
+          </div>
+        </template>
+      </div>
+      <div class="datepicker-popup" v-if="!showDateOnly"  v-show="displayMonthView">
+        <div class="datepicker-ctrl">
+          <span class="datepicker-preBtn glyphicon glyphicon-chevron-left" aria-hidden="true" @click="preNextYearClick(0)"></span>
+          <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextYearClick(1)"></span>
+        </div>
+        <template v-for="(p, pan) in pane" >
+          <div class="datepicker-inner">
+            <div class="datepicker-body">
+              <p @click="switchDecadeView">{{stringifyYearHeader(currDate, pan)}}</p>
+              <div class="datepicker-monthRange">
+                <template v-for="(m, $index) in text.months">
+                  <span :class="{'datepicker-dateRange-item-active':
+                      (text.months[parse(value).getMonth()]  === m) &&
+                      currDate.getFullYear() + pan === parse(value).getFullYear()}"
+                      @click="monthSelect(stringifyYearHeader(currDate, pan), $index)"
+                    >{{m.substr(0,3)}}</span>
                 </template>
-                <template v-else>
-                    {{d.text}}
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="datepicker-popup" v-if="!showDateOnly" v-show="displayYearView">
+        <div class="datepicker-ctrl">
+          <span class="datepicker-preBtn glyphicon glyphicon-chevron-left" aria-hidden="true" @click="preNextDecadeClick(0)"></span>
+          <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextDecadeClick(1)"></span>
+        </div>
+        <template v-for="(p, pan) in pane" >
+          <div class="datepicker-inner">
+            <div class="datepicker-body">
+              <p>{{stringifyDecadeHeader(currDate, pan)}}</p>
+              <div class="datepicker-monthRange decadeRange">
+                <template v-for="decade in decadeRange[pan]">
+                  <span :class="{'datepicker-dateRange-item-active':
+                      parse(inputValue).getFullYear() === decade.text}"
+                      @click.stop="yearSelect(decade.text)"
+                    >{{decade.text}}</span>
                 </template>
-                <div v-if="d.sclass !== 'datepicker-item-gray'"><slot :name="stringify(d.date)"></slot></div></div>
-              </span>
+              </div>
             </div>
           </div>
-        </div>
-      </template>
-    </div>
-    <div class="datepicker-popup" :style="paneStyle" v-show="displayMonthView">
-      <div class="datepicker-ctrl">
-        <span class="datepicker-preBtn glyphicon glyphicon-chevron-left" aria-hidden="true" @click="preNextYearClick(0)"></span>
-        <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextYearClick(1)"></span>
+        </template>
       </div>
-      <template v-for="(p, pan) in pane" >
-        <div class="datepicker-inner">
-          <div class="datepicker-body">
-            <p @click="switchDecadeView">{{stringifyYearHeader(currDate, pan)}}</p>
-            <div class="datepicker-monthRange">
-              <template v-for="(m, $index) in text.months">
-                <span :class="{'datepicker-dateRange-item-active':
-                    (text.months[parse(value).getMonth()]  === m) &&
-                    currDate.getFullYear() + pan === parse(value).getFullYear()}"
-                    @click="monthSelect(stringifyYearHeader(currDate, pan), $index)"
-                  >{{m.substr(0,3)}}</span>
-              </template>
-            </div>
-          </div>
-        </div>
-      </template>
-    </div>
-    <div class="datepicker-popup" :style="paneStyle" v-show="displayYearView">
-      <div class="datepicker-ctrl">
-        <span class="datepicker-preBtn glyphicon glyphicon-chevron-left" aria-hidden="true" @click="preNextDecadeClick(0)"></span>
-        <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextDecadeClick(1)"></span>
-      </div>
-      <template v-for="(p, pan) in pane" >
-        <div class="datepicker-inner">
-          <div class="datepicker-body">
-            <p>{{stringifyDecadeHeader(currDate, pan)}}</p>
-            <div class="datepicker-monthRange decadeRange">
-              <template v-for="decade in decadeRange[pan]">
-                <span :class="{'datepicker-dateRange-item-active':
-                    parse(inputValue).getFullYear() === decade.text}"
-                    @click.stop="yearSelect(decade.text)"
-                  >{{decade.text}}</span>
-              </template>
-            </div>
-          </div>
-        </div>
-      </template>
     </div>
   </div>
 </template>
 
 <script>
+function getTarget (node) {
+  if (node === void 0) {
+    node = document.body
+  }
+  if (node === true) { return document.body }
+  return node instanceof window.Node ? node : document.querySelector(node)
+}
+
+const transfer = {
+  inserted (el, binding) {
+    const value = binding.value
+    if (value === false) return false
+    el.className = el.className ? el.className + ' v-transfer' : 'v-transfer'
+    const parentNode = el.parentNode
+    if (!parentNode) return
+    const home = document.createComment('')
+    let hasMovedOut = false
+    if (value !== false) {
+      parentNode.replaceChild(home, el) // moving out, el is no longer in the document
+      getTarget(value).appendChild(el) // moving into new place
+      hasMovedOut = true
+    }
+    if (!el.__transferDomData) {
+      el.__transferDomData = {
+        parentNode: parentNode,
+        home: home,
+        target: getTarget(value),
+        hasMovedOut: hasMovedOut
+      }
+    }
+  },
+  componentUpdated (el, binding) {
+    const value = binding.value
+    if (value === false) return false
+    // need to make sure children are done updating (vs. `update`)
+    const ref$1 = el.__transferDomData
+    if (!ref$1) return
+    // homes.get(el)
+    const parentNode = ref$1.parentNode
+    const home = ref$1.home
+    const hasMovedOut = ref$1.hasMovedOut // recall where home is
+
+    if (!hasMovedOut && value) {
+      // remove from document and leave placeholder
+      parentNode.replaceChild(home, el)
+      // append to target
+      getTarget(value).appendChild(el)
+      el.__transferDomData = Object.assign({}, el.__transferDomData, { hasMovedOut: true, target: getTarget(value) })
+    } else if (hasMovedOut && value === false) {
+      // previously moved, coming back home
+      parentNode.replaceChild(el, home)
+      el.__transferDomData = Object.assign({}, el.__transferDomData, { hasMovedOut: false, target: getTarget(value) })
+    } else if (value) {
+      // already moved, going somewhere else
+      getTarget(value).appendChild(el)
+    }
+  },
+  unbind (el, binding) {
+    const value = binding.value
+    if (value === false) return false
+    el.className = el.className.replace('v-transfer', '')
+    const ref$1 = el.__transferDomData
+    if (!ref$1) return
+    if (el.__transferDomData.hasMovedOut === true) {
+      el.__transferDomData.parentNode && el.__transferDomData.parentNode.appendChild(el)
+    }
+    el.__transferDomData = null
+  }
+}
 export default {
   name: 'calendar',
   props: {
     value: {
-      type: String
+      type: [String, Date]
     },
     format: {
       default: 'MM/dd/yyyy'
@@ -148,7 +219,29 @@ export default {
     rangeStatus: {
       type: Number,
       default: 0
-    }
+    },
+    onDrawDate: {
+      type: Function,
+      default () {}
+    },
+    maxDate: {
+      type: String
+    },
+    minDate: {
+      type: String
+    },
+    showDateOnly: {
+      type: Boolean,
+      default: false
+    },
+    transfer: {
+      type: Boolean,
+      default: false
+    },
+    elementId: [String]
+  },
+  directives: {
+    transfer
   },
   mounted () {
     this._blur = (e) => {
@@ -190,7 +283,7 @@ export default {
   },
   data () {
     return {
-      inputValue: this.value,
+      // inputValue: this.value,
       dateFormat: this.format,
       currDate: new Date(),
       dateRange: [],
@@ -208,11 +301,29 @@ export default {
   watch: {
     currDate () {
       this.getDateRange()
+    },
+    value (v) {
+      this.inputValue = v
     }
   },
   computed: {
     text () {
       return this.translations(this.lang)
+    },
+    isWrapperShow () {
+      return this.displayDayView || this.displayMonthView || this.displayYearView
+    },
+    inputValue: {
+      get () {
+        return this.value
+      },
+      set (v) {
+        this.$emit('input', v)
+        this.currDate = this.parse(v)
+        if (this.rangeStatus === 1 && this.eventbus) {
+          this.eventbus.$emit('calendar-rangestart', this.currDate)
+        }
+      }
     }
   },
   methods: {
@@ -235,7 +346,26 @@ export default {
         }
       }
     },
+    __OnDrawDate (e) {
+      let date = e.date
+      let maxDate = this.parse(this.maxDate, false)
+      let minDate = this.parse(this.minDate, false)
+      if (this.isDate(maxDate)) {
+        if (date.getTime() > maxDate.getTime()) {
+          e.allowSelect = false
+        }
+      }
+      if (this.isDate(minDate)) {
+        if (date.getTime() < minDate.getTime()) {
+          e.allowSelect = false
+        }
+      }
+      this.$emit('drawdate', e)
+      this.onDrawDate(e)
+    },
     getItemClasses (d) {
+      d.allowSelect = true
+      this.__OnDrawDate(d)
       const clazz = []
       clazz.push(d.sclass)
       if (this.rangeStart && this.rangeEnd && d.sclass !== 'datepicker-item-gray') {
@@ -250,6 +380,9 @@ export default {
         if (this.stringify(d.date) == this.stringify(this.rangeEnd)) {
           clazz.push('daytoday-end')
         }
+      }
+      if (d.allowSelect == false) {
+        clazz.push('datepicker-item-disabled')
       }
       return clazz.join(' ')
     },
@@ -279,16 +412,40 @@ export default {
       }
       this.updatePaneStyle()
     },
+    getElOffset (el) {
+      let offsetParent = el
+      let top = el.offsetTop
+      let left = el.offsetLeft
+      while (offsetParent != document.body) {
+        offsetParent = offsetParent.offsetParent
+        top += offsetParent.offsetTop
+        left += offsetParent.offsetLeft
+      }
+      return {
+        top, left
+      }
+    },
     updatePaneStyle () {
       if (!(this.displayMonthView || this.displayYearView)) {
         this.$nextTick(function () {
+          let { left, top } = this.getElOffset(this.$el)
           let offsetLeft = this.$el.offsetLeft
-          let offsetWidth = this.$el.querySelector('.datepicker-inner').offsetWidth
+          let elWidth = this.$el.offsetWidth
+          let offsetTop = top + this.$el.offsetHeight
+          let offsetWidth = (this.$refs.popup.querySelector('.datepicker-inner')).offsetWidth
           let popWidth = this.pane * offsetWidth + this.borderWidth // add border
           this.paneStyle.width = popWidth + 'px'
           if (this.hasInput) {
-            if (popWidth + offsetLeft > document.documentElement.clientWidth) {
-              this.paneStyle.right = '0px'
+            if (this.transfer) {
+              this.paneStyle.left = left + 'px'
+              this.paneStyle.top = offsetTop + 'px'
+              if (popWidth + left > document.documentElement.clientWidth) {
+                this.paneStyle.left = left + elWidth - popWidth + 'px'
+              }
+            } else {
+              if (popWidth + offsetLeft > document.documentElement.clientWidth) {
+                this.paneStyle.right = '0px'
+              }
             }
           } else {
             this.paneStyle.position = 'initial'
@@ -336,24 +493,25 @@ export default {
       this.displayMonthView = true
       this.currDate = new Date(year, this.currDate.getMonth(), this.currDate.getDate())
     },
-    daySelect (date, event) {
+    daySelect (item, event) {
+      let date = item.date
       let el = event.target
-      if (el.classList[0] === 'datepicker-item-disable') {
+      if (item.allowSelect == false || el.classList[0] === 'datepicker-item-disable') {
         return false
       } else {
         if (this.hasInput) {
           this.currDate = date
           this.inputValue = this.stringify(this.currDate)
           this.displayDayView = false
-          if (this.rangeStatus === 1) {
-            this.eventbus.$emit('calendar-rangestart', this.currDate)
-          }
         } else {
           this.onDayClick(date, this.stringify(date))
         }
       }
     },
     switchMonthView () {
+      if (this.showDateOnly) {
+        return true
+      }
       this.displayDayView = false
       this.displayMonthView = true
     },
@@ -399,8 +557,11 @@ export default {
     stringifyYearHeader (date, year = 0) {
       return date.getFullYear() + year
     },
+    isDate (value) {
+      return !!(value && value.getFullYear)
+    },
     stringify (date, format = this.dateFormat) {
-      if (!date) date = this.parse()
+      if (!date) date = this.parse(this.inputValue)
       if (!date) return ''
       const year = date.getFullYear()
       const month = date.getMonth() + 1
@@ -416,15 +577,17 @@ export default {
       .replace(/M(?!a)/g, month)
       .replace(/d/g, day)
     },
-    parse (str = this.inputValue) {
-      let date
-      if (str.length === 10 && (this.dateFormat === 'dd-MM-yyyy' || this.dateFormat === 'dd/MM/yyyy')) {
-        date = new Date(str.substring(6, 10), str.substring(3, 5) - 1, str.substring(0, 2))
-      } else {
-        date = new Date(str)
-        date.setHours(0, 0, 0)
-      }
-      return isNaN(date.getFullYear()) ? new Date() : date
+    parse (str, safe = true) {
+      if (typeof str == 'string') {
+        let date
+        if (str.length === 10 && (this.dateFormat === 'dd-MM-yyyy' || this.dateFormat === 'dd/MM/yyyy')) {
+          date = new Date(str.substring(6, 10), str.substring(3, 5) - 1, str.substring(0, 2))
+        } else {
+          date = new Date(str)
+          date.setHours(0, 0, 0)
+        }
+        return isNaN(date.getFullYear()) ? (safe ? new Date() : date) : date
+      } else return str
     },
     getDayCount (year, month) {
       const dict = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -545,13 +708,18 @@ input.datepicker-input.with-reset-button {
 .datepicker > button.close:focus {
   opacity: .2;
 }
-.datepicker-popup{
+
+
+.datepicker-wrapper{
   position: absolute;
+  z-index: 1000;
+}
+
+.datepicker-popup{
   border: 1px solid #ccc;
   border-radius: 5px;
   background: #fff;
   margin-top: 2px;
-  z-index: 1000;
   box-shadow: 0 6px 12px rgba(0,0,0,0.175);
   @include clearfix;
 }
@@ -601,6 +769,12 @@ input.datepicker-input.with-reset-button {
   background: rgb(50, 118, 177)!important;
   color: white!important;
 }
+
+.datepicker-item-disabled {
+    color: #aaa;
+    text-decoration: line-through;
+}
+
 .datepicker-monthRange {
   margin-top: 10px
 }
