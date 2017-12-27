@@ -1,7 +1,7 @@
 {
   "name": "vue2-slot-calendar",
   "aliasName": "vue2-calendar",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "vue2 bootstrap style calendar",
   "author": "Terry <gidcai@gmail.com>",
   "scripts": {
