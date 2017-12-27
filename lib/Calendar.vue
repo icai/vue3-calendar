@@ -245,7 +245,11 @@ export default {
   },
   mounted () {
     this._blur = (e) => {
-      if (!this.$el.contains(e.target) && this.hasInput) this.close()
+      if (this.transfer) {
+        if ((!this.$el.contains(e.target) && !this.$refs.popup.contains(e.target)) && this.hasInput) this.close()
+      } else {
+        if (!this.$el.contains(e.target) && this.hasInput) this.close()
+      }
     }
     this.$emit('child-created', this)
     // this.inputValue = this.value
