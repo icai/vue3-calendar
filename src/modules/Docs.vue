@@ -156,7 +156,7 @@ export default {
       }
     },
     onDrawDate2 (e) {
-      console.info(e)
+      // console.info(e)
       // let date = e.date
       // if (new Date().getTime() > date.getTime()) {
       //   e.allowSelect = false
