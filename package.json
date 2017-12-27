@@ -1,7 +1,7 @@
 {
   "name": "vue2-slot-calendar",
   "aliasName": "vue2-calendar",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "vue2 bootstrap style calendar",
   "author": "Terry <gidcai@gmail.com>",
   "scripts": {
@@ -21,10 +21,10 @@
     "example"
   ],
   "dependencies": {
-    "bootstrap-sass": "^3.3.7",
-    "vue": "^2.5.2"
   },
   "devDependencies": {
+    "bootstrap-sass": "^3.3.7",
+    "vue": "^2.5.2",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
