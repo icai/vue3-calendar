@@ -54,7 +54,7 @@
     <lorem :len="3"></lorem>
     <div style="height: 600px;">
       <calendar class="event-calendar" v-model="value"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick3" :change-pane="changePane">
-        <div class="event" v-for="evt in events" :slot="evt.date">
+        <div class="event" v-for="(evt, index) in events" :key="index" :slot="evt.date">
             ${{evt.content}} <i :class="{low : evt.low}" v-if="evt.low">↓</i>
         </div>
       </calendar>
@@ -63,7 +63,7 @@
     <lorem :len="3"></lorem>
     <div style="height: 600px;">
       <calendar class="event-calendar" v-model="value"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick4" :change-pane="changePane2">
-        <div class="event" v-for="evt in lurevents" :slot="evt.date">
+        <div class="event" v-for="(evt, index) in lurevents" :key="index" :slot="evt.date">
             <div style="font-size:12px;" v-html="evt.content"></div>
         </div>
       </calendar>
