@@ -220,10 +220,11 @@ export default {
       this.date3 = str
     },
     changePane (year, month, pane) {
+      this.events = []
       // ajax data or ...
       setTimeout(() => {
         this.events = this.getEventContent(year, month, pane)
-      }, 0)
+      }, 200)
     },
     onDayClick4 (date, str) {
       this.date4 = str
