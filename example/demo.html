@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>vue2-calendar</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://vuejs.org/js/vue.js"></script>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+	<script src="https://vuejs.org/js/vue.js"></script>
     <link rel="stylesheet" href="../lib/calendar.min.css" >
     <script src="../lib/calendar.js"></script>
 </head>
 <body>
 
     <div id="app">
-       <div class="text-center" style="padding-top: 100px;"> 
-           <calendar :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" ></calendar>
+       <div class="text-center" style="padding-top: 100px;">
+           <calendar v-model="value" show-date-only :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
         </div>
     </div>
       <script>
@@ -26,7 +29,7 @@
                     value: '2015-06-10',
                     format: 'yyyy-MM-dd',
                     clear: true,
-                    placeholder: 'placeholder is displayed when value is null or empty'
+                    placeholder: 'Start Date'
                 }
             },
             components: {
