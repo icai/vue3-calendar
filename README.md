@@ -49,7 +49,7 @@
 
 - This project is not only a vue component, but also a webpack **multi-page** project in action.
 
-
+- Support Boostrap 4
 
 
 ## Install
