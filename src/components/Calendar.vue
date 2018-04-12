@@ -1,7 +1,7 @@
 <template>
   <div class="datepicker">
     <template v-if="hasInput">
-      <input :id="elementId" class="form-control datepicker-input" :class="{'with-reset-button': clearButton}" type="text" :placeholder="placeholder"
+      <input :id="elementId" class="form-control datepicker-input" :class="classes" type="text" :placeholder="placeholder"
           :style="{width:width}"
           @click="inputClick"
           v-model="inputValue"/>
@@ -177,6 +177,10 @@ export default {
       type: Boolean,
       default: false
     },
+    inputClasses: {
+      type: String,
+      default: ''
+    },
     lang: {
       type: String,
       default: navigator.language
@@ -328,7 +332,14 @@ export default {
           this.eventbus.$emit('calendar-rangestart', this.currDate)
         }
       }
-    }
+    },
+    classes() {
+			var classes = this.inputClasses;
+			if (this.clearButton) {
+				classes += ' with-reset-button'
+			}
+			return classes;
+		}
   },
   methods: {
     handleMouseOver (event) {
