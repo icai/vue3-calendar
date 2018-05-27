@@ -333,13 +333,13 @@ export default {
         }
       }
     },
-    classes() {
-			var classes = this.inputClasses;
-			if (this.clearButton) {
-				classes += ' with-reset-button'
-			}
-			return classes;
-		}
+    classes () {
+      var classes = this.inputClasses
+      if (this.clearButton) {
+        classes += ' with-reset-button'
+      }
+      return classes
+    }
   },
   methods: {
     handleMouseOver (event) {
