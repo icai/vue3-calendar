@@ -12,8 +12,8 @@
     <div class="datepicker-wrapper" ref="popup" v-transfer="transfer" v-show="isWrapperShow" :style="paneStyle" >
       <div class="datepicker-popup"  @mouseover="handleMouseOver" @mouseout="handleMouseOver" v-show="displayDayView">
         <div class="datepicker-ctrl">
-          <span class="datepicker-preBtn glyphicon glyphicon-chevron-left" aria-hidden="true" @click="preNextMonthClick(0)"></span>
-          <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextMonthClick(1)"></span>
+          <span class="datepicker-preBtn calendaricon-angle-left" aria-hidden="true" @click="preNextMonthClick(0)"></span>
+          <span class="datepicker-nextBtn calendaricon-angle-right" aria-hidden="true" @click="preNextMonthClick(1)"></span>
         </div>
         <template v-for="(p, pan) in pane" >
           <div class="datepicker-inner" :key="pan">
@@ -39,8 +39,8 @@
       </div>
       <div class="datepicker-popup" v-if="!showDateOnly"  v-show="displayMonthView">
         <div class="datepicker-ctrl">
-          <span class="datepicker-preBtn glyphicon glyphicon-chevron-left" aria-hidden="true" @click="preNextYearClick(0)"></span>
-          <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextYearClick(1)"></span>
+          <span class="datepicker-preBtn calendaricon-angle-left" aria-hidden="true" @click="preNextYearClick(0)"></span>
+          <span class="datepicker-nextBtn calendaricon-angle-right" aria-hidden="true" @click="preNextYearClick(1)"></span>
         </div>
         <template v-for="(p, pan) in pane" >
           <div class="datepicker-inner" :key="pan">
@@ -61,8 +61,8 @@
       </div>
       <div class="datepicker-popup" v-if="!showDateOnly" v-show="displayYearView">
         <div class="datepicker-ctrl">
-          <span class="datepicker-preBtn glyphicon glyphicon-chevron-left" aria-hidden="true" @click="preNextDecadeClick(0)"></span>
-          <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextDecadeClick(1)"></span>
+          <span class="datepicker-preBtn calendaricon-angle-left" aria-hidden="true" @click="preNextDecadeClick(0)"></span>
+          <span class="datepicker-nextBtn calendaricon-angle-right" aria-hidden="true" @click="preNextDecadeClick(1)"></span>
         </div>
         <template v-for="(p, pan) in pane" >
           <div class="datepicker-inner" :key="pan">
@@ -700,10 +700,59 @@ export default {
     clear: both;
   }
 }
-.datepicker{
+
+
+
+.datepicker {
+  font-size: 14px;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: #0000;
+  -webkit-font-smoothing: antialiased;
+  // color: #2c3e50;
+  color: rgba(0, 0, 0, 0.6509803921568628);
   position: relative;
   display: inline-block;
 
+  .form-control {
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+      height: 34px;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.42857;
+      color: #555;
+      background-color: #fff;
+      background-image: none;
+      // border: 1px solid #ccc;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      box-shadow: none;
+      // box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      // transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+      &:hover, &:focus {
+        outline: 0;
+        border-color: #40a9ff;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+      }
+  }
+
+  button.close{
+    padding: 0;
+    cursor: pointer;
+    background: #0000;
+    border: 0;
+    -webkit-appearance: none;
+    float: right;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+  }
 }
 input.datepicker-input.with-reset-button {
   padding-right: 25px;
@@ -731,11 +780,13 @@ input.datepicker-input.with-reset-button {
 }
 
 .datepicker-popup{
-  border: 1px solid #ccc;
+  // border: 1px solid #ccc;
+  border: 1px solid #fff;
   border-radius: 5px;
   background: #fff;
   margin-top: 2px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+  // box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
   @include clearfix;
 }
 .datepicker-inner{
@@ -745,6 +796,9 @@ input.datepicker-input.with-reset-button {
 .datepicker-body{
   padding: 10px 10px;
   text-align: center;
+  p {
+      margin: 0 0 10px;
+  }
 }
 .datepicker-ctrl p,
 .datepicker-ctrl span,
@@ -834,6 +888,7 @@ input.datepicker-input.with-reset-button {
   line-height: 30px;
   font-weight: bold;
   text-align: center;
+  top: 3px;
 }
 .month-btn{
   font-weight: bold;
@@ -844,8 +899,44 @@ input.datepicker-input.with-reset-button {
 }
 .datepicker-preBtn{
   left: 2px;
+  font-size: 18px;
 }
 .datepicker-nextBtn{
   right: 2px;
+  font-size: 18px;
+}
+
+
+@font-face {
+  font-family: 'calendar';
+  src:  url('~assets/fonts/calendar.eot?8xpf49');
+  src:  url('~assets/fonts/calendar.eot?8xpf49#iefix') format('embedded-opentype'),
+    url('~assets/fonts/calendar.ttf?8xpf49') format('truetype'),
+    url('~assets/fonts/calendar.woff?8xpf49') format('woff'),
+    url('~assets/fonts/calendar.svg?8xpf49#calendar') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="calendaricon-"], [class*=" calendaricon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'calendar' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.calendaricon-angle-left:before {
+  content: "\f104";
+}
+.calendaricon-angle-right:before {
+  content: "\f105";
 }
 </style>
