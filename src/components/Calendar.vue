@@ -20,7 +20,7 @@
             <div class="datepicker-body">
               <p @click="switchMonthView">{{stringifyDayHeader(currDate, pan)}}</p>
               <div class="datepicker-weekRange">
-                <span v-for="(w, index) in text.daysOfWeek" :key="index">{{w}}</span>
+                <span v-for="(w, index) in daysOfWeek" :key="index">{{w}}</span>
               </div>
               <div class="datepicker-dateRange">
                 <span v-for="(d, k) in dateRange[pan]" :key="k" class="day-cell" :class="getItemClasses(d)" :data-date="stringify(d.date)" @click="daySelect(d, $event)"><div>
@@ -315,7 +315,7 @@ export default {
       this.getDateRange()
     },
     value (v) {
-      this.inputValue = v
+      this.inputValue = v instanceof Date ? this.stringify(v) : v;
     }
   },
   computed: {
@@ -335,7 +335,11 @@ export default {
     },
     inputValue: {
       get () {
-        return this.value
+        if(this.value instanceof Date) {
+          return this.stringify(this.value);
+        } else {
+          return this.value
+        }
       },
       set (v) {
         this.$emit('input', v)
@@ -649,16 +653,13 @@ export default {
           })
         }
         this.dateRange[p] = []
-        const currMonthFirstDay = new Date(time.year, time.month, 1)
-        let firstDayWeek = currMonthFirstDay.getDay() + 1
-        if (firstDayWeek === 0) {
-          firstDayWeek = 7
-        }
+        const currMonthFirstDay = new Date(time.year, time.month, 1);
+        let firstDayWeek = this.prefixLen(currMonthFirstDay);
         const dayCount = this.getDayCount(time.year, time.month)
         if (firstDayWeek > 1) {
           const preMonth = this.getYearMonth(time.year, time.month - 1)
           const prevMonthDayCount = this.getDayCount(preMonth.year, preMonth.month)
-          for (let i = 1; i < firstDayWeek; i++) {
+          for (let i = 0; i < firstDayWeek; i++) {
             const dayText = prevMonthDayCount - firstDayWeek + i + 1
             this.dateRange[p].push({
               text: dayText,
