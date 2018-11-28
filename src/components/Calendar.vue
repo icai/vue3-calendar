@@ -163,6 +163,10 @@ export default {
     format: {
       default: 'MM/dd/yyyy'
     },
+    firstDayOfWeek: {
+      // sunday
+      default: 0
+    },
     disabledDaysOfWeek: {
       type: Array,
       default () {
@@ -315,6 +319,14 @@ export default {
     }
   },
   computed: {
+    // get real order of the daysOfWeek
+    daysOfWeek () {
+      const firstDay = this.firstDayOfWeek;
+      if(firstDay == 0) {
+        return this.text.daysOfWeek;
+      }
+      return this.text.daysOfWeek.slice(firstDay, 7).concat(this.text.daysOfWeek.slice(0, firstDay))
+    },
     text () {
       return this.translations(this.lang)
     },
@@ -612,6 +624,12 @@ export default {
         }
       }
       return dict[month]
+    },
+    //
+    prefixLen (date) {
+        const firstDay = this.firstDayOfWeek;
+        const wkday = date.getDay(); // frist Date
+        return wkday >= firstDay ? (wkday - firstDay) : (7 - firstDay + wkday);
     },
     getDateRange () {
       this.dateRange = []
