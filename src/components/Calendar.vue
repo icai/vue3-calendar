@@ -16,14 +16,14 @@
           <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextMonthClick(1)"></span>
         </div>
         <template v-for="(p, pan) in pane" >
-          <div class="datepicker-inner">
+          <div class="datepicker-inner" :key="pan">
             <div class="datepicker-body">
               <p @click="switchMonthView">{{stringifyDayHeader(currDate, pan)}}</p>
               <div class="datepicker-weekRange">
-                <span v-for="w in text.daysOfWeek">{{w}}</span>
+                <span v-for="(w, index) in text.daysOfWeek" :key="index">{{w}}</span>
               </div>
               <div class="datepicker-dateRange">
-                <span v-for="d in dateRange[pan]" class="day-cell" :class="getItemClasses(d)" :data-date="stringify(d.date)" @click="daySelect(d, $event)"><div>
+                <span v-for="(d, k) in dateRange[pan]" :key="k" class="day-cell" :class="getItemClasses(d)" :data-date="stringify(d.date)" @click="daySelect(d, $event)"><div>
                   <template v-if="d.sclass !== 'datepicker-item-gray'">
                     {{getSpecailDay(d.date) || d.text}}
                   </template>
@@ -43,12 +43,12 @@
           <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextYearClick(1)"></span>
         </div>
         <template v-for="(p, pan) in pane" >
-          <div class="datepicker-inner">
+          <div class="datepicker-inner" :key="pan">
             <div class="datepicker-body">
               <p @click="switchDecadeView">{{stringifyYearHeader(currDate, pan)}}</p>
               <div class="datepicker-monthRange">
-                <template v-for="(m, $index) in text.months">
-                  <span :class="{'datepicker-dateRange-item-active':
+                <template v-for="(m, $index) in text.months" >
+                  <span :key="$index" :class="{'datepicker-dateRange-item-active':
                       (text.months[parse(value).getMonth()]  === m) &&
                       currDate.getFullYear() + pan === parse(value).getFullYear()}"
                       @click="monthSelect(stringifyYearHeader(currDate, pan), $index)"
@@ -65,12 +65,12 @@
           <span class="datepicker-nextBtn glyphicon glyphicon-chevron-right" aria-hidden="true" @click="preNextDecadeClick(1)"></span>
         </div>
         <template v-for="(p, pan) in pane" >
-          <div class="datepicker-inner">
+          <div class="datepicker-inner" :key="pan">
             <div class="datepicker-body">
               <p>{{stringifyDecadeHeader(currDate, pan)}}</p>
               <div class="datepicker-monthRange decadeRange">
-                <template v-for="decade in decadeRange[pan]">
-                  <span :class="{'datepicker-dateRange-item-active':
+                <template v-for="(decade, di) in decadeRange[pan]">
+                  <span :key="di" :class="{'datepicker-dateRange-item-active':
                       parse(inputValue).getFullYear() === decade.text}"
                       @click.stop="yearSelect(decade.text)"
                     >{{decade.text}}</span>

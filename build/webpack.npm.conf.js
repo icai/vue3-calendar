@@ -6,7 +6,7 @@ const config = require('../config')
 const merge = require('webpack-merge')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const baseWebpackConfig = require('./webpack.base.conf')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const pp = require('../package')
 
@@ -69,14 +69,16 @@ function build(name) {
         'process.env': env
       }),
       new webpack.BannerPlugin(banner),
-      new ExtractTextPlugin({
-        filename: '[name].css' //utils.assetsPath('css/[name].[contenthash].css')
+      new MiniCssExtractPlugin({
+        filename: '[name].css', //utils.assetsPath('css/[name].[contenthash].css')
+        chunkFilename: '[name].css'
       })
     ]
   }
   webpackConfig.entry = {};
   webpackConfig.entry[name.replace(/\.(js|vue)/, '')] = "./src/components/Calendar.vue"
   webpackConfig = merge(webpackConfig, {
+    mode: 'production',
     module: {
       rules: utils.styleLoaders({
         sourceMap: config.npm.productionSourceMap,
