@@ -2,7 +2,6 @@
 
 > vue 2 calendar, datepicker component which supported lunar or date event
 
-
 <p align="center">
   <a href="http://blog.w3cub.com/vue2-calendar/?x-page=github">
     Live Demo >>
@@ -46,23 +45,20 @@
   <br>
 </p>
 
-
 - This project is not only a vue component, but also a webpack **multi-page** project in action.
 
-- Support Boostrap 4
-
+- Boostrap like style
 
 ## Install
-
 
 ```bash
 $ npm install vue2-slot-calendar
 ```
 
 ### Import using module
+
 ```JavaScript
 
-import 'bootstrap-sass' // alias css
 
 // js file
 import 'vue2-slot-calendar/lib/calendar.min.css';
@@ -80,8 +76,9 @@ const VueCalendar = Calendar;
 ```
 
 ### Import using script tag
-``` HTML
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+```HTML
+
 <link rel="stylesheet" href="../node_modules/vue2-slot-calendar/lib/calendar.min.css" >
 <script src="../node_modules/vue2-slot-calendar/lib/calendar.min.js"></script>
 ```
@@ -90,7 +87,7 @@ Also see the demo file, `example/demo.html`
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
@@ -106,71 +103,79 @@ npm run unit
 # run all tests
 npm test
 ```
-Chinese user: [![cnpm](https://npm.taobao.org/badge/v/cnpmjs.org.svg)](https://npm.taobao.org/)
 
 ## Screenshot
 
-
 ![](https://raw.githubusercontent.com/icai/vue2-calendar/master/src/assets/demo.gif?1477232397)
-
-
 
 ## Usage
 
-
-
 ```html
-  <calendar
-    :value="value"
-    :disabled-days-of-week="disabled"
-    :format="format"
-    :clear-button="clear"
-    :placeholder="placeholder"
-    :pane="2"
-    :has-input="false"
-    :on-day-click="onDayClick2"
-    :special-days="_dateMap"
-  ></calendar>
-
+<calendar
+  :value="value"
+  :disabled-days-of-week="disabled"
+  :format="format"
+  :clear-button="clear"
+  :placeholder="placeholder"
+  :pane="2"
+  :has-input="false"
+  :on-day-click="onDayClick2"
+  :special-days="_dateMap"
+></calendar>
 ```
 
 ### Use slot to render async data
 
-
-
 ```html
-
-  <calendar class="event-calendar" :value="value" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick3" :change-pane="changePane">
-    <div v-for="evt in events" :slot="evt.date">
-        ${{evt.content}} <i :class="{low : evt.low}" v-if="evt.low">↓</i>
-    </div>
-  </calendar>
-
+<calendar
+  class="event-calendar"
+  :value="value"
+  :disabled-days-of-week="disabled"
+  :format="format"
+  :clear-button="clear"
+  :placeholder="placeholder"
+  :pane="2"
+  :has-input="false"
+  :on-day-click="onDayClick3"
+  :change-pane="changePane"
+>
+  <div v-for="evt in events" :slot="evt.date">
+    ${{evt.content}} <i :class="{low : evt.low}" v-if="evt.low">↓</i>
+  </div>
+</calendar>
 ```
-
 
 ### Range Hover Status
 
 ```html
+<calendar
+  :value="value"
+  :disabled-days-of-week="disabled"
+  :format="format"
+  :clear-button="clear"
+  :placeholder="placeholder"
+  :pane="2"
+  :range-bus="getBus"
+  :range-status="1"
+></calendar>
 
-  <calendar :value="value" :disabled-days-of-week="disabled" :format="format"
-   :clear-button="clear" :placeholder="placeholder" :pane="2"
-   :range-bus="getBus" :range-status="1"></calendar>
-
-  <calendar :value="value" :disabled-days-of-week="disabled" :format="format"
-   :clear-button="clear" :placeholder="placeholder" :pane="2"
-   :range-bus="getBus" :range-status="2"></calendar>
-
+<calendar
+  :value="value"
+  :disabled-days-of-week="disabled"
+  :format="format"
+  :clear-button="clear"
+  :placeholder="placeholder"
+  :pane="2"
+  :range-bus="getBus"
+  :range-status="2"
+></calendar>
 ```
-
-
 
 ### Props
 
 Options/Props
 
-
-|          Name         |    Type    |    Default     |                                                         Description                                                         |
+| Name                  | Type       | Default        | Description                                                                                                                 |
 | --------------------- | ---------- | -------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | value                 | `String`   | ''             | Value of the input DOM                                                                                                      |
 | width                 | `String`   | '200px'        | Width of the input DOM                                                                                                      |
@@ -184,24 +189,19 @@ Options/Props
 | onDayClick            | `Function` |                | Only for `hasInput` set false                                                                                               |
 | specialDays           | `Object`   |                | To repalce the day text                                                                                                     |
 | changePane            | `Function` |                | For pane change parameter (year, month, pane) month[0,11], demo `/src/modules/Docs.vue`                                     |
-| rangeBus              | `Function` |                | should return `new Vue()` as sibling component communication events bus                                                                   |
-| rangeStatus           | `Number`   | 0              | Default is `disabled` range hover effect,  currently only support [0,1,2] `1` will communicate with `2`                                                                                                                         |
-| onDrawDate            | `Function` |                | DrawDate Function  `allowSelect` to update date cell style |
-| showDateOnly          | `Boolean`  | false          | show date pane only |
-| transfer              | `Boolean`  | false          | transfer popup to `document.body` |
-| elementId             | `String`   |                | elementId for label tag `for` attribute |
-
+| rangeBus              | `Function` |                | should return `new Vue()` as sibling component communication events bus                                                     |
+| rangeStatus           | `Number`   | 0              | Default is `disabled` range hover effect, currently only support [0,1,2] `1` will communicate with `2`                      |
+| onDrawDate            | `Function` |                | DrawDate Function `allowSelect` to update date cell style                                                                   |
+| showDateOnly          | `Boolean`  | false          | show date pane only                                                                                                         |
+| transfer              | `Boolean`  | false          | transfer popup to `document.body`                                                                                           |
+| elementId             | `String`   |                | elementId for label tag `for` attribute                                                                                     |
+| firstDayOfWeek        | `Number`   | 0              | first day of the week, default sunday, [0,6]                                                                                |
 
 ### Events
 
-
-|          Name        |   Description                  |
-| -------------------- | ---------------------------------------------------------|
-| drawdate             | drawdate Event like  `onDrawDate`                        |
-
-
-
-
+| Name     | Description                      |
+| -------- | -------------------------------- |
+| drawdate | drawdate Event like `onDrawDate` |
 
 ```javascript
   props: {
@@ -285,12 +285,8 @@ Options/Props
   }
 ```
 
-
 ## Credits
 
-
 Inspired by [vue-strap](https://github.com/yuche/vue-strap) datepicker component.
-
-
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
