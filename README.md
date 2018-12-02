@@ -206,10 +206,14 @@ Options/Props
 ```javascript
   props: {
     value: {
-      type: String
+      type: [String, Date]
     },
     format: {
       default: 'MM/dd/yyyy'
+    },
+    firstDayOfWeek: {
+      // sunday
+      default: 0
     },
     disabledDaysOfWeek: {
       type: Array,
@@ -224,6 +228,10 @@ Options/Props
     clearButton: {
       type: Boolean,
       default: false
+    },
+    inputClasses: {
+      type: String,
+      default: ''
     },
     lang: {
       type: String,
@@ -272,6 +280,12 @@ Options/Props
       type: Function,
       default () {}
     },
+    maxDate: {
+      type: String
+    },
+    minDate: {
+      type: String
+    },
     showDateOnly: {
       type: Boolean,
       default: false
@@ -281,7 +295,6 @@ Options/Props
       default: false
     },
     elementId: [String]
-
   }
 ```
 
