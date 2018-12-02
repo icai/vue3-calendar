@@ -93,7 +93,7 @@ Also see the demo file, `example/demo.html`
 
 ## I18n support
 
-current provide `window.VueCalendarLang` function hook to change your lang
+currently, provide `window.VueCalendarLang` function hook to change your lang
 
 
 ```js
