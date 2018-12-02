@@ -1,115 +1,108 @@
-'use strict'
-const path = require('path')
-const webpack = require('webpack')
-const utils = require('./utils')
-const config = require('../config')
-const merge = require('webpack-merge')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const baseWebpackConfig = require('./webpack.base.conf')
+"use strict";
+const path = require("path");
+const webpack = require("webpack");
+const utils = require("./utils");
+const config = require("../config");
+const merge = require("webpack-merge");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const baseWebpackConfig = require("./webpack.base.conf");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-const pp = require('../package')
+const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const pp = require("../package");
 
 const banner = [
-  pp.aliasName +' v' + pp.version,
-  '(c) ' + (new Date().getFullYear()) + ' ' + pp.author,
+  pp.aliasName + " v" + pp.version,
+  "(c) " + new Date().getFullYear() + " " + pp.author,
   pp.homepage
-].join('\n')
+].join("\n");
 
 function resolve(dir) {
-  return path.join(__dirname, '..', dir)
+  return path.join(__dirname, "..", dir);
 }
 
-const env = config.npm.env
+const env = config.npm.env;
 
 function build(name) {
-  const minimize = !!name.match(/\.min/)
-  let webpackConfig = {
-    resolve: {
-      extensions: ['.js', '.vue'],
-      alias: {
-        'vue$': 'vue/dist/vue.esm.js'
-      }
+const minimize = !!name.match(/\.min/);
+let webpackConfig = merge(baseWebpackConfig, {
+    mode: minimize ? 'production' : 'none',
+    module: {
+      rules: utils.styleLoaders({
+        sourceMap: config.build.productionSourceMap,
+        extract: true
+      }, minimize)
     },
     output: {
-      path: resolve('lib'),
+      path: resolve("lib"),
       filename: name,
       libraryTarget: "umd",
       libraryExport: "default",
       library: "Calendar",
       umdNamedDefine: true
     },
-    module: {
-      rules: [
-        {
-          test: /\.vue$/,
-          loader: 'vue-loader',
-          options: {
-            loaders: utils.cssLoaders({
-              sourceMap: true,
-              extract: true
-            }, minimize),
-            transformToRequire: {
-              video: 'src',
-              source: 'src',
-              img: 'src',
-              image: 'xlink:href'
-            }
-          }
-        },
-        {
-          test: /\.js$/,
-          loader: 'babel-loader',
-          include: [resolve('src')]
-        }
-      ]
-    },
     plugins: [
-      new webpack.DefinePlugin({
-        'process.env': env
-      }),
-      new webpack.BannerPlugin(banner),
       new MiniCssExtractPlugin({
-        filename: '[name].css', //utils.assetsPath('css/[name].[contenthash].css')
-        chunkFilename: '[name].css'
-      })
+        filename: "[name].css",
+        chunkFilename: "[name].css"
+      }),
+      new VueLoaderPlugin(),
+      new webpack.DefinePlugin({
+        "process.env": env
+      }),
+
+      new webpack.BannerPlugin(banner)
     ]
-  }
+  });
   webpackConfig.entry = {};
-  webpackConfig.entry[name.replace(/\.(js|vue)/, '')] = "./src/components/Calendar.vue"
-  webpackConfig = merge(webpackConfig, {
-    mode: 'production',
-    module: {
-      rules: utils.styleLoaders({
-        sourceMap: config.npm.productionSourceMap,
-        extract: true
-      })
-    }
-  })
+  webpackConfig.entry[name.replace(/\.(js|vue)/, "")] =
+    "./src/components/Calendar.vue";
 
   if (minimize) {
     webpackConfig = merge(webpackConfig, {
+      optimization: {
+        minimizer: [
+          new UglifyJsPlugin({
+            cache: true,
+            parallel: true,
+            sourceMap: true // set to true if you want JS source maps
+          }),
+          new OptimizeCSSPlugin({})
+        ]
+      },
       plugins: [
         new OptimizeCSSPlugin({
           cssProcessorOptions: {
             safe: true
           }
         }),
-        // Compress extracted CSS. We are using this plugin so that possible
-        // duplicated CSS from different components can be deduped.
-        new webpack.optimize.UglifyJsPlugin({
-          compress: {
-            warnings: false
-          },
-          sourceMap: true
-        }),
-        new CopyWebpackPlugin([
-          { from: './src/components/Calendar.vue' }
-        ])
+        new CopyWebpackPlugin([{
+          from: "./src/components/Calendar.vue",
+          transform (content) {
+            const fs = require('fs');
+            const cssfile = fs.readFileSync(path.resolve(__dirname, './../lib/calendar.css'));
+            return content.toString().replace(/<(style)[^>]*?>[\s\S]+<\/\1>/, (all, $1)=> {
+              return `<${$1} lang="css">${cssfile}</${$1}>`
+            }).replace(/~assets\/fonts/g, './fonts')
+          }
+        },{
+          from: "./src/components/Calendar.vue",
+          to: "[name].scss.[ext]",
+          transform (content) {
+            return content.toString().replace(/~assets\/fonts/g, './fonts')
+          }
+        },{
+          from: "./src/assets/fonts/*",
+          to: "fonts/",
+          transformPath (targetPath, absolutePath) {
+            return targetPath.replace('src/assets/fonts/', '');
+          }
+        }])
       ]
-    })
+    });
   }
-  return webpackConfig
+  return webpackConfig;
 }
 
-module.exports = [build('calendar.js'), build('calendar.min.js')]
+module.exports =  [build("calendar.js"), build("calendar.min.js")];
