@@ -11,6 +11,7 @@
     "docs": "node build/doc.server.js",
     "build": "node build/build.js",
     "lib": "cross-env BABEL_ENV=npm node build/npm.js",
+    "deploy:doc": "sh deploy/doc.sh",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs --fix"
