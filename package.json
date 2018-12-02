@@ -1,7 +1,7 @@
 {
   "name": "vue2-slot-calendar",
   "aliasName": "vue2-calendar",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "description": "vue2 bootstrap style calendar",
   "author": "Terry <gidcai@gmail.com>",
   "scripts": {
@@ -60,6 +60,7 @@
     "eslint-plugin-vue": "^5.0.0-beta.5",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.16.4",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^2.0.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-loader": "^0.5.5",
@@ -92,6 +93,7 @@
     "shelljs": "^0.8.3",
     "sinon": "^7.1.1",
     "sinon-chai": "^3.3.0",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "url-loader": "^1.1.2",
     "vue": "^2.5.17",
     "vue-loader": "^15.4.2",
