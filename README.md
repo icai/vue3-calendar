@@ -47,7 +47,12 @@
 
 - This project is not only a vue component, but also a webpack **multi-page** project in action.
 
-- Boostrap like style
+- Boostrap style like
+
+- I18n support
+
+- Community feedback
+
 
 ## Install
 
@@ -84,6 +89,43 @@ const VueCalendar = Calendar;
 ```
 
 Also see the demo file, `example/demo.html`
+
+
+## I18n support
+
+current provide `window.VueCalendarLang` function hook to change your lang
+
+
+```js
+  translations(lang) {
+    lang = lang || "en";
+    let text = {
+      daysOfWeek: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+      limit: "Limit reached ({{limit}} items max).",
+      loading: "Loading...",
+      minLength: "Min. Length",
+      months: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ],
+      notSelected: "Nothing Selected",
+      required: "Required",
+      search: "Search"
+    };
+    return window.VueCalendarLang ? window.VueCalendarLang(lang) : text;
+  },
+```
+
 
 ## Build Setup
 
