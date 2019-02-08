@@ -601,11 +601,13 @@ export default {
       const date = this.currDate.getDate();
       if (flag === 0) {
         const preMonth = this.getYearMonth(year, month - 1);
-        this.currDate = new Date(preMonth.year, preMonth.month, date);
+        const lastDate = Math.min(this.getDayCount(preMonth.year, preMonth.month), date);
+        this.currDate = new Date(preMonth.year, preMonth.month, lastDate);
         this.changePane(preMonth.year, preMonth.month, this.pane);
       } else {
         const nextMonth = this.getYearMonth(year, month + 1);
-        this.currDate = new Date(nextMonth.year, nextMonth.month, date);
+        const lastDate = Math.min(this.getDayCount(nextMonth.year, nextMonth.month), date);
+        this.currDate = new Date(nextMonth.year, nextMonth.month, lastDate);
         this.changePane(nextMonth.year, nextMonth.month, this.pane);
       }
     },
@@ -831,11 +833,10 @@ export default {
 </script>
 
 <style lang="css">/*!
- * vue2-calendar v2.2.0
- * (c) 2018 Terry <gidcai@gmail.com>
+ * vue2-calendar v2.2.3
+ * (c) 2019 Terry <gidcai@gmail.com>
  * https://github.com/icai/vue2-calendar#readme
  */
-
 .datepicker {
   font-size: 14px;
   font-family: "Avenir", Helvetica, Arial, sans-serif;

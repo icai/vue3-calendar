@@ -601,11 +601,13 @@ export default {
       const date = this.currDate.getDate();
       if (flag === 0) {
         const preMonth = this.getYearMonth(year, month - 1);
-        this.currDate = new Date(preMonth.year, preMonth.month, date);
+        const lastDate = Math.min(this.getDayCount(preMonth.year, preMonth.month), date);
+        this.currDate = new Date(preMonth.year, preMonth.month, lastDate);
         this.changePane(preMonth.year, preMonth.month, this.pane);
       } else {
         const nextMonth = this.getYearMonth(year, month + 1);
-        this.currDate = new Date(nextMonth.year, nextMonth.month, date);
+        const lastDate = Math.min(this.getDayCount(nextMonth.year, nextMonth.month), date);
+        this.currDate = new Date(nextMonth.year, nextMonth.month, lastDate);
         this.changePane(nextMonth.year, nextMonth.month, this.pane);
       }
     },
