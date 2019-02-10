@@ -10,6 +10,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+// @ts-ignore
 const pp = require("../package");
 
 const banner = [
@@ -26,6 +27,7 @@ const env = config.npm.env;
 
 function build(name) {
 const minimize = !!name.match(/\.min/);
+// @ts-ignore
 let webpackConfig = merge(baseWebpackConfig, {
     mode: minimize ? 'production' : 'none',
     module: {
@@ -95,6 +97,7 @@ let webpackConfig = merge(baseWebpackConfig, {
         },{
           from: "./src/assets/fonts/*",
           to: "fonts/",
+          // @ts-ignore
           transformPath (targetPath, absolutePath) {
             return targetPath.replace('src/assets/fonts/', '');
           }
