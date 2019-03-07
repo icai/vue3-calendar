@@ -539,13 +539,13 @@ export default {
       this.updatePaneStyle();
     },
     getElOffset(el) {
-      let offsetParent = el;
       let top = el.offsetTop;
       let left = el.offsetLeft;
-      while (offsetParent != document.body) {
-        offsetParent = offsetParent.offsetParent;
+      let offsetParent = el.offsetParent;
+      while (offsetParent && offsetParent != document.body) {
         top += offsetParent.offsetTop;
         left += offsetParent.offsetLeft;
+        offsetParent = offsetParent.offsetParent;
       }
       return {
         top,
