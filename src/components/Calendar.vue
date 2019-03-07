@@ -774,7 +774,7 @@ export default {
         const currMonthFirstDay = new Date(time.year, time.month, 1);
         let firstDayWeek = this.prefixLen(currMonthFirstDay);
         const dayCount = this.getDayCount(time.year, time.month);
-        if (firstDayWeek > 1) {
+        if (firstDayWeek >= 1) {
           const preMonth = this.getYearMonth(time.year, time.month - 1);
           const prevMonthDayCount = this.getDayCount(
             preMonth.year,
