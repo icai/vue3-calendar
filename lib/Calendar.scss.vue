@@ -539,13 +539,13 @@ export default {
       this.updatePaneStyle();
     },
     getElOffset(el) {
-      let offsetParent = el;
       let top = el.offsetTop;
       let left = el.offsetLeft;
-      while (offsetParent != document.body) {
-        offsetParent = offsetParent.offsetParent;
+      let offsetParent = el.offsetParent;
+      while (offsetParent && offsetParent != document.body) {
         top += offsetParent.offsetTop;
         left += offsetParent.offsetLeft;
+        offsetParent = offsetParent.offsetParent;
       }
       return {
         top,
@@ -720,8 +720,8 @@ export default {
     },
     parse(str, safe = true) {
       if (typeof str == "string") {
-        let date;
-        if (
+		let date;
+        if (			
           str.length === 10 &&
           (this.dateFormat === "dd-MM-yyyy" || this.dateFormat === "dd/MM/yyyy")
         ) {
@@ -730,10 +730,16 @@ export default {
             str.substring(3, 5) - 1,
             str.substring(0, 2)
           );
-        } else {
+		} else if (this.dateFormat === "yyyy-MM-dd" || this.dateFormat === "yyyy/MM/dd") {
+		  date = new Date(
+            str.substring(0, 4),
+            str.substring(5, 7) - 1,
+            str.substring(8, 10)
+          );
+		} else {
           date = new Date(str);
           date.setHours(0, 0, 0);
-        }
+		}		
         return isNaN(date.getFullYear()) ? (safe ? new Date() : date) : date;
       } else return str;
     },
@@ -774,7 +780,7 @@ export default {
         const currMonthFirstDay = new Date(time.year, time.month, 1);
         let firstDayWeek = this.prefixLen(currMonthFirstDay);
         const dayCount = this.getDayCount(time.year, time.month);
-        if (firstDayWeek > 1) {
+        if (firstDayWeek >= 1) {
           const preMonth = this.getYearMonth(time.year, time.month - 1);
           const prevMonthDayCount = this.getDayCount(
             preMonth.year,

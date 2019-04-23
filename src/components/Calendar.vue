@@ -720,8 +720,8 @@ export default {
     },
     parse(str, safe = true) {
       if (typeof str == "string") {
-        let date;
-        if (
+		let date;
+        if (			
           str.length === 10 &&
           (this.dateFormat === "dd-MM-yyyy" || this.dateFormat === "dd/MM/yyyy")
         ) {
@@ -730,10 +730,16 @@ export default {
             str.substring(3, 5) - 1,
             str.substring(0, 2)
           );
-        } else {
+		} else if (this.dateFormat === "yyyy-MM-dd" || this.dateFormat === "yyyy/MM/dd") {
+		  date = new Date(
+            str.substring(0, 4),
+            str.substring(5, 7) - 1,
+            str.substring(8, 10)
+          );
+		} else {
           date = new Date(str);
           date.setHours(0, 0, 0);
-        }
+		}		
         return isNaN(date.getFullYear()) ? (safe ? new Date() : date) : date;
       } else return str;
     },
