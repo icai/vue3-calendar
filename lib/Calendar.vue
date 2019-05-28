@@ -539,13 +539,13 @@ export default {
       this.updatePaneStyle();
     },
     getElOffset(el) {
-      let offsetParent = el;
       let top = el.offsetTop;
       let left = el.offsetLeft;
-      while (offsetParent != document.body) {
-        offsetParent = offsetParent.offsetParent;
+      let offsetParent = el.offsetParent;
+      while (offsetParent && offsetParent != document.body) {
         top += offsetParent.offsetTop;
         left += offsetParent.offsetLeft;
+        offsetParent = offsetParent.offsetParent;
       }
       return {
         top,
@@ -774,7 +774,7 @@ export default {
         const currMonthFirstDay = new Date(time.year, time.month, 1);
         let firstDayWeek = this.prefixLen(currMonthFirstDay);
         const dayCount = this.getDayCount(time.year, time.month);
-        if (firstDayWeek > 1) {
+        if (firstDayWeek >= 1) {
           const preMonth = this.getYearMonth(time.year, time.month - 1);
           const prevMonthDayCount = this.getDayCount(
             preMonth.year,
@@ -833,7 +833,7 @@ export default {
 </script>
 
 <style lang="css">/*!
- * vue2-calendar v2.2.3
+ * vue2-calendar v2.2.5
  * (c) 2019 Terry <gidcai@gmail.com>
  * https://github.com/icai/vue2-calendar#readme
  */
