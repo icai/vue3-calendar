@@ -839,7 +839,7 @@ export default {
 </script>
 
 <style lang="css">/*!
- * vue2-calendar v2.2.4
+ * vue2-calendar v2.2.5
  * (c) 2019 Terry <gidcai@gmail.com>
  * https://github.com/icai/vue2-calendar#readme
  */
