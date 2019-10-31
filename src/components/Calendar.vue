@@ -730,6 +730,15 @@ export default {
             str.substring(3, 5) - 1,
             str.substring(0, 2)
           );
+        } else if (
+          str.length === 10 &&
+          (this.dateFormat === "yyyy-MM-dd" || this.dateFormat === "yyyy/MM/dd")
+        ) {
+		      date = new Date(
+            str.substring(0, 4),
+            str.substring(5, 7) - 1,
+            str.substring(8, 10)
+          );
         } else {
           date = new Date(str);
           date.setHours(0, 0, 0);
