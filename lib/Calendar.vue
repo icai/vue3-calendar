@@ -7,11 +7,16 @@
         :class="classes"
         type="text"
         :placeholder="placeholder"
-        :style="{width:width}"
+        :style="{ width: width }"
         @click="inputClick"
         v-model="inputValue"
+      />
+      <button
+        v-if="clearButton && value"
+        type="button"
+        class="close"
+        @click="inputValue = ''"
       >
-      <button v-if="clearButton && value" type="button" class="close" @click="inputValue = ''">
         <span>&times;</span>
       </button>
     </template>
@@ -43,9 +48,16 @@
         <template v-for="(p, pan) in pane">
           <div class="datepicker-inner" :key="pan">
             <div class="datepicker-body">
-              <p @click="switchMonthView">{{stringifyDayHeader(currDate, pan)}}</p>
-              <div class="datepicker-weekRange">
-                <span v-for="(w, index) in daysOfWeek" :key="index">{{w}}</span>
+              <p @click="switchMonthView">
+                {{ stringifyDayHeader(currDate, pan) }}
+              </p>
+              <div>
+                <span
+                  class="datepicker-weekRange"
+                  v-for="(w, index) in daysOfWeek"
+                  :key="index"
+                  >{{ w }}</span
+                >
               </div>
               <div class="datepicker-dateRange">
                 <span
@@ -57,10 +69,10 @@
                   @click="daySelect(d, $event)"
                 >
                   <div>
-                    <template
-                      v-if="d.sclass !== 'datepicker-item-gray'"
-                    >{{getSpecailDay(d.date) || d.text}}</template>
-                    <template v-else>{{d.text}}</template>
+                    <template v-if="d.sclass !== 'datepicker-item-gray'">{{
+                      getSpecailDay(d.date) || d.text
+                    }}</template>
+                    <template v-else>{{ d.text }}</template>
                     <div v-if="d.sclass !== 'datepicker-item-gray'">
                       <slot :name="stringify(d.date)"></slot>
                     </div>
@@ -71,7 +83,11 @@
           </div>
         </template>
       </div>
-      <div class="datepicker-popup" v-if="!showDateOnly" v-show="displayMonthView">
+      <div
+        class="datepicker-popup"
+        v-if="!showDateOnly"
+        v-show="displayMonthView"
+      >
         <div class="datepicker-ctrl">
           <span
             class="datepicker-preBtn calendaricon-angle-left"
@@ -87,23 +103,35 @@
         <template v-for="(p, pan) in pane">
           <div class="datepicker-inner" :key="pan">
             <div class="datepicker-body">
-              <p @click="switchDecadeView">{{stringifyYearHeader(currDate, pan)}}</p>
+              <p @click="switchDecadeView">
+                {{ stringifyYearHeader(currDate, pan) }}
+              </p>
               <div class="datepicker-monthRange">
                 <template v-for="(m, $index) in text.months">
                   <span
                     :key="$index"
-                    :class="{'datepicker-dateRange-item-active':
-                      (text.months[parse(value).getMonth()]  === m) &&
-                      currDate.getFullYear() + pan === parse(value).getFullYear()}"
-                    @click="monthSelect(stringifyYearHeader(currDate, pan), $index)"
-                  >{{m.substr(0,3)}}</span>
+                    :class="{
+                      'datepicker-dateRange-item-active':
+                        text.months[parse(value).getMonth()] === m &&
+                        currDate.getFullYear() + pan ===
+                          parse(value).getFullYear()
+                    }"
+                    @click="
+                      monthSelect(stringifyYearHeader(currDate, pan), $index)
+                    "
+                    >{{ m.substr(0, 3) }}</span
+                  >
                 </template>
               </div>
             </div>
           </div>
         </template>
       </div>
-      <div class="datepicker-popup" v-if="!showDateOnly" v-show="displayYearView">
+      <div
+        class="datepicker-popup"
+        v-if="!showDateOnly"
+        v-show="displayYearView"
+      >
         <div class="datepicker-ctrl">
           <span
             class="datepicker-preBtn calendaricon-angle-left"
@@ -119,15 +147,18 @@
         <template v-for="(p, pan) in pane">
           <div class="datepicker-inner" :key="pan">
             <div class="datepicker-body">
-              <p>{{stringifyDecadeHeader(currDate, pan)}}</p>
+              <p>{{ stringifyDecadeHeader(currDate, pan) }}</p>
               <div class="datepicker-monthRange decadeRange">
                 <template v-for="(decade, di) in decadeRange[pan]">
                   <span
                     :key="di"
-                    :class="{'datepicker-dateRange-item-active':
-                      parse(inputValue).getFullYear() === decade.text}"
+                    :class="{
+                      'datepicker-dateRange-item-active':
+                        parse(inputValue).getFullYear() === decade.text
+                    }"
                     @click.stop="yearSelect(decade.text)"
-                  >{{decade.text}}</span>
+                    >{{ decade.text }}</span
+                  >
                 </template>
               </div>
             </div>
@@ -395,7 +426,7 @@ export default {
       }
       return this.text.daysOfWeek
         .slice(firstDay, 7)
-        .concat(this.text.daysOfWeek.slice(0, firstDay));
+        .concat(this.text.daysOfWeek.slice(1, firstDay));
     },
     text() {
       return this.translations(this.lang);
@@ -502,7 +533,7 @@ export default {
     translations(lang) {
       lang = lang || "en";
       let text = {
-        daysOfWeek: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+        daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         limit: "Limit reached ({{limit}} items max).",
         loading: "Loading...",
         minLength: "Min. Length",
@@ -601,12 +632,18 @@ export default {
       const date = this.currDate.getDate();
       if (flag === 0) {
         const preMonth = this.getYearMonth(year, month - 1);
-        const lastDate = Math.min(this.getDayCount(preMonth.year, preMonth.month), date);
+        const lastDate = Math.min(
+          this.getDayCount(preMonth.year, preMonth.month),
+          date
+        );
         this.currDate = new Date(preMonth.year, preMonth.month, lastDate);
         this.changePane(preMonth.year, preMonth.month, this.pane);
       } else {
         const nextMonth = this.getYearMonth(year, month + 1);
-        const lastDate = Math.min(this.getDayCount(nextMonth.year, nextMonth.month), date);
+        const lastDate = Math.min(
+          this.getDayCount(nextMonth.year, nextMonth.month),
+          date
+        );
         this.currDate = new Date(nextMonth.year, nextMonth.month, lastDate);
         this.changePane(nextMonth.year, nextMonth.month, this.pane);
       }
@@ -690,7 +727,7 @@ export default {
     },
     stringifyDayHeader(date, month = 0) {
       const d = this.siblingsMonth(date, month);
-      return this.text.months[d.getMonth()] + " " + d.getFullYear();
+      return this.text.months[d.getMonth()];
     },
     parseMonth(date) {
       return this.text.months[date.getMonth()];
@@ -832,7 +869,8 @@ export default {
 };
 </script>
 
-<style lang="css">/*!
+<style lang="css">
+/*!
  * vue2-calendar v2.2.5
  * (c) 2019 Terry <gidcai@gmail.com>
  * https://github.com/icai/vue2-calendar#readme
@@ -848,39 +886,41 @@ export default {
   display: inline-block;
 }
 .datepicker .form-control {
-    box-sizing: border-box;
-    display: block;
-    width: 100%;
-    height: 34px;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #d9d9d9;
-    border-radius: 4px;
-    box-shadow: none;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  box-shadow: none;
 }
-.datepicker .form-control:hover, .datepicker .form-control:focus {
-      outline: 0;
-      border-color: #40a9ff;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+.datepicker .form-control:hover,
+.datepicker .form-control:focus {
+  outline: 0;
+  border-color: #40a9ff;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(102, 175, 233, 0.6);
 }
 .datepicker button.close {
-    padding: 0;
-    cursor: pointer;
-    background: #0000;
-    border: 0;
-    -webkit-appearance: none;
-    float: right;
-    font-size: 21px;
-    font-weight: bold;
-    line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    opacity: 0.2;
-    filter: alpha(opacity=20);
+  padding: 0;
+  cursor: pointer;
+  background: #0000;
+  border: 0;
+  -webkit-appearance: none;
+  float: right;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.2;
+  filter: alpha(opacity=20);
 }
 input.datepicker-input.with-reset-button {
   padding-right: 25px;
@@ -900,6 +940,10 @@ input.datepicker-input.with-reset-button {
 .datepicker > button.close:focus {
   opacity: 0.2;
 }
+.day-cell {
+  margin-right: 4px;
+  margin-left: 4px;
+}
 .datepicker-wrapper {
   position: absolute;
   z-index: 1000;
@@ -910,16 +954,18 @@ input.datepicker-input.with-reset-button {
   background: #fff;
   margin-top: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  width: 800px;
 }
-.datepicker-popup:before, .datepicker-popup:after {
-    content: " ";
-    display: table;
+.datepicker-popup:before,
+.datepicker-popup:after {
+  content: " ";
+  display: table;
 }
 .datepicker-popup:after {
-    clear: both;
+  clear: both;
 }
 .datepicker-inner {
-  width: 218px;
+  width: 370px;
   float: left;
 }
 .datepicker-body {
@@ -927,13 +973,15 @@ input.datepicker-input.with-reset-button {
   text-align: center;
 }
 .datepicker-body p {
-    margin: 0 0 10px;
+  margin: 0 0 10px;
+  font-weight: bold;
+  font-size: 18px;
 }
 .datepicker-ctrl p,
 .datepicker-ctrl span,
 .datepicker-body span {
   display: inline-block;
-  width: 28px;
+  width: 40px;
   line-height: 28px;
   height: 28px;
 }
@@ -973,6 +1021,10 @@ input.datepicker-input.with-reset-button {
 .datepicker-monthRange {
   margin-top: 10px;
 }
+.datepicker-weekRange {
+  margin-right: 4px;
+  margin-left: 4px;
+}
 .datepicker-monthRange span,
 .datepicker-ctrl span,
 .datepicker-ctrl p,
@@ -997,9 +1049,7 @@ input.datepicker-input.with-reset-button {
 .datepicker-dateRange .daytoday-range:hover {
   background-color: #ddd;
 }
-.datepicker-weekRange span {
-  font-weight: bold;
-}
+
 .datepicker-label {
   background-color: #f8f8f8;
   font-weight: 700;
@@ -1032,7 +1082,14 @@ input.datepicker-input.with-reset-button {
 @font-face {
   font-family: "calendar";
   src: url(data:application/vnd.ms-fontobject;base64,rAUAAAQFAAABAAIAAAAAAAAAAAAAAAAAAAABAJABAAAAAExQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAnWMjhgAAAAAAAAAAAAAAAAAAAAAAABAAYwBhAGwAZQBuAGQAYQByAAAADgBSAGUAZwB1AGwAYQByAAAAFgBWAGUAcgBzAGkAbwBuACAAMQAuADAAAAAQAGMAYQBsAGUAbgBkAGEAcgAAAAAAAAEAAAALAIAAAwAwT1MvMg+dCoQAAAC8AAAAYGNtYXAPUuKQAAABHAAAAFRnYXNwAAAAEAAAAXAAAAAIZ2x5ZrVRJOYAAAF4AAABNGhlYWQQzSHDAAACrAAAADZoaGVhBJsDOwAAAuQAAAAkaG10eAbbACEAAAMIAAAAGGxvY2EAwgBwAAADIAAAAA5tYXhwAAgAJwAAAzAAAAAgbmFtZWq4IzgAAANQAAABknBvc3QAAwAAAAAE5AAAACAAAwFuAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADxBQMz/zQAzAMzAMwAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAOAAAAAoACAACAAIAAQAg8QX//f//AAAAAAAg8QT//f//AAH/4w8AAAMAAQAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAABABr/4wFmAh0AJAAAARQGDwEXHgEVFAYPAQ4BIyImJwEuATU0NjcBPgEzMhYfAR4BFQFmAwLh4QIDAwIdAwcDBAcC/vUCAwMCAQsCBwQDBwMdAgMB7gQHAuHhAgcEAwcDHAMDAwMBCgIIAwMIAgEKAwMDAxwDBgQAAAAAAQAH/+MBVAIdACQAAAEUBgcBDgEjIiYvAS4BNTQ2PwEnLgE1NDY/AT4BMzIWFwEeARUBVAMD/vYDBwMEBwIdAgQEAuHhAgQEAh0CBwQDBwMBCgMDAQADCAL+9gMDAwMcAwYEBAcC4eECBwQDBwMcAwMDA/72AggDAAAAAAEAAAABAACGI2OdXw889QALBAAAAAAA2CPvYwAAAADYI+9jAAD/4wFmAh0AAAAIAAIAAAAAAAAAAQAAAzP/NAAABAAAAAAAAWYAAQAAAAAAAAAAAAAAAAAAAAYEAAAAAAAAAAAAAAAAAAAAAYAAGgFbAAcAAAAAAAoAFAAeAFwAmgAAAAEAAAAGACUAAQAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAOAK4AAQAAAAAAAQAIAAAAAQAAAAAAAgAHAGkAAQAAAAAAAwAIADkAAQAAAAAABAAIAH4AAQAAAAAABQALABgAAQAAAAAABgAIAFEAAQAAAAAACgAaAJYAAwABBAkAAQAQAAgAAwABBAkAAgAOAHAAAwABBAkAAwAQAEEAAwABBAkABAAQAIYAAwABBAkABQAWACMAAwABBAkABgAQAFkAAwABBAkACgA0ALBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJWZXJzaW9uIDEuMABWAGUAcgBzAGkAbwBuACAAMQAuADBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJSZWd1bGFyAFIAZQBnAHUAbABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJGb250IGdlbmVyYXRlZCBieSBJY29Nb29uLgBGAG8AbgB0ACAAZwBlAG4AZQByAGEAdABlAGQAIABiAHkAIABJAGMAbwBNAG8AbwBuAC4AAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA);
-  src: url(data:application/vnd.ms-fontobject;base64,rAUAAAQFAAABAAIAAAAAAAAAAAAAAAAAAAABAJABAAAAAExQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAnWMjhgAAAAAAAAAAAAAAAAAAAAAAABAAYwBhAGwAZQBuAGQAYQByAAAADgBSAGUAZwB1AGwAYQByAAAAFgBWAGUAcgBzAGkAbwBuACAAMQAuADAAAAAQAGMAYQBsAGUAbgBkAGEAcgAAAAAAAAEAAAALAIAAAwAwT1MvMg+dCoQAAAC8AAAAYGNtYXAPUuKQAAABHAAAAFRnYXNwAAAAEAAAAXAAAAAIZ2x5ZrVRJOYAAAF4AAABNGhlYWQQzSHDAAACrAAAADZoaGVhBJsDOwAAAuQAAAAkaG10eAbbACEAAAMIAAAAGGxvY2EAwgBwAAADIAAAAA5tYXhwAAgAJwAAAzAAAAAgbmFtZWq4IzgAAANQAAABknBvc3QAAwAAAAAE5AAAACAAAwFuAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADxBQMz/zQAzAMzAMwAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAOAAAAAoACAACAAIAAQAg8QX//f//AAAAAAAg8QT//f//AAH/4w8AAAMAAQAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAABABr/4wFmAh0AJAAAARQGDwEXHgEVFAYPAQ4BIyImJwEuATU0NjcBPgEzMhYfAR4BFQFmAwLh4QIDAwIdAwcDBAcC/vUCAwMCAQsCBwQDBwMdAgMB7gQHAuHhAgcEAwcDHAMDAwMBCgIIAwMIAgEKAwMDAxwDBgQAAAAAAQAH/+MBVAIdACQAAAEUBgcBDgEjIiYvAS4BNTQ2PwEnLgE1NDY/AT4BMzIWFwEeARUBVAMD/vYDBwMEBwIdAgQEAuHhAgQEAh0CBwQDBwMBCgMDAQADCAL+9gMDAwMcAwYEBAcC4eECBwQDBwMcAwMDA/72AggDAAAAAAEAAAABAACGI2OdXw889QALBAAAAAAA2CPvYwAAAADYI+9jAAD/4wFmAh0AAAAIAAIAAAAAAAAAAQAAAzP/NAAABAAAAAAAAWYAAQAAAAAAAAAAAAAAAAAAAAYEAAAAAAAAAAAAAAAAAAAAAYAAGgFbAAcAAAAAAAoAFAAeAFwAmgAAAAEAAAAGACUAAQAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAOAK4AAQAAAAAAAQAIAAAAAQAAAAAAAgAHAGkAAQAAAAAAAwAIADkAAQAAAAAABAAIAH4AAQAAAAAABQALABgAAQAAAAAABgAIAFEAAQAAAAAACgAaAJYAAwABBAkAAQAQAAgAAwABBAkAAgAOAHAAAwABBAkAAwAQAEEAAwABBAkABAAQAIYAAwABBAkABQAWACMAAwABBAkABgAQAFkAAwABBAkACgA0ALBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJWZXJzaW9uIDEuMABWAGUAcgBzAGkAbwBuACAAMQAuADBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJSZWd1bGFyAFIAZQBnAHUAbABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJGb250IGdlbmVyYXRlZCBieSBJY29Nb29uLgBGAG8AbgB0ACAAZwBlAG4AZQByAGEAdABlAGQAIABiAHkAIABJAGMAbwBNAG8AbwBuAC4AAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA#iefix) format("embedded-opentype"), url(data:font/ttf;base64,AAEAAAALAIAAAwAwT1MvMg+dCoQAAAC8AAAAYGNtYXAPUuKQAAABHAAAAFRnYXNwAAAAEAAAAXAAAAAIZ2x5ZrVRJOYAAAF4AAABNGhlYWQQzSHDAAACrAAAADZoaGVhBJsDOwAAAuQAAAAkaG10eAbbACEAAAMIAAAAGGxvY2EAwgBwAAADIAAAAA5tYXhwAAgAJwAAAzAAAAAgbmFtZWq4IzgAAANQAAABknBvc3QAAwAAAAAE5AAAACAAAwFuAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADxBQMz/zQAzAMzAMwAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAOAAAAAoACAACAAIAAQAg8QX//f//AAAAAAAg8QT//f//AAH/4w8AAAMAAQAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAABABr/4wFmAh0AJAAAARQGDwEXHgEVFAYPAQ4BIyImJwEuATU0NjcBPgEzMhYfAR4BFQFmAwLh4QIDAwIdAwcDBAcC/vUCAwMCAQsCBwQDBwMdAgMB7gQHAuHhAgcEAwcDHAMDAwMBCgIIAwMIAgEKAwMDAxwDBgQAAAAAAQAH/+MBVAIdACQAAAEUBgcBDgEjIiYvAS4BNTQ2PwEnLgE1NDY/AT4BMzIWFwEeARUBVAMD/vYDBwMEBwIdAgQEAuHhAgQEAh0CBwQDBwMBCgMDAQADCAL+9gMDAwMcAwYEBAcC4eECBwQDBwMcAwMDA/72AggDAAAAAAEAAAABAACGI2OdXw889QALBAAAAAAA2CPvYwAAAADYI+9jAAD/4wFmAh0AAAAIAAIAAAAAAAAAAQAAAzP/NAAABAAAAAAAAWYAAQAAAAAAAAAAAAAAAAAAAAYEAAAAAAAAAAAAAAAAAAAAAYAAGgFbAAcAAAAAAAoAFAAeAFwAmgAAAAEAAAAGACUAAQAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAOAK4AAQAAAAAAAQAIAAAAAQAAAAAAAgAHAGkAAQAAAAAAAwAIADkAAQAAAAAABAAIAH4AAQAAAAAABQALABgAAQAAAAAABgAIAFEAAQAAAAAACgAaAJYAAwABBAkAAQAQAAgAAwABBAkAAgAOAHAAAwABBAkAAwAQAEEAAwABBAkABAAQAIYAAwABBAkABQAWACMAAwABBAkABgAQAFkAAwABBAkACgA0ALBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJWZXJzaW9uIDEuMABWAGUAcgBzAGkAbwBuACAAMQAuADBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJSZWd1bGFyAFIAZQBnAHUAbABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJGb250IGdlbmVyYXRlZCBieSBJY29Nb29uLgBGAG8AbgB0ACAAZwBlAG4AZQByAGEAdABlAGQAIABiAHkAIABJAGMAbwBNAG8AbwBuAC4AAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA) format("truetype"), url(data:font/woff;base64,d09GRgABAAAAAAVQAAsAAAAABQQAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABPUy8yAAABCAAAAGAAAABgD50KhGNtYXAAAAFoAAAAVAAAAFQPUuKQZ2FzcAAAAbwAAAAIAAAACAAAABBnbHlmAAABxAAAATQAAAE0tVEk5mhlYWQAAAL4AAAANgAAADYQzSHDaGhlYQAAAzAAAAAkAAAAJASbAztobXR4AAADVAAAABgAAAAYBtsAIWxvY2EAAANsAAAADgAAAA4AwgBwbWF4cAAAA3wAAAAgAAAAIAAIACduYW1lAAADnAAAAZIAAAGSargjOHBvc3QAAAUwAAAAIAAAACAAAwAAAAMBbgGQAAUAAAKZAswAAACPApkCzAAAAesAMwEJAAAAAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAQAAA8QUDM/80AMwDMwDMAAAAAQAAAAAAAAAAAAAAIAAAAAAAAwAAAAMAAAAcAAEAAwAAABwAAwABAAAAHAAEADgAAAAKAAgAAgACAAEAIPEF//3//wAAAAAAIPEE//3//wAB/+MPAAADAAEAAAAAAAAAAAAAAAEAAf//AA8AAQAAAAAAAAAAAAIAADc5AQAAAAABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAa/+MBZgIdACQAAAEUBg8BFx4BFRQGDwEOASMiJicBLgE1NDY3AT4BMzIWHwEeARUBZgMC4eECAwMCHQMHAwQHAv71AgMDAgELAgcEAwcDHQIDAe4EBwLh4QIHBAMHAxwDAwMDAQoCCAMDCAIBCgMDAwMcAwYEAAAAAAEAB//jAVQCHQAkAAABFAYHAQ4BIyImLwEuATU0Nj8BJy4BNTQ2PwE+ATMyFhcBHgEVAVQDA/72AwcDBAcCHQIEBALh4QIEBAIdAgcEAwcDAQoDAwEAAwgC/vYDAwMDHAMGBAQHAuHhAgcEAwcDHAMDAwP+9gIIAwAAAAABAAAAAQAAhiNjnV8PPPUACwQAAAAAANgj72MAAAAA2CPvYwAA/+MBZgIdAAAACAACAAAAAAAAAAEAAAMz/zQAAAQAAAAAAAFmAAEAAAAAAAAAAAAAAAAAAAAGBAAAAAAAAAAAAAAAAAAAAAGAABoBWwAHAAAAAAAKABQAHgBcAJoAAAABAAAABgAlAAEAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAADgCuAAEAAAAAAAEACAAAAAEAAAAAAAIABwBpAAEAAAAAAAMACAA5AAEAAAAAAAQACAB+AAEAAAAAAAUACwAYAAEAAAAAAAYACABRAAEAAAAAAAoAGgCWAAMAAQQJAAEAEAAIAAMAAQQJAAIADgBwAAMAAQQJAAMAEABBAAMAAQQJAAQAEACGAAMAAQQJAAUAFgAjAAMAAQQJAAYAEABZAAMAAQQJAAoANACwY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByVmVyc2lvbiAxLjAAVgBlAHIAcwBpAG8AbgAgADEALgAwY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByUmVndWxhcgBSAGUAZwB1AGwAYQByY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByRm9udCBnZW5lcmF0ZWQgYnkgSWNvTW9vbi4ARgBvAG4AdAAgAGcAZQBuAGUAcgBhAHQAZQBkACAAYgB5ACAASQBjAG8ATQBvAG8AbgAuAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==) format("woff"), url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiID4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8bWV0YWRhdGE+R2VuZXJhdGVkIGJ5IEljb01vb248L21ldGFkYXRhPgo8ZGVmcz4KPGZvbnQgaWQ9ImNhbGVuZGFyIiBob3Jpei1hZHYteD0iMTAyNCI+Cjxmb250LWZhY2UgdW5pdHMtcGVyLWVtPSIxMDI0IiBhc2NlbnQ9IjgxOS4yIiBkZXNjZW50PSItMjA0LjgiIC8+CjxtaXNzaW5nLWdseXBoIGhvcml6LWFkdi14PSIxMDI0IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4MjA7IiBob3Jpei1hZHYteD0iMCIgZD0iIiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZjEwNDsiIGdseXBoLW5hbWU9ImFuZ2xlLWxlZnQiIGhvcml6LWFkdi14PSIzODQiIGQ9Ik0zNTguMjg2IDQ5My43MTRjMC00LjU3MS0yLjI4Ni05LjcxNC01LjcxNC0xMy4xNDNsLTIyNC41NzEtMjI0LjU3MSAyMjQuNTcxLTIyNC41NzFjMy40MjktMy40MjkgNS43MTQtOC41NzEgNS43MTQtMTMuMTQzcy0yLjI4Ni05LjcxNC01LjcxNC0xMy4xNDNsLTI4LjU3MS0yOC41NzFjLTMuNDI5LTMuNDI5LTguNTcxLTUuNzE0LTEzLjE0My01LjcxNHMtOS43MTQgMi4yODYtMTMuMTQzIDUuNzE0bC0yNjYuMjg2IDI2Ni4yODZjLTMuNDI5IDMuNDI5LTUuNzE0IDguNTcxLTUuNzE0IDEzLjE0M3MyLjI4NiA5LjcxNCA1LjcxNCAxMy4xNDNsMjY2LjI4NiAyNjYuMjg2YzMuNDI5IDMuNDI5IDguNTcxIDUuNzE0IDEzLjE0MyA1LjcxNHM5LjcxNC0yLjI4NiAxMy4xNDMtNS43MTRsMjguNTcxLTI4LjU3MWMzLjQyOS0zLjQyOSA1LjcxNC04IDUuNzE0LTEzLjE0M3oiIC8+CjxnbHlwaCB1bmljb2RlPSImI3hmMTA1OyIgZ2x5cGgtbmFtZT0iYW5nbGUtcmlnaHQiIGhvcml6LWFkdi14PSIzNDciIGQ9Ik0zNDAgMjU2YzAtNC41NzEtMi4yODYtOS43MTQtNS43MTQtMTMuMTQzbC0yNjYuMjg2LTI2Ni4yODZjLTMuNDI5LTMuNDI5LTguNTcxLTUuNzE0LTEzLjE0My01LjcxNHMtOS43MTQgMi4yODYtMTMuMTQzIDUuNzE0bC0yOC41NzEgMjguNTcxYy0zLjQyOSAzLjQyOS01LjcxNCA4LTUuNzE0IDEzLjE0MyAwIDQuNTcxIDIuMjg2IDkuNzE0IDUuNzE0IDEzLjE0M2wyMjQuNTcxIDIyNC41NzEtMjI0LjU3MSAyMjQuNTcxYy0zLjQyOSAzLjQyOS01LjcxNCA4LjU3MS01LjcxNCAxMy4xNDNzMi4yODYgOS43MTQgNS43MTQgMTMuMTQzbDI4LjU3MSAyOC41NzFjMy40MjkgMy40MjkgOC41NzEgNS43MTQgMTMuMTQzIDUuNzE0czkuNzE0LTIuMjg2IDEzLjE0My01LjcxNGwyNjYuMjg2LTI2Ni4yODZjMy40MjktMy40MjkgNS43MTQtOC41NzEgNS43MTQtMTMuMTQzeiIgLz4KPC9mb250PjwvZGVmcz48L3N2Zz4=#calendar) format("svg");
+  src: url(data:application/vnd.ms-fontobject;base64,rAUAAAQFAAABAAIAAAAAAAAAAAAAAAAAAAABAJABAAAAAExQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAnWMjhgAAAAAAAAAAAAAAAAAAAAAAABAAYwBhAGwAZQBuAGQAYQByAAAADgBSAGUAZwB1AGwAYQByAAAAFgBWAGUAcgBzAGkAbwBuACAAMQAuADAAAAAQAGMAYQBsAGUAbgBkAGEAcgAAAAAAAAEAAAALAIAAAwAwT1MvMg+dCoQAAAC8AAAAYGNtYXAPUuKQAAABHAAAAFRnYXNwAAAAEAAAAXAAAAAIZ2x5ZrVRJOYAAAF4AAABNGhlYWQQzSHDAAACrAAAADZoaGVhBJsDOwAAAuQAAAAkaG10eAbbACEAAAMIAAAAGGxvY2EAwgBwAAADIAAAAA5tYXhwAAgAJwAAAzAAAAAgbmFtZWq4IzgAAANQAAABknBvc3QAAwAAAAAE5AAAACAAAwFuAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADxBQMz/zQAzAMzAMwAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAOAAAAAoACAACAAIAAQAg8QX//f//AAAAAAAg8QT//f//AAH/4w8AAAMAAQAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAABABr/4wFmAh0AJAAAARQGDwEXHgEVFAYPAQ4BIyImJwEuATU0NjcBPgEzMhYfAR4BFQFmAwLh4QIDAwIdAwcDBAcC/vUCAwMCAQsCBwQDBwMdAgMB7gQHAuHhAgcEAwcDHAMDAwMBCgIIAwMIAgEKAwMDAxwDBgQAAAAAAQAH/+MBVAIdACQAAAEUBgcBDgEjIiYvAS4BNTQ2PwEnLgE1NDY/AT4BMzIWFwEeARUBVAMD/vYDBwMEBwIdAgQEAuHhAgQEAh0CBwQDBwMBCgMDAQADCAL+9gMDAwMcAwYEBAcC4eECBwQDBwMcAwMDA/72AggDAAAAAAEAAAABAACGI2OdXw889QALBAAAAAAA2CPvYwAAAADYI+9jAAD/4wFmAh0AAAAIAAIAAAAAAAAAAQAAAzP/NAAABAAAAAAAAWYAAQAAAAAAAAAAAAAAAAAAAAYEAAAAAAAAAAAAAAAAAAAAAYAAGgFbAAcAAAAAAAoAFAAeAFwAmgAAAAEAAAAGACUAAQAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAOAK4AAQAAAAAAAQAIAAAAAQAAAAAAAgAHAGkAAQAAAAAAAwAIADkAAQAAAAAABAAIAH4AAQAAAAAABQALABgAAQAAAAAABgAIAFEAAQAAAAAACgAaAJYAAwABBAkAAQAQAAgAAwABBAkAAgAOAHAAAwABBAkAAwAQAEEAAwABBAkABAAQAIYAAwABBAkABQAWACMAAwABBAkABgAQAFkAAwABBAkACgA0ALBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJWZXJzaW9uIDEuMABWAGUAcgBzAGkAbwBuACAAMQAuADBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJSZWd1bGFyAFIAZQBnAHUAbABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJGb250IGdlbmVyYXRlZCBieSBJY29Nb29uLgBGAG8AbgB0ACAAZwBlAG4AZQByAGEAdABlAGQAIABiAHkAIABJAGMAbwBNAG8AbwBuAC4AAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA#iefix)
+      format("embedded-opentype"),
+    url(data:font/ttf;base64,AAEAAAALAIAAAwAwT1MvMg+dCoQAAAC8AAAAYGNtYXAPUuKQAAABHAAAAFRnYXNwAAAAEAAAAXAAAAAIZ2x5ZrVRJOYAAAF4AAABNGhlYWQQzSHDAAACrAAAADZoaGVhBJsDOwAAAuQAAAAkaG10eAbbACEAAAMIAAAAGGxvY2EAwgBwAAADIAAAAA5tYXhwAAgAJwAAAzAAAAAgbmFtZWq4IzgAAANQAAABknBvc3QAAwAAAAAE5AAAACAAAwFuAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADxBQMz/zQAzAMzAMwAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAOAAAAAoACAACAAIAAQAg8QX//f//AAAAAAAg8QT//f//AAH/4w8AAAMAAQAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAABABr/4wFmAh0AJAAAARQGDwEXHgEVFAYPAQ4BIyImJwEuATU0NjcBPgEzMhYfAR4BFQFmAwLh4QIDAwIdAwcDBAcC/vUCAwMCAQsCBwQDBwMdAgMB7gQHAuHhAgcEAwcDHAMDAwMBCgIIAwMIAgEKAwMDAxwDBgQAAAAAAQAH/+MBVAIdACQAAAEUBgcBDgEjIiYvAS4BNTQ2PwEnLgE1NDY/AT4BMzIWFwEeARUBVAMD/vYDBwMEBwIdAgQEAuHhAgQEAh0CBwQDBwMBCgMDAQADCAL+9gMDAwMcAwYEBAcC4eECBwQDBwMcAwMDA/72AggDAAAAAAEAAAABAACGI2OdXw889QALBAAAAAAA2CPvYwAAAADYI+9jAAD/4wFmAh0AAAAIAAIAAAAAAAAAAQAAAzP/NAAABAAAAAAAAWYAAQAAAAAAAAAAAAAAAAAAAAYEAAAAAAAAAAAAAAAAAAAAAYAAGgFbAAcAAAAAAAoAFAAeAFwAmgAAAAEAAAAGACUAAQAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAOAK4AAQAAAAAAAQAIAAAAAQAAAAAAAgAHAGkAAQAAAAAAAwAIADkAAQAAAAAABAAIAH4AAQAAAAAABQALABgAAQAAAAAABgAIAFEAAQAAAAAACgAaAJYAAwABBAkAAQAQAAgAAwABBAkAAgAOAHAAAwABBAkAAwAQAEEAAwABBAkABAAQAIYAAwABBAkABQAWACMAAwABBAkABgAQAFkAAwABBAkACgA0ALBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJWZXJzaW9uIDEuMABWAGUAcgBzAGkAbwBuACAAMQAuADBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJSZWd1bGFyAFIAZQBnAHUAbABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJGb250IGdlbmVyYXRlZCBieSBJY29Nb29uLgBGAG8AbgB0ACAAZwBlAG4AZQByAGEAdABlAGQAIABiAHkAIABJAGMAbwBNAG8AbwBuAC4AAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA)
+      format("truetype"),
+    url(data:font/woff;base64,d09GRgABAAAAAAVQAAsAAAAABQQAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABPUy8yAAABCAAAAGAAAABgD50KhGNtYXAAAAFoAAAAVAAAAFQPUuKQZ2FzcAAAAbwAAAAIAAAACAAAABBnbHlmAAABxAAAATQAAAE0tVEk5mhlYWQAAAL4AAAANgAAADYQzSHDaGhlYQAAAzAAAAAkAAAAJASbAztobXR4AAADVAAAABgAAAAYBtsAIWxvY2EAAANsAAAADgAAAA4AwgBwbWF4cAAAA3wAAAAgAAAAIAAIACduYW1lAAADnAAAAZIAAAGSargjOHBvc3QAAAUwAAAAIAAAACAAAwAAAAMBbgGQAAUAAAKZAswAAACPApkCzAAAAesAMwEJAAAAAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAQAAA8QUDM/80AMwDMwDMAAAAAQAAAAAAAAAAAAAAIAAAAAAAAwAAAAMAAAAcAAEAAwAAABwAAwABAAAAHAAEADgAAAAKAAgAAgACAAEAIPEF//3//wAAAAAAIPEE//3//wAB/+MPAAADAAEAAAAAAAAAAAAAAAEAAf//AA8AAQAAAAAAAAAAAAIAADc5AQAAAAABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAa/+MBZgIdACQAAAEUBg8BFx4BFRQGDwEOASMiJicBLgE1NDY3AT4BMzIWHwEeARUBZgMC4eECAwMCHQMHAwQHAv71AgMDAgELAgcEAwcDHQIDAe4EBwLh4QIHBAMHAxwDAwMDAQoCCAMDCAIBCgMDAwMcAwYEAAAAAAEAB//jAVQCHQAkAAABFAYHAQ4BIyImLwEuATU0Nj8BJy4BNTQ2PwE+ATMyFhcBHgEVAVQDA/72AwcDBAcCHQIEBALh4QIEBAIdAgcEAwcDAQoDAwEAAwgC/vYDAwMDHAMGBAQHAuHhAgcEAwcDHAMDAwP+9gIIAwAAAAABAAAAAQAAhiNjnV8PPPUACwQAAAAAANgj72MAAAAA2CPvYwAA/+MBZgIdAAAACAACAAAAAAAAAAEAAAMz/zQAAAQAAAAAAAFmAAEAAAAAAAAAAAAAAAAAAAAGBAAAAAAAAAAAAAAAAAAAAAGAABoBWwAHAAAAAAAKABQAHgBcAJoAAAABAAAABgAlAAEAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAADgCuAAEAAAAAAAEACAAAAAEAAAAAAAIABwBpAAEAAAAAAAMACAA5AAEAAAAAAAQACAB+AAEAAAAAAAUACwAYAAEAAAAAAAYACABRAAEAAAAAAAoAGgCWAAMAAQQJAAEAEAAIAAMAAQQJAAIADgBwAAMAAQQJAAMAEABBAAMAAQQJAAQAEACGAAMAAQQJAAUAFgAjAAMAAQQJAAYAEABZAAMAAQQJAAoANACwY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByVmVyc2lvbiAxLjAAVgBlAHIAcwBpAG8AbgAgADEALgAwY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByUmVndWxhcgBSAGUAZwB1AGwAYQByY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByRm9udCBnZW5lcmF0ZWQgYnkgSWNvTW9vbi4ARgBvAG4AdAAgAGcAZQBuAGUAcgBhAHQAZQBkACAAYgB5ACAASQBjAG8ATQBvAG8AbgAuAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==)
+      format("woff"),
+    url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiID4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8bWV0YWRhdGE+R2VuZXJhdGVkIGJ5IEljb01vb248L21ldGFkYXRhPgo8ZGVmcz4KPGZvbnQgaWQ9ImNhbGVuZGFyIiBob3Jpei1hZHYteD0iMTAyNCI+Cjxmb250LWZhY2UgdW5pdHMtcGVyLWVtPSIxMDI0IiBhc2NlbnQ9IjgxOS4yIiBkZXNjZW50PSItMjA0LjgiIC8+CjxtaXNzaW5nLWdseXBoIGhvcml6LWFkdi14PSIxMDI0IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4MjA7IiBob3Jpei1hZHYteD0iMCIgZD0iIiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZjEwNDsiIGdseXBoLW5hbWU9ImFuZ2xlLWxlZnQiIGhvcml6LWFkdi14PSIzODQiIGQ9Ik0zNTguMjg2IDQ5My43MTRjMC00LjU3MS0yLjI4Ni05LjcxNC01LjcxNC0xMy4xNDNsLTIyNC41NzEtMjI0LjU3MSAyMjQuNTcxLTIyNC41NzFjMy40MjktMy40MjkgNS43MTQtOC41NzEgNS43MTQtMTMuMTQzcy0yLjI4Ni05LjcxNC01LjcxNC0xMy4xNDNsLTI4LjU3MS0yOC41NzFjLTMuNDI5LTMuNDI5LTguNTcxLTUuNzE0LTEzLjE0My01LjcxNHMtOS43MTQgMi4yODYtMTMuMTQzIDUuNzE0bC0yNjYuMjg2IDI2Ni4yODZjLTMuNDI5IDMuNDI5LTUuNzE0IDguNTcxLTUuNzE0IDEzLjE0M3MyLjI4NiA5LjcxNCA1LjcxNCAxMy4xNDNsMjY2LjI4NiAyNjYuMjg2YzMuNDI5IDMuNDI5IDguNTcxIDUuNzE0IDEzLjE0MyA1LjcxNHM5LjcxNC0yLjI4NiAxMy4xNDMtNS43MTRsMjguNTcxLTI4LjU3MWMzLjQyOS0zLjQyOSA1LjcxNC04IDUuNzE0LTEzLjE0M3oiIC8+CjxnbHlwaCB1bmljb2RlPSImI3hmMTA1OyIgZ2x5cGgtbmFtZT0iYW5nbGUtcmlnaHQiIGhvcml6LWFkdi14PSIzNDciIGQ9Ik0zNDAgMjU2YzAtNC41NzEtMi4yODYtOS43MTQtNS43MTQtMTMuMTQzbC0yNjYuMjg2LTI2Ni4yODZjLTMuNDI5LTMuNDI5LTguNTcxLTUuNzE0LTEzLjE0My01LjcxNHMtOS43MTQgMi4yODYtMTMuMTQzIDUuNzE0bC0yOC41NzEgMjguNTcxYy0zLjQyOSAzLjQyOS01LjcxNCA4LTUuNzE0IDEzLjE0MyAwIDQuNTcxIDIuMjg2IDkuNzE0IDUuNzE0IDEzLjE0M2wyMjQuNTcxIDIyNC41NzEtMjI0LjU3MSAyMjQuNTcxYy0zLjQyOSAzLjQyOS01LjcxNCA4LjU3MS01LjcxNCAxMy4xNDNzMi4yODYgOS43MTQgNS43MTQgMTMuMTQzbDI4LjU3MSAyOC41NzFjMy40MjkgMy40MjkgOC41NzEgNS43MTQgMTMuMTQzIDUuNzE0czkuNzE0LTIuMjg2IDEzLjE0My01LjcxNGwyNjYuMjg2LTI2Ni4yODZjMy40MjktMy40MjkgNS43MTQtOC41NzEgNS43MTQtMTMuMTQzeiIgLz4KPC9mb250PjwvZGVmcz48L3N2Zz4=#calendar)
+      format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -1056,5 +1113,4 @@ input.datepicker-input.with-reset-button {
 .calendaricon-angle-right:before {
   content: "\F105";
 }
-
 </style>
