@@ -1,5 +1,7 @@
 # vue2-calendar
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/icai/vue2-calendar.svg)](https://greenkeeper.io/)
+
 > vue 2 calendar, datepicker component which supported lunar or date event
 
 <p align="center">
