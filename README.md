@@ -57,7 +57,7 @@
 ## Install
 
 ```bash
-$ npm install vue2-slot-calendar
+$ npm install vue2-slot-calendar-fixed
 ```
 
 ### Import using module
