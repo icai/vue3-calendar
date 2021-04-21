@@ -7,11 +7,16 @@
         :class="classes"
         type="text"
         :placeholder="placeholder"
-        :style="{width:width}"
+        :style="{ width: width }"
         @click="inputClick"
         v-model="inputValue"
+      />
+      <button
+        v-if="clearButton && value"
+        type="button"
+        class="close"
+        @click="inputValue = ''"
       >
-      <button v-if="clearButton && value" type="button" class="close" @click="inputValue = ''">
         <span>&times;</span>
       </button>
     </template>
@@ -43,9 +48,13 @@
         <template v-for="(p, pan) in pane">
           <div class="datepicker-inner" :key="pan">
             <div class="datepicker-body">
-              <p @click="switchMonthView">{{stringifyDayHeader(currDate, pan)}}</p>
+              <p @click="switchMonthView">
+                {{ stringifyDayHeader(currDate, pan) }}
+              </p>
               <div class="datepicker-weekRange">
-                <span v-for="(w, index) in daysOfWeek" :key="index">{{w}}</span>
+                <span v-for="(w, index) in daysOfWeek" :key="index">{{
+                  w
+                }}</span>
               </div>
               <div class="datepicker-dateRange">
                 <span
@@ -57,10 +66,10 @@
                   @click="daySelect(d, $event)"
                 >
                   <div>
-                    <template
-                      v-if="d.sclass !== 'datepicker-item-gray'"
-                    >{{getSpecailDay(d.date) || d.text}}</template>
-                    <template v-else>{{d.text}}</template>
+                    <template v-if="d.sclass !== 'datepicker-item-gray'">{{
+                      getSpecailDay(d.date) || d.text
+                    }}</template>
+                    <template v-else>{{ d.text }}</template>
                     <div v-if="d.sclass !== 'datepicker-item-gray'">
                       <slot :name="stringify(d.date)"></slot>
                     </div>
@@ -71,7 +80,11 @@
           </div>
         </template>
       </div>
-      <div class="datepicker-popup" v-if="!showDateOnly" v-show="displayMonthView">
+      <div
+        class="datepicker-popup"
+        v-if="!showDateOnly"
+        v-show="displayMonthView"
+      >
         <div class="datepicker-ctrl">
           <span
             class="datepicker-preBtn calendaricon-angle-left"
@@ -87,23 +100,35 @@
         <template v-for="(p, pan) in pane">
           <div class="datepicker-inner" :key="pan">
             <div class="datepicker-body">
-              <p @click="switchDecadeView">{{stringifyYearHeader(currDate, pan)}}</p>
+              <p @click="switchDecadeView">
+                {{ stringifyYearHeader(currDate, pan) }}
+              </p>
               <div class="datepicker-monthRange">
                 <template v-for="(m, $index) in text.months">
                   <span
                     :key="$index"
-                    :class="{'datepicker-dateRange-item-active':
-                      (text.months[parse(value).getMonth()]  === m) &&
-                      currDate.getFullYear() + pan === parse(value).getFullYear()}"
-                    @click="monthSelect(stringifyYearHeader(currDate, pan), $index)"
-                  >{{m.substr(0,3)}}</span>
+                    :class="{
+                      'datepicker-dateRange-item-active':
+                        text.months[parse(value).getMonth()] === m &&
+                        currDate.getFullYear() + pan ===
+                          parse(value).getFullYear()
+                    }"
+                    @click="
+                      monthSelect(stringifyYearHeader(currDate, pan), $index)
+                    "
+                    >{{ m.substr(0, 3) }}</span
+                  >
                 </template>
               </div>
             </div>
           </div>
         </template>
       </div>
-      <div class="datepicker-popup" v-if="!showDateOnly" v-show="displayYearView">
+      <div
+        class="datepicker-popup"
+        v-if="!showDateOnly"
+        v-show="displayYearView"
+      >
         <div class="datepicker-ctrl">
           <span
             class="datepicker-preBtn calendaricon-angle-left"
@@ -119,15 +144,18 @@
         <template v-for="(p, pan) in pane">
           <div class="datepicker-inner" :key="pan">
             <div class="datepicker-body">
-              <p>{{stringifyDecadeHeader(currDate, pan)}}</p>
+              <p>{{ stringifyDecadeHeader(currDate, pan) }}</p>
               <div class="datepicker-monthRange decadeRange">
                 <template v-for="(decade, di) in decadeRange[pan]">
                   <span
                     :key="di"
-                    :class="{'datepicker-dateRange-item-active':
-                      parse(inputValue).getFullYear() === decade.text}"
+                    :class="{
+                      'datepicker-dateRange-item-active':
+                        parse(inputValue).getFullYear() === decade.text
+                    }"
                     @click.stop="yearSelect(decade.text)"
-                  >{{decade.text}}</span>
+                    >{{ decade.text }}</span
+                  >
                 </template>
               </div>
             </div>
@@ -139,6 +167,8 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
+
 function getTarget(node) {
   if (node === void 0) {
     node = document.body;
@@ -279,6 +309,12 @@ export default {
       type: Object,
       default() {
         return {};
+      }
+    },
+    disabledDays: {
+      type: Array,
+      default() {
+        return [];
       }
     },
     rangeBus: {
@@ -601,12 +637,18 @@ export default {
       const date = this.currDate.getDate();
       if (flag === 0) {
         const preMonth = this.getYearMonth(year, month - 1);
-        const lastDate = Math.min(this.getDayCount(preMonth.year, preMonth.month), date);
+        const lastDate = Math.min(
+          this.getDayCount(preMonth.year, preMonth.month),
+          date
+        );
         this.currDate = new Date(preMonth.year, preMonth.month, lastDate);
         this.changePane(preMonth.year, preMonth.month, this.pane);
       } else {
         const nextMonth = this.getYearMonth(year, month + 1);
-        const lastDate = Math.min(this.getDayCount(nextMonth.year, nextMonth.month), date);
+        const lastDate = Math.min(
+          this.getDayCount(nextMonth.year, nextMonth.month),
+          date
+        );
         this.currDate = new Date(nextMonth.year, nextMonth.month, lastDate);
         this.changePane(nextMonth.year, nextMonth.month, this.pane);
       }
@@ -793,9 +835,16 @@ export default {
           const date = new Date(time.year, time.month, i);
           const week = date.getDay();
           let sclass = "";
+
           this.disabledDaysOfWeek.forEach(el => {
             if (week === parseInt(el, 10)) sclass = "datepicker-item-disable";
           });
+
+          // If date is in disabled list disable the day
+          if (this.disabledDays.includes(dayjs(date).format("YYYY-MM-DD"))) {
+            sclass = "datepicker-item-disable";
+          }
+
           if (i === this.currDate.getDate()) {
             if (this.inputValue) {
               const valueDate = this.parse(this.inputValue);
@@ -834,7 +883,7 @@ export default {
 
 <style lang="css">/*!
  * vue2-calendar v2.2.5
- * (c) 2019 Terry <gidcai@gmail.com>
+ * (c) 2021 Terry <gidcai@gmail.com>
  * https://github.com/icai/vue2-calendar#readme
  */
 .datepicker {
@@ -954,6 +1003,7 @@ input.datepicker-input.with-reset-button {
 .datepicker-item-disable {
   background-color: white !important;
   cursor: not-allowed !important;
+  pointer-events: none;
 }
 .decadeRange span:first-child,
 .decadeRange span:last-child,

@@ -1,6 +1,6 @@
 /*!
  * vue2-calendar v2.2.5
- * (c) 2019 Terry <gidcai@gmail.com>
+ * (c) 2021 Terry <gidcai@gmail.com>
  * https://github.com/icai/vue2-calendar#readme
  */
 .datepicker {
@@ -120,6 +120,7 @@ input.datepicker-input.with-reset-button {
 .datepicker-item-disable {
   background-color: white !important;
   cursor: not-allowed !important;
+  pointer-events: none;
 }
 .decadeRange span:first-child,
 .decadeRange span:last-child,
