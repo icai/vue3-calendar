@@ -1,24 +1,31 @@
 <template>
   <div class="datepicker">
     <template v-if="hasInput">
-      <input
-        :id="elementId"
-        class="form-control datepicker-input"
-        :class="classes"
-        type="text"
-        :placeholder="placeholder"
-        :style="{ width: width }"
+      <div
         @click="inputClick"
-        v-model="inputValue"
-      />
-      <button
-        v-if="clearButton && value"
-        type="button"
-        class="close"
-        @click="inputValue = ''"
+        :style="{ cursor: inputDisabled ? 'pointer' : 'auto' }"
       >
-        <span>&times;</span>
-      </button>
+        <input
+          :id="elementId"
+          class="form-control datepicker-input"
+          :class="classes"
+          type="text"
+          :placeholder="placeholder"
+          :style="{
+            width: width,
+            'pointer-events': inputDisabled ? 'none' : 'auto'
+          }"
+          v-model="inputValue"
+        />
+        <button
+          v-if="clearButton && value"
+          type="button"
+          class="close"
+          @click="inputValue = ''"
+        >
+          <span>&times;</span>
+        </button>
+      </div>
     </template>
     <div
       class="datepicker-wrapper"
@@ -252,6 +259,10 @@ export default {
   props: {
     value: {
       type: [String, Date]
+    },
+    inputDisabled: {
+      type: Boolean,
+      default: false
     },
     format: {
       default: "MM/dd/yyyy"
