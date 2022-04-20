@@ -23,7 +23,6 @@
     "example"
   ],
   "devDependencies": {
-    "dayjs": "^1.10.4",
     "@babel/core": "^7.1.6",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-decorators": "^7.0.0",
@@ -50,6 +49,7 @@
     "copy-webpack-plugin": "^4.6.0",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
+    "dayjs": "^1.10.4",
     "eslint": "^5.9.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-friendly-formatter": "^4.0.1",
@@ -83,14 +83,12 @@
     "markdown-loader": "^4.0.0",
     "mini-css-extract-plugin": "^0.4.5",
     "mocha": "^5.2.0",
-    "node-sass": "^4.10.0",
     "opn": "^5.4.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "ora": "^3.0.0",
     "phantomjs-prebuilt": "^2.1.16",
     "portfinder": "^1.0.19",
     "rimraf": "^2.6.2",
-    "sass-loader": "^7.1.0",
     "semver": "^5.6.0",
     "shelljs": "^0.8.3",
     "sinon": "^7.1.1",
@@ -133,5 +131,9 @@
   "bugs": {
     "url": "https://github.com/icai/vue2-calendar/issues"
   },
-  "homepage": "https://github.com/icai/vue2-calendar#readme"
+  "homepage": "https://github.com/icai/vue2-calendar#readme",
+  "dependencies": {
+    "sass": "^1.49.9",
+    "sass-loader": "10"
+  }
 }

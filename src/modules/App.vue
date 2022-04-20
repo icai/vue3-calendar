@@ -8,6 +8,7 @@
       :disabled-days-of-week="disabled"
       :format="format"
       :clear-button="clear"
+      :input-disabled="true"
       :placeholder="placeholder"
     ></calendar>
     <hello :show-link="true"></hello>
