@@ -482,7 +482,7 @@ function cDay(B) {
 }
 
 
-module.exports = {
+export default {
   Calendar: calendar,
   monthDays: monthDays,
   cDay: cDay

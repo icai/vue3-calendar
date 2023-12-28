@@ -1,25 +1,15 @@
-import Vue from 'vue'
+import { createApp } from "vue";
 import App from './modules/App'
-import Docs from './modules/Docs'
-import 'bootstrap-sass'
-import pp from '../package.json'
+// import Docs from './modules/Docs'
+// import 'bootstrap-sass'
+import pp from '../package.json' assert {type:'json'}
 
 const routemaps = {
   '/': function () {
-    /* eslint-disable no-new */
-    new Vue({
-      el: '#app',
-      template: '<App/>',
-      components: { App }
-    })
+    createApp(App).mount('#app');
   },
   '/demo/': function () {
-    /* eslint-disable no-new */
-    new Vue({
-      el: '#app',
-      template: '<Docs/>',
-      components: { Docs }
-    })
+    createApp(Docs).mount('#app');
   }
 }
 

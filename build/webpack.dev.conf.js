@@ -1,29 +1,23 @@
-'use strict'
-const utils = require('./utils')
-const webpack = require('webpack')
-const config = require('../config')
-const merge = require('webpack-merge')
-const baseWebpackConfig = require('./webpack.base.conf')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+import * as utils from "./utils.js";
+import webpack from "webpack";
+import config from "../config/index.js";
+import { merge } from "webpack-merge";
+import baseWebpackConfig from "./webpack.base.conf.js";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import { VueLoaderPlugin } from "vue-loader";
 
-// add hot-reload related code to entry chunks
-Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
-})
 
-module.exports = merge(baseWebpackConfig, {
-  mode: 'development',
+export default merge(baseWebpackConfig, {
+  mode: "development",
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
-  // cheap-module-eval-source-map is faster for development
-  devtool: '#cheap-module-eval-source-map',
+  // eval-cheap-module-source-map is faster for development
+  devtool: "eval-cheap-module-source-map",
   plugins: [
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
-      'process.env': config.dev.env
+      "process.env": config.dev.env
     }),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.HotModuleReplacementPlugin(),
@@ -31,16 +25,15 @@ module.exports = merge(baseWebpackConfig, {
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: config.dev.index,
-      template: 'index.html',
+      template: "index.html",
       inject: true,
-      chunks: ['index']
+      chunks: ["index"]
     }),
     new HtmlWebpackPlugin({
       filename: config.dev.demo,
-      template: 'index.html',
+      template: "index.html",
       inject: true,
-      chunks: ['demo/index']
-    }),
-    new FriendlyErrorsPlugin()
+      chunks: ["demo/index"]
+    })
   ]
-})
+});

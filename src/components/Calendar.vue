@@ -1,138 +1,78 @@
 <template>
-  <div class="datepicker">
+  <div class="datepicker" ref="el">
     <template v-if="hasInput">
-      <input
-        :id="elementId"
-        class="form-control datepicker-input"
-        :class="classes"
-        type="text"
-        :placeholder="placeholder"
-        :style="{width:width}"
-        @click="inputClick"
-        v-model="inputValue"
-      >
+      <input :id="elementId" class="form-control datepicker-input" :class="classes" type="text" :placeholder="placeholder"
+        :style="{ width: width }" @click="inputClick" v-model="inputValue">
       <button v-if="clearButton && value" type="button" class="close" @click="inputValue = ''">
         <span>&times;</span>
       </button>
     </template>
-    <div
-      class="datepicker-wrapper"
-      ref="popup"
-      v-transfer="transfer"
-      v-show="isWrapperShow"
-      :style="paneStyle"
-    >
-      <div
-        class="datepicker-popup"
-        @mouseover="handleMouseOver"
-        @mouseout="handleMouseOver"
-        v-show="displayDayView"
-      >
+    <div class="datepicker-wrapper" ref="popup" v-transfer="transfer" v-show="isWrapperShow" :style="paneStyle">
+      <div class="datepicker-popup" @mouseover="handleMouseOver" @mouseout="handleMouseOver" v-show="displayDayView">
         <div class="datepicker-ctrl">
-          <span
-            class="datepicker-preBtn calendaricon-angle-left"
-            aria-hidden="true"
-            @click="preNextMonthClick(0)"
-          ></span>
-          <span
-            class="datepicker-nextBtn calendaricon-angle-right"
-            aria-hidden="true"
-            @click="preNextMonthClick(1)"
-          ></span>
+          <span class="datepicker-preBtn calendaricon-angle-left" aria-hidden="true" @click="preNextMonthClick(0)"></span>
+          <span class="datepicker-nextBtn calendaricon-angle-right" aria-hidden="true"
+            @click="preNextMonthClick(1)"></span>
         </div>
-        <template v-for="(p, pan) in pane">
-          <div class="datepicker-inner" :key="pan">
-            <div class="datepicker-body">
-              <p @click="switchMonthView">{{stringifyDayHeader(currDate, pan)}}</p>
-              <div class="datepicker-weekRange">
-                <span v-for="(w, index) in daysOfWeek" :key="index">{{w}}</span>
-              </div>
-              <div class="datepicker-dateRange">
-                <span
-                  v-for="(d, k) in dateRange[pan]"
-                  :key="k"
-                  class="day-cell"
-                  :class="getItemClasses(d)"
-                  :data-date="stringify(d.date)"
-                  @click="daySelect(d, $event)"
-                >
-                  <div>
-                    <template
-                      v-if="d.sclass !== 'datepicker-item-gray'"
-                    >{{getSpecailDay(d.date) || d.text}}</template>
-                    <template v-else>{{d.text}}</template>
-                    <div v-if="d.sclass !== 'datepicker-item-gray'">
-                      <slot :name="stringify(d.date)"></slot>
-                    </div>
+        <div class="datepicker-inner" v-for="(p, pan) in pane" :key="pan">
+          <div class="datepicker-body">
+            <p @click="switchMonthView">{{ stringifyDayHeader(currDate, pan) }}</p>
+            <div class="datepicker-weekRange">
+              <span v-for="(w, index) in daysOfWeek" :key="index">{{ w }}</span>
+            </div>
+            <div class="datepicker-dateRange">
+              <span v-for="(d, k) in dateRange[pan]" :key="k" class="day-cell" :class="getItemClasses(d)"
+                :data-date="stringify(d.date)" @click="daySelect(d, $event)">
+                <div>
+                  <template v-if="d.sclass !== 'datepicker-item-gray'">{{ getSpecailDay(d.date) || d.text }}</template>
+                  <template v-else>{{ d.text }}</template>
+                  <div v-if="d.sclass !== 'datepicker-item-gray'">
+                    <slot :name="stringify(d.date)"></slot>
                   </div>
-                </span>
-              </div>
+                </div>
+              </span>
             </div>
           </div>
-        </template>
+        </div>
       </div>
       <div class="datepicker-popup" v-if="!showDateOnly" v-show="displayMonthView">
         <div class="datepicker-ctrl">
-          <span
-            class="datepicker-preBtn calendaricon-angle-left"
-            aria-hidden="true"
-            @click="preNextYearClick(0)"
-          ></span>
-          <span
-            class="datepicker-nextBtn calendaricon-angle-right"
-            aria-hidden="true"
-            @click="preNextYearClick(1)"
-          ></span>
+          <span class="datepicker-preBtn calendaricon-angle-left" aria-hidden="true" @click="preNextYearClick(0)"></span>
+          <span class="datepicker-nextBtn calendaricon-angle-right" aria-hidden="true"
+            @click="preNextYearClick(1)"></span>
         </div>
-        <template v-for="(p, pan) in pane">
-          <div class="datepicker-inner" :key="pan">
-            <div class="datepicker-body">
-              <p @click="switchDecadeView">{{stringifyYearHeader(currDate, pan)}}</p>
-              <div class="datepicker-monthRange">
-                <template v-for="(m, $index) in text.months">
-                  <span
-                    :key="$index"
-                    :class="{'datepicker-dateRange-item-active':
-                      (text.months[parse(value).getMonth()]  === m) &&
-                      currDate.getFullYear() + pan === parse(value).getFullYear()}"
-                    @click="monthSelect(stringifyYearHeader(currDate, pan), $index)"
-                  >{{m.substr(0,3)}}</span>
-                </template>
-              </div>
+        <div class="datepicker-inner" v-for="(p, pan) in pane" :key="pan">
+          <div class="datepicker-body">
+            <p @click="switchDecadeView">{{ stringifyYearHeader(currDate, pan) }}</p>
+            <div class="datepicker-monthRange">
+
+              <span :key="$index" v-for="(m, $index) in text.months" :class="{
+                  'datepicker-dateRange-item-active':
+                    (text.months[parse(modelValue).getMonth()] === m) &&
+                    currDate.getFullYear() + pan === parse(modelValue).getFullYear()
+                }" @click="monthSelect(stringifyYearHeader(currDate, pan), $index)">{{ m.substr(0, 3) }}</span>
             </div>
           </div>
-        </template>
+        </div>
       </div>
       <div class="datepicker-popup" v-if="!showDateOnly" v-show="displayYearView">
         <div class="datepicker-ctrl">
-          <span
-            class="datepicker-preBtn calendaricon-angle-left"
-            aria-hidden="true"
-            @click="preNextDecadeClick(0)"
-          ></span>
-          <span
-            class="datepicker-nextBtn calendaricon-angle-right"
-            aria-hidden="true"
-            @click="preNextDecadeClick(1)"
-          ></span>
+          <span class="datepicker-preBtn calendaricon-angle-left" aria-hidden="true"
+            @click="preNextDecadeClick(0)"></span>
+          <span class="datepicker-nextBtn calendaricon-angle-right" aria-hidden="true"
+            @click="preNextDecadeClick(1)"></span>
         </div>
-        <template v-for="(p, pan) in pane">
-          <div class="datepicker-inner" :key="pan">
-            <div class="datepicker-body">
-              <p>{{stringifyDecadeHeader(currDate, pan)}}</p>
-              <div class="datepicker-monthRange decadeRange">
-                <template v-for="(decade, di) in decadeRange[pan]">
-                  <span
-                    :key="di"
-                    :class="{'datepicker-dateRange-item-active':
-                      parse(inputValue).getFullYear() === decade.text}"
-                    @click.stop="yearSelect(decade.text)"
-                  >{{decade.text}}</span>
-                </template>
-              </div>
+        <div class="datepicker-inner" v-for="(p, pan) in pane" :key="pan">
+          <div class="datepicker-body">
+            <p>{{ stringifyDecadeHeader(currDate, pan) }}</p>
+            <div class="datepicker-monthRange decadeRange">
+              <span v-for="(decade, di) in decadeRange[pan]" :key="di" :class="{
+                  'datepicker-dateRange-item-active':
+                    parse(inputValue).getFullYear() === decade.text
+                }" @click.stop="yearSelect(decade.text)">{{ decade.text }}</span>
             </div>
           </div>
-        </template>
+        </div>
       </div>
     </div>
   </div>
@@ -220,7 +160,7 @@ const transfer = {
 export default {
   name: "calendar",
   props: {
-    value: {
+    modelValue: {
       type: [String, Date]
     },
     format: {
@@ -269,11 +209,11 @@ export default {
     },
     onDayClick: {
       type: Function,
-      default() {}
+      default() { }
     },
     changePane: {
       type: Function,
-      default() {}
+      default() { }
     },
     specialDays: {
       type: Object,
@@ -284,7 +224,6 @@ export default {
     rangeBus: {
       type: Function,
       default() {
-        // return new Vue()
       }
     },
     rangeStatus: {
@@ -293,7 +232,7 @@ export default {
     },
     onDrawDate: {
       type: Function,
-      default() {}
+      default() { }
     },
     maxDate: {
       type: String
@@ -311,6 +250,7 @@ export default {
     },
     elementId: [String]
   },
+  emits: ["update:modelValue", "child-created", "drawdate"],
   directives: {
     transfer
   },
@@ -318,13 +258,13 @@ export default {
     this._blur = e => {
       if (this.transfer) {
         if (
-          !this.$el.contains(e.target) &&
-          !this.$refs.popup.contains(e.target) &&
+          !this.$refs.el?.contains(e.target) &&
+          !this.$refs.popup?.contains(e.target) &&
           this.hasInput
         )
           this.close();
       } else {
-        if (!this.$el.contains(e.target) && this.hasInput) this.close();
+        if (!this.$refs.el?.contains(e.target) && this.hasInput) this.close();
       }
     };
     this.$emit("child-created", this);
@@ -340,6 +280,7 @@ export default {
     }
     if (this.rangeStatus) {
       this.eventbus = this.rangeBus();
+      console.log(this.eventbus);
       if (typeof this.eventbus === "object" && !this.eventbus.$on) {
         console.warn("Calendar rangeBus doesn't exist");
         this.rangeStatus = 0;
@@ -382,7 +323,7 @@ export default {
     currDate() {
       this.getDateRange();
     },
-    value(v) {
+    modelValue(v) {
       this.inputValue = v instanceof Date ? this.stringify(v) : v;
     }
   },
@@ -407,14 +348,14 @@ export default {
     },
     inputValue: {
       get() {
-        if (this.value instanceof Date) {
-          return this.stringify(this.value);
+        if (this.modelValue instanceof Date) {
+          return this.stringify(this.modelValue);
         } else {
-          return this.value;
+          return this.modelValue;
         }
       },
       set(v) {
-        this.$emit("input", v);
+        this.$emit("update:modelValue", v);
         this.currDate = this.parse(v);
         if (this.rangeStatus === 1 && this.eventbus) {
           this.eventbus.$emit("calendar-rangestart", this.currDate);
@@ -440,7 +381,7 @@ export default {
         return true;
       }
       while (
-        this.$el.contains(target) &&
+        this.$refs.el.contains(target) &&
         !~target.className.indexOf("day-cell")
       ) {
         target = target.parentNode;
@@ -554,16 +495,18 @@ export default {
     },
     updatePaneStyle() {
       if (!(this.displayMonthView || this.displayYearView)) {
-        this.$nextTick(function() {
-          let { left, top } = this.getElOffset(this.$el);
-          let offsetLeft = this.$el.offsetLeft;
-          let elWidth = this.$el.offsetWidth;
-          let offsetTop = top + this.$el.offsetHeight;
+        this.$nextTick(function () {
+          let { left, top } = this.getElOffset(this.$refs.el);
+          let offsetLeft = this.$refs.el.offsetLeft;
+          let elWidth = this.$refs.el.offsetWidth;
+          let offsetTop = top + this.$refs.el.offsetHeight;
           let offsetWidth = this.$refs.popup.querySelector(".datepicker-inner")
             .offsetWidth;
           let popWidth = this.pane * offsetWidth + this.borderWidth; // add border
           this.paneStyle.width = popWidth + "px";
+
           if (this.hasInput) {
+            debugger
             if (this.transfer) {
               this.paneStyle.left = left + "px";
               this.paneStyle.top = offsetTop + "px";
@@ -834,11 +777,13 @@ export default {
 
 <style lang="scss">
 @mixin clearfix() {
+
   &:before,
   &:after {
     content: " "; // 1
     display: table; // 2
   }
+
   &:after {
     clear: both;
   }
@@ -870,6 +815,7 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     box-shadow: none;
+
     // box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     // transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
     &:hover,
@@ -897,10 +843,12 @@ export default {
     filter: alpha(opacity=20);
   }
 }
+
 input.datepicker-input.with-reset-button {
   padding-right: 25px;
 }
-.datepicker > button.close {
+
+.datepicker>button.close {
   position: absolute;
   top: 0;
   right: 0;
@@ -912,7 +860,8 @@ input.datepicker-input.with-reset-button {
   line-height: 34px;
   text-align: center;
 }
-.datepicker > button.close:focus {
+
+.datepicker>button.close:focus {
   opacity: 0.2;
 }
 
@@ -931,17 +880,21 @@ input.datepicker-input.with-reset-button {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   @include clearfix;
 }
+
 .datepicker-inner {
   width: 218px;
   float: left;
 }
+
 .datepicker-body {
   padding: 10px 10px;
   text-align: center;
+
   p {
     margin: 0 0 10px;
   }
 }
+
 .datepicker-ctrl p,
 .datepicker-ctrl span,
 .datepicker-body span {
@@ -951,30 +904,37 @@ input.datepicker-input.with-reset-button {
   height: 28px;
   // border-radius: 4px;
 }
+
 .datepicker-ctrl p {
   width: 65%;
 }
+
 .datepicker-ctrl span {
   position: absolute;
 }
+
 .datepicker-body span {
   text-align: center;
 }
+
 .datepicker-monthRange span {
   width: 48px;
   height: 50px;
   line-height: 45px;
 }
+
 .datepicker-item-disable {
   background-color: white !important;
   cursor: not-allowed !important;
 }
+
 .decadeRange span:first-child,
 .decadeRange span:last-child,
 .datepicker-item-disable,
 .datepicker-item-gray {
   color: #999;
 }
+
 .datepicker-dateRange-item-active:hover,
 .datepicker-dateRange-item-active {
   background: rgb(50, 118, 177) !important;
@@ -989,12 +949,14 @@ input.datepicker-input.with-reset-button {
 .datepicker-monthRange {
   margin-top: 10px;
 }
+
 .datepicker-monthRange span,
 .datepicker-ctrl span,
 .datepicker-ctrl p,
 .datepicker-dateRange span {
   cursor: pointer;
 }
+
 .datepicker-monthRange span:hover,
 .datepicker-ctrl p:hover,
 .datepicker-ctrl i:hover,
@@ -1002,7 +964,9 @@ input.datepicker-input.with-reset-button {
 .datepicker-dateRange-item-hover {
   background-color: #eeeeee;
 }
+
 .datepicker-dateRange {
+
   .daytoday-start,
   .daytoday-start:hover,
   .daytoday-end,
@@ -1011,19 +975,23 @@ input.datepicker-input.with-reset-button {
     color: white !important;
   }
 }
+
 .datepicker-dateRange .daytoday-range,
 .datepicker-dateRange .daytoday-range:hover {
   background-color: #ddd;
 }
+
 .datepicker-weekRange span {
   font-weight: bold;
 }
+
 .datepicker-label {
   background-color: #f8f8f8;
   font-weight: 700;
   padding: 7px 0;
   text-align: center;
 }
+
 .datepicker-ctrl {
   position: relative;
   /*height: 30px;*/
@@ -1032,6 +1000,7 @@ input.datepicker-input.with-reset-button {
   text-align: center;
   top: 3px;
 }
+
 .month-btn {
   font-weight: bold;
   -webkit-user-select: none;
@@ -1039,47 +1008,32 @@ input.datepicker-input.with-reset-button {
   -ms-user-select: none;
   user-select: none;
 }
+
 .datepicker-preBtn {
   left: 2px;
-  font-size: 18px;
+  width: 20px!important;
+  height: 20px!important;
+  background-repeat: no-repeat;
+  background-size: 18px;
+
 }
+
 .datepicker-nextBtn {
   right: 2px;
-  font-size: 18px;
+  width: 20px!important;
+  height: 20px!important;
+  background-repeat: no-repeat;
+  background-size: 18px;
 }
 
-@font-face {
-  font-family: "calendar";
-  src: url("~assets/fonts/calendar.eot?8xpf49");
-  src: url("~assets/fonts/calendar.eot?8xpf49#iefix")
-      format("embedded-opentype"),
-    url("~assets/fonts/calendar.ttf?8xpf49") format("truetype"),
-    url("~assets/fonts/calendar.woff?8xpf49") format("woff"),
-    url("~assets/fonts/calendar.svg?8xpf49#calendar") format("svg");
-  font-weight: normal;
-  font-style: normal;
+.calendaricon-angle-left {
+  top: 10px;
+  background-image: url(data:image/svg+xml;base64,PCEtLSBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAtLT4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMjQiIGhlaWdodD0iMTAyNCIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCI+CjxwYXRoIGQ9Ik04MDEuMjUzIDk4LjVjMCA3Ljk1Mi0zLjk3NiAxNi44OTUtOS45NDIgMjIuODYxbC0zOTAuNjM1IDM5MC42MzUgMzkwLjYzNSAzOTAuNjM1YzUuOTY1IDUuOTY1IDkuOTQyIDE0LjkxIDkuOTQyIDIyLjg2MXMtMy45NzYgMTYuODk1LTkuOTQyIDIyLjg2MWwtNDkuNjk3IDQ5LjY5N2MtNS45NjUgNS45NjUtMTQuOTEgOS45NDItMjIuODYxIDkuOTQycy0xNi44OTUtMy45NzYtMjIuODYxLTkuOTQybC00NjMuMTk3LTQ2My4xOTdjLTUuOTY1LTUuOTY1LTkuOTQyLTE0LjkxLTkuOTQyLTIyLjg2MXMzLjk3Ni0xNi44OTUgOS45NDItMjIuODYxbDQ2My4xOTctNDYzLjE5N2M1Ljk2NS01Ljk2NSAxNC45MS05Ljk0MiAyMi44NjEtOS45NDJzMTYuODk1IDMuOTc2IDIyLjg2MSA5Ljk0Mmw0OS42OTcgNDkuNjk3YzUuOTY1IDUuOTY1IDkuOTQyIDEzLjkxOCA5Ljk0MiAyMi44NjF6Ij48L3BhdGg+Cjwvc3ZnPgo=)
+
 }
 
-[class^="calendaricon-"],
-[class*=" calendaricon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: "calendar" !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.calendaricon-angle-left:before {
-  content: "\f104";
-}
-.calendaricon-angle-right:before {
-  content: "\f105";
+.calendaricon-angle-right {
+  top: 10px;
+  background-image: url(data:image/svg+xml;base64,PCEtLSBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAtLT4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMjQiIGhlaWdodD0iMTAyNCIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCI+CjxwYXRoIGQ9Ik04MDEuMjU2IDUxMmMwIDcuOTUzLTMuOTc3IDE2Ljg5NS05Ljk0NCAyMi44NmwtNDYzLjIwMyA0NjMuMjAzYy01Ljk2NiA1Ljk2Ni0xNC45MTEgOS45NDQtMjIuODYgOS45NDRzLTE2Ljg5NS0zLjk3Ny0yMi44Ni05Ljk0NGwtNDkuNjk1LTQ5LjY5NWMtNS45NjYtNS45NjYtOS45NDQtMTMuOTE5LTkuOTQ0LTIyLjg2IDAtNy45NTMgMy45NzctMTYuODk1IDkuOTQ0LTIyLjg2bDM5MC42MzgtMzkwLjYzOC0zOTAuNjM4LTM5MC42MzhjLTUuOTY2LTUuOTY2LTkuOTQ0LTE0LjkxMS05Ljk0NC0yMi44NnMzLjk3Ny0xNi44OTUgOS45NDQtMjIuODZsNDkuNjk1LTQ5LjY5NWM1Ljk2Ni01Ljk2NiAxNC45MTEtOS45NDQgMjIuODYtOS45NDRzMTYuODk1IDMuOTc3IDIyLjg2IDkuOTQ0bDQ2My4yMDMgNDYzLjIwM2M1Ljk2NiA1Ljk2NiA5Ljk0NCAxNC45MTEgOS45NDQgMjIuODZ6Ij48L3BhdGg+Cjwvc3ZnPgo=)
 }
 </style>

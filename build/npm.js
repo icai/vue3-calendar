@@ -11,6 +11,7 @@ const webpack = require('webpack')
 const config = require('../config')
 const webpackConfig = require('./webpack.npm.conf')
 
+
 const spinner = ora('building for production...')
 spinner.start()
 

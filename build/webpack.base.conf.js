@@ -1,16 +1,19 @@
-'use strict'
-const path = require('path')
-const utils = require('./utils')
-const config = require('../config')
-const vueLoaderConfig = require('./vue-loader.conf')
+import { fileURLToPath } from 'url';
+
+import path from 'path'
+import * as utils from './utils.js'
+import config from '../config/index.js'
+import vueLoaderConfig from './vue-loader.conf.js'
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
 
-
-module.exports = {
+export default {
   entry: {
     'index': './src/views/index.js',
     'demo/index': './src/views/demo/index.js'
@@ -25,28 +28,24 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
-      'root': resolve(''),
+      '@root': resolve(''),
       '@': resolve('src'),
-      'src': resolve('src'),
-      'utils': resolve('src/utils'),
       'assets': resolve('src/assets'),
-      'components': resolve('src/components'),
-      "bootstrap-sass$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss"),
-      "bootstrap-sprockets$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap-sprockets.scss")
+      // "bootstrap-sass$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss"),
+      // "bootstrap-sprockets$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap-sprockets.scss")
     }
   },
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
+      // {
+      //   test: /\.(js|vue)$/,
+      //   loader: 'eslint-loader',
+      //   enforce: 'pre',
+      //   include: [resolve('src'), resolve('test')],
+      //   options: {
+      //     formatter: require('eslint-friendly-formatter')
+      //   }
+      // },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
