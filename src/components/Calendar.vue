@@ -1,11 +1,13 @@
 <template>
   <div class="datepicker" ref="el">
     <template v-if="hasInput">
-      <input :id="elementId" class="form-control datepicker-input" :class="classes" type="text" :placeholder="placeholder"
+      <slot name="input" :elementId="elementId" :inputClick="inputClick" :inputValue="inputValue" >
+        <input :id="elementId" class="form-control datepicker-input" :class="classes" type="text" :placeholder="placeholder"
         :style="{ width: width }" @click="inputClick" v-model="inputValue">
-      <button v-if="clearButton && value" type="button" class="close" @click="inputValue = ''">
-        <span>&times;</span>
-      </button>
+        <button v-if="clearButton && value" type="button" class="close" @click="inputValue = ''">
+          <span>&times;</span>
+        </button>
+      </slot>
     </template>
     <div :class="{
       'datepicker-wrapper': true,

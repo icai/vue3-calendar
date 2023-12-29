@@ -251,6 +251,19 @@ npm test
 ></calendar>
 ```
 
+### Input Slot
+
+```html
+    <calendar v-model="value" showDateOnly @drawDate="onDrawDate" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder">
+      <template #input="scope">
+        <div class="mb-1">
+          <label for="exampleFormControlInput1" class="form-label">Input slot focus to trigger</label>
+          <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1"  @focus="scope.inputClick" v-model="scope.inputValue" placeholder="focus to trigger">
+        </div>
+      </template>
+    </calendar>
+```
+
 ### Props
 
 Options/Props
