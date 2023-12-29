@@ -610,7 +610,7 @@ export default {
         let date;
         if (
           str.length === 10 &&
-          (this.dateFormat === "dd-MM-yyyy" || this.dateFormat === "dd/MM/yyyy")
+          (this.dateFormat === 'dd.MM.yyyy' || this.dateFormat === "dd-MM-yyyy" || this.dateFormat === "dd/MM/yyyy")
         ) {
           date = new Date(
             str.substring(6, 10),
