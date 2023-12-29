@@ -4,7 +4,7 @@
       <slot name="input" :elementId="elementId" :inputClick="inputClick" :inputValue="inputValue" >
         <input :id="elementId" class="form-control datepicker-input" :class="classes" type="text" :placeholder="placeholder"
         :style="{ width: width }" @click="inputClick" v-model="inputValue">
-        <button v-if="clearButton && value" type="button" class="close" @click="inputValue = ''">
+        <button v-if="clearButton && modelValue" type="button" class="close" @click="inputValue = ''">
           <span>&times;</span>
         </button>
       </slot>
