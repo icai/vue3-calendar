@@ -18,8 +18,7 @@ export const cssLoaders = function(options, minimize) {
   const cssLoader = {
     loader: "css-loader",
     options: {
-      // minimize: minimize,
-      sourceMap: options.sourceMap
+      importLoaders: 1
     }
   };
 
@@ -37,9 +36,9 @@ export const cssLoaders = function(options, minimize) {
 
 
     if (options.extract) {
-      return [ "vue-style-loader", MiniCssExtractPlugin.loader].concat(loaders);
+      return [MiniCssExtractPlugin.loader].concat(loaders);
     } else {
-      return ["vue-style-loader"].concat(loaders);
+      return ['vue-style-loader'].concat(loaders);
     }
   }
 

@@ -31,6 +31,7 @@ export default {
       '@root': resolve(''),
       '@': resolve('src'),
       'assets': resolve('src/assets'),
+      'vue$': 'vue/dist/vue.esm-browser.js',
       // "bootstrap-sass$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss"),
       // "bootstrap-sprockets$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap-sprockets.scss")
     }
@@ -49,12 +50,13 @@ export default {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig
+        exclude: /node_modules/,
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'), resolve('test')],
+        exclude: /node_modules/,
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -83,15 +85,15 @@ export default {
       {
         test: /\.md$/,
         use: [
-            {
-                loader: "html-loader"
-            },
-            {
-                loader: "markdown-loader",
-                options: {
-                    /* your options here */
-                }
+          {
+            loader: "html-loader"
+          },
+          {
+            loader: "markdown-loader",
+            options: {
+                /* your options here */
             }
+          }
         ]
       }
     ]

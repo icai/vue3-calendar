@@ -4,10 +4,10 @@
   <div class="container">
     <logo></logo>
     <hello :msg="msg" :show-link="false" ></hello>
-    <calendar v-model="value" showDateOnly :onDrawDate="onDrawDate" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
+    <calendar v-model="value" showDateOnly @drawDate="onDrawDate" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
     <lorem :len="5"></lorem>
 
-    <calendar v-model="value" showDateOnly minDate="2017-12-29" maxDate="2018-01-27" @drawdate="onDrawDate2" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
+    <calendar v-model="value" showDateOnly minDate="2017-12-29" maxDate="2018-01-27" @drawDate="onDrawDate2" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
     <lorem :len="5"></lorem>
 
     <div class="col-sm-offset-8">
@@ -72,7 +72,7 @@
 
     <lorem :len="6"></lorem>
     <div class="text-center">
-      Happy 1024!
+      Happy New Year!
     </div>
     <p class="lorem">consectetur adipisicing elit,</p>
   </div>
@@ -84,7 +84,7 @@ import Hello from '@/components/Hello'
 import Lorem from '@/components/Lorem'
 import Calendar from '@/components/Calendar'
 import lunar from '@/utils/lunar'
-import { eventbus } from '../components/event.js'
+import { eventbus } from '@/utils/event'
 
 export default {
   name: 'docs',

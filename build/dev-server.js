@@ -70,7 +70,7 @@ app.use(hotMiddleware)
 const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
 app.use(staticPath, express.static('./static'))
 
-// const uri = 'http://localhost:' + port;
+const uri = 'http://localhost:' + port;
 
 let _resolve;
 let _reject;

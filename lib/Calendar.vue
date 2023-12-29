@@ -1,71 +1,43 @@
 <template>
-  <div class="datepicker">
+  <div class="datepicker" ref="el">
     <template v-if="hasInput">
-      <input
-        :id="elementId"
-        class="form-control datepicker-input"
-        :class="classes"
-        type="text"
-        :placeholder="placeholder"
-        :style="{width:width}"
-        @click="inputClick"
-        v-model="inputValue"
-      >
+      <input :id="elementId" class="form-control datepicker-input" :class="classes" type="text" :placeholder="placeholder"
+        :style="{ width: width }" @click="inputClick" v-model="inputValue">
       <button v-if="clearButton && value" type="button" class="close" @click="inputValue = ''">
         <span>&times;</span>
       </button>
     </template>
-    <div
-      class="datepicker-wrapper"
-      ref="popup"
-      v-transfer="transfer"
-      v-show="isWrapperShow"
-      :style="paneStyle"
-    >
-      <div
-        class="datepicker-popup"
-        @mouseover="handleMouseOver"
-        @mouseout="handleMouseOver"
-        v-show="displayDayView"
-      >
+    <div :class="{
+      'datepicker-wrapper': true,
+      'datepicker': transfer
+    }" ref="popup" v-transfer="transfer" v-show="isWrapperShow" :style="paneStyle">
+      <div class="datepicker-popup" @mouseover="handleMouseOver" @mouseout="handleMouseOver" v-show="displayDayView">
         <div class="datepicker-ctrl">
-          <span
-            class="datepicker-preBtn calendaricon-angle-left"
-            aria-hidden="true"
-            @click="preNextMonthClick(0)"
-          ></span>
-          <span
-            class="datepicker-nextBtn calendaricon-angle-right"
-            aria-hidden="true"
-            @click="preNextMonthClick(1)"
-          ></span>
+          <span class="datepicker-preBtn calendaricon-angle-left" aria-hidden="true" @click="preNextMonthClick(0)"></span>
+          <span class="datepicker-nextBtn calendaricon-angle-right" aria-hidden="true"
+            @click="preNextMonthClick(1)"></span>
         </div>
-        <template v-for="(p, pan) in pane">
-          <div class="datepicker-inner" :key="pan">
+        <template v-for="(p, pan) in pane" :key="pan">
+          <div class="datepicker-inner">
             <div class="datepicker-body">
-              <p @click="switchMonthView">{{stringifyDayHeader(currDate, pan)}}</p>
+              <p @click="switchMonthView">{{ stringifyDayHeader(currDate, pan) }}</p>
               <div class="datepicker-weekRange">
-                <span v-for="(w, index) in daysOfWeek" :key="index">{{w}}</span>
+                <span v-for="(w, index) in daysOfWeek" :key="index">{{ w }}</span>
               </div>
               <div class="datepicker-dateRange">
-                <span
-                  v-for="(d, k) in dateRange[pan]"
-                  :key="k"
-                  class="day-cell"
-                  :class="getItemClasses(d)"
-                  :data-date="stringify(d.date)"
-                  @click="daySelect(d, $event)"
-                >
-                  <div>
-                    <template
-                      v-if="d.sclass !== 'datepicker-item-gray'"
-                    >{{getSpecailDay(d.date) || d.text}}</template>
-                    <template v-else>{{d.text}}</template>
-                    <div v-if="d.sclass !== 'datepicker-item-gray'">
-                      <slot :name="stringify(d.date)"></slot>
+                <template v-if="dateRange[pan]">
+                  <span v-for="(d, k) in dateRange[pan]" :key="k" class="day-cell" :class="getItemClasses(d)" :data-date="stringify(d.date)"
+                    @click="daySelect(d, $event)">
+                    <div>
+                      <template v-if="d.sclass !== 'datepicker-item-gray'">{{ getSpecailDay(d.date) || d.text
+                      }}</template>
+                      <template v-else>{{ d.text }}</template>
+                      <div v-if="d.sclass !== 'datepicker-item-gray'">
+                        <slot :name="stringify(d.date)"></slot>
+                      </div>
                     </div>
-                  </div>
-                </span>
+                  </span>
+                </template>
               </div>
             </div>
           </div>
@@ -73,30 +45,21 @@
       </div>
       <div class="datepicker-popup" v-if="!showDateOnly" v-show="displayMonthView">
         <div class="datepicker-ctrl">
-          <span
-            class="datepicker-preBtn calendaricon-angle-left"
-            aria-hidden="true"
-            @click="preNextYearClick(0)"
-          ></span>
-          <span
-            class="datepicker-nextBtn calendaricon-angle-right"
-            aria-hidden="true"
-            @click="preNextYearClick(1)"
-          ></span>
+          <span class="datepicker-preBtn calendaricon-angle-left" aria-hidden="true" @click="preNextYearClick(0)"></span>
+          <span class="datepicker-nextBtn calendaricon-angle-right" aria-hidden="true"
+            @click="preNextYearClick(1)"></span>
         </div>
-        <template v-for="(p, pan) in pane">
-          <div class="datepicker-inner" :key="pan">
+        <template v-for="(p, pan) in pane" :key="pan">
+          <div class="datepicker-inner">
             <div class="datepicker-body">
-              <p @click="switchDecadeView">{{stringifyYearHeader(currDate, pan)}}</p>
+              <p @click="switchDecadeView">{{ stringifyYearHeader(currDate, pan) }}</p>
               <div class="datepicker-monthRange">
-                <template v-for="(m, $index) in text.months">
-                  <span
-                    :key="$index"
-                    :class="{'datepicker-dateRange-item-active':
-                      (text.months[parse(value).getMonth()]  === m) &&
-                      currDate.getFullYear() + pan === parse(value).getFullYear()}"
-                    @click="monthSelect(stringifyYearHeader(currDate, pan), $index)"
-                  >{{m.substr(0,3)}}</span>
+                <template v-if="text.months">
+                  <span :key="$index" v-for="(m, $index) in text.months" :class="{
+                    'datepicker-dateRange-item-active':
+                      (text.months[parse(modelValue).getMonth()] === m) &&
+                      currDate.getFullYear() + pan === parse(modelValue).getFullYear()
+                  }" @click="monthSelect(stringifyYearHeader(currDate, pan), $index)">{{ m.substr(0, 3) }}</span>
                 </template>
               </div>
             </div>
@@ -105,29 +68,21 @@
       </div>
       <div class="datepicker-popup" v-if="!showDateOnly" v-show="displayYearView">
         <div class="datepicker-ctrl">
-          <span
-            class="datepicker-preBtn calendaricon-angle-left"
-            aria-hidden="true"
-            @click="preNextDecadeClick(0)"
-          ></span>
-          <span
-            class="datepicker-nextBtn calendaricon-angle-right"
-            aria-hidden="true"
-            @click="preNextDecadeClick(1)"
-          ></span>
+          <span class="datepicker-preBtn calendaricon-angle-left" aria-hidden="true"
+            @click="preNextDecadeClick(0)"></span>
+          <span class="datepicker-nextBtn calendaricon-angle-right" aria-hidden="true"
+            @click="preNextDecadeClick(1)"></span>
         </div>
-        <template v-for="(p, pan) in pane">
-          <div class="datepicker-inner" :key="pan">
+        <template v-for="(p, pan) in pane" :key="pan">
+          <div class="datepicker-inner">
             <div class="datepicker-body">
-              <p>{{stringifyDecadeHeader(currDate, pan)}}</p>
+              <p>{{ stringifyDecadeHeader(currDate, pan) }}</p>
               <div class="datepicker-monthRange decadeRange">
-                <template v-for="(decade, di) in decadeRange[pan]">
-                  <span
-                    :key="di"
-                    :class="{'datepicker-dateRange-item-active':
-                      parse(inputValue).getFullYear() === decade.text}"
-                    @click.stop="yearSelect(decade.text)"
-                  >{{decade.text}}</span>
+                <template v-if="decadeRange[pan]">
+                  <span v-for="(decade, di) in decadeRange[pan]" :key="di" :class="{
+                    'datepicker-dateRange-item-active':
+                      parse(inputValue).getFullYear() === decade.text
+                  }" @click.stop="yearSelect(decade.text)">{{ decade.text }}</span>
                 </template>
               </div>
             </div>
@@ -139,88 +94,11 @@
 </template>
 
 <script>
-function getTarget(node) {
-  if (node === void 0) {
-    node = document.body;
-  }
-  if (node === true) {
-    return document.body;
-  }
-  return node instanceof window.Node ? node : document.querySelector(node);
-}
-
-const transfer = {
-  inserted(el, binding) {
-    const value = binding.value;
-    if (value === false) return false;
-    el.className = el.className ? el.className + " v-transfer" : "v-transfer";
-    const parentNode = el.parentNode;
-    if (!parentNode) return;
-    const home = document.createComment("");
-    let hasMovedOut = false;
-    if (value !== false) {
-      parentNode.replaceChild(home, el); // moving out, el is no longer in the document
-      getTarget(value).appendChild(el); // moving into new place
-      hasMovedOut = true;
-    }
-    if (!el.__transferDomData) {
-      el.__transferDomData = {
-        parentNode: parentNode,
-        home: home,
-        target: getTarget(value),
-        hasMovedOut: hasMovedOut
-      };
-    }
-  },
-  componentUpdated(el, binding) {
-    const value = binding.value;
-    if (value === false) return false;
-    // need to make sure children are done updating (vs. `update`)
-    const ref$1 = el.__transferDomData;
-    if (!ref$1) return;
-    // homes.get(el)
-    const parentNode = ref$1.parentNode;
-    const home = ref$1.home;
-    const hasMovedOut = ref$1.hasMovedOut; // recall where home is
-
-    if (!hasMovedOut && value) {
-      // remove from document and leave placeholder
-      parentNode.replaceChild(home, el);
-      // append to target
-      getTarget(value).appendChild(el);
-      el.__transferDomData = Object.assign({}, el.__transferDomData, {
-        hasMovedOut: true,
-        target: getTarget(value)
-      });
-    } else if (hasMovedOut && value === false) {
-      // previously moved, coming back home
-      parentNode.replaceChild(el, home);
-      el.__transferDomData = Object.assign({}, el.__transferDomData, {
-        hasMovedOut: false,
-        target: getTarget(value)
-      });
-    } else if (value) {
-      // already moved, going somewhere else
-      getTarget(value).appendChild(el);
-    }
-  },
-  unbind(el, binding) {
-    const value = binding.value;
-    if (value === false) return false;
-    el.className = el.className.replace("v-transfer", "");
-    const ref$1 = el.__transferDomData;
-    if (!ref$1) return;
-    if (el.__transferDomData.hasMovedOut === true) {
-      el.__transferDomData.parentNode &&
-        el.__transferDomData.parentNode.appendChild(el);
-    }
-    el.__transferDomData = null;
-  }
-};
+import transfer from './directives/transfer'
 export default {
   name: "calendar",
   props: {
-    value: {
+    modelValue: {
       type: [String, Date]
     },
     format: {
@@ -269,11 +147,11 @@ export default {
     },
     onDayClick: {
       type: Function,
-      default() {}
+      default() { }
     },
     changePane: {
       type: Function,
-      default() {}
+      default() { }
     },
     specialDays: {
       type: Object,
@@ -284,17 +162,16 @@ export default {
     rangeBus: {
       type: Function,
       default() {
-        // return new Vue()
       }
     },
     rangeStatus: {
       type: Number,
       default: 0
     },
-    onDrawDate: {
-      type: Function,
-      default() {}
-    },
+    // onDrawDate: {
+    //   type: Function,
+    //   default() { }
+    // },
     maxDate: {
       type: String
     },
@@ -311,6 +188,7 @@ export default {
     },
     elementId: [String]
   },
+  emits: ["update:modelValue", "childCreated", "drawDate"],
   directives: {
     transfer
   },
@@ -318,16 +196,16 @@ export default {
     this._blur = e => {
       if (this.transfer) {
         if (
-          !this.$el.contains(e.target) &&
-          !this.$refs.popup.contains(e.target) &&
+          !this.$el?.contains(e.target) &&
+          !this.$refs.popup?.contains(e.target) &&
           this.hasInput
         )
           this.close();
       } else {
-        if (!this.$el.contains(e.target) && this.hasInput) this.close();
+        if (!this.$el?.contains(e.target) && this.hasInput) this.close();
       }
     };
-    this.$emit("child-created", this);
+    this.$emit("childCreated", this);
     // this.inputValue = this.value
     // this.dateFormat = this.format
     this.currDate = this.parse(this.inputValue) || this.parse(new Date());
@@ -340,6 +218,7 @@ export default {
     }
     if (this.rangeStatus) {
       this.eventbus = this.rangeBus();
+      console.log(this.eventbus);
       if (typeof this.eventbus === "object" && !this.eventbus.$on) {
         console.warn("Calendar rangeBus doesn't exist");
         this.rangeStatus = 0;
@@ -351,14 +230,14 @@ export default {
         this.currDate = date;
         this.inputValue = this.stringify(this.currDate);
       };
-      this.eventbus.$on("calendar-rangestart", this._updateRangeStart);
+      this.eventbus.$on("calendarRangeStart", this._updateRangeStart);
     }
     document.addEventListener("click", this._blur);
   },
   beforeDestroy() {
     document.removeEventListener("click", this._blur);
     if (this.rangeStatus === 2) {
-      this.eventbus.$off("calendar-rangestart", this._updateRangeStart);
+      this.eventbus.$off("calendarRangeStart", this._updateRangeStart);
     }
   },
   data() {
@@ -382,7 +261,7 @@ export default {
     currDate() {
       this.getDateRange();
     },
-    value(v) {
+    modelValue(v) {
       this.inputValue = v instanceof Date ? this.stringify(v) : v;
     }
   },
@@ -407,17 +286,17 @@ export default {
     },
     inputValue: {
       get() {
-        if (this.value instanceof Date) {
-          return this.stringify(this.value);
+        if (this.modelValue instanceof Date) {
+          return this.stringify(this.modelValue);
         } else {
-          return this.value;
+          return this.modelValue;
         }
       },
       set(v) {
-        this.$emit("input", v);
+        this.$emit("update:modelValue", v);
         this.currDate = this.parse(v);
         if (this.rangeStatus === 1 && this.eventbus) {
-          this.eventbus.$emit("calendar-rangestart", this.currDate);
+          this.eventbus.$emit("calendarRangeStart", this.currDate);
         }
       }
     },
@@ -469,8 +348,7 @@ export default {
           e.allowSelect = false;
         }
       }
-      this.$emit("drawdate", e);
-      this.onDrawDate(e);
+      this.$emit("drawDate", e);
     },
     getItemClasses(d) {
       d.allowSelect = true;
@@ -527,7 +405,9 @@ export default {
       return window.VueCalendarLang ? window.VueCalendarLang(lang) : text;
     },
     close() {
-      this.displayDayView = this.displayMonthView = this.displayYearView = false;
+      this.displayDayView = false;
+      this.displayMonthView = false;
+      this.displayYearView = false;
     },
     inputClick() {
       this.currDate = this.parse(this.inputValue) || this.parse(new Date());
@@ -554,7 +434,7 @@ export default {
     },
     updatePaneStyle() {
       if (!(this.displayMonthView || this.displayYearView)) {
-        this.$nextTick(function() {
+        this.$nextTick(() => {
           let { left, top } = this.getElOffset(this.$el);
           let offsetLeft = this.$el.offsetLeft;
           let elWidth = this.$el.offsetWidth;
@@ -562,26 +442,29 @@ export default {
           let offsetWidth = this.$refs.popup.querySelector(".datepicker-inner")
             .offsetWidth;
           let popWidth = this.pane * offsetWidth + this.borderWidth; // add border
-          this.paneStyle.width = popWidth + "px";
+          const paneStyle = {};
+          paneStyle.width = popWidth + "px";
+
           if (this.hasInput) {
             if (this.transfer) {
-              this.paneStyle.left = left + "px";
-              this.paneStyle.top = offsetTop + "px";
+              paneStyle.left = left + "px";
+              paneStyle.top = offsetTop + "px";
               if (popWidth + left > document.documentElement.clientWidth) {
-                this.paneStyle.left = left + elWidth - popWidth + "px";
+                paneStyle.left = left + elWidth - popWidth + "px";
               }
             } else {
               if (
                 popWidth + offsetLeft >
                 document.documentElement.clientWidth
               ) {
-                this.paneStyle.right = "0px";
+                paneStyle.right = "0px";
               }
             }
           } else {
-            this.paneStyle.position = "initial";
+            paneStyle.position = "initial";
           }
-          this.$forceUpdate();
+          this.paneStyle = paneStyle;
+          // this.$forceUpdate();
         });
       }
     },
@@ -753,8 +636,8 @@ export default {
       return wkday >= firstDay ? wkday - firstDay : 7 - firstDay + wkday;
     },
     getDateRange() {
-      this.dateRange = [];
-      this.decadeRange = [];
+      const dateRange = [];
+      const decadeRange = [];
       for (let p = 0; p < this.pane; p++) {
         let currMonth = this.siblingsMonth(this.currDate, p);
         let time = {
@@ -762,15 +645,15 @@ export default {
           month: currMonth.getMonth()
         };
         let yearStr = time.year.toString();
-        this.decadeRange[p] = [];
+        decadeRange[p] = [];
         let firstYearOfDecade =
           yearStr.substring(0, yearStr.length - 1) + 0 - 1;
         for (let i = 0; i < 12; i++) {
-          this.decadeRange[p].push({
+          decadeRange[p].push({
             text: firstYearOfDecade + i + p * 10
           });
         }
-        this.dateRange[p] = [];
+        dateRange[p] = [];
         const currMonthFirstDay = new Date(time.year, time.month, 1);
         let firstDayWeek = this.prefixLen(currMonthFirstDay);
         const dayCount = this.getDayCount(time.year, time.month);
@@ -782,7 +665,7 @@ export default {
           );
           for (let i = 0; i < firstDayWeek; i++) {
             const dayText = prevMonthDayCount - firstDayWeek + i + 1;
-            this.dateRange[p].push({
+            dateRange[p].push({
               text: dayText,
               date: new Date(preMonth.year, preMonth.month, dayText),
               sclass: "datepicker-item-gray"
@@ -809,17 +692,17 @@ export default {
               }
             }
           }
-          this.dateRange[p].push({
+          dateRange[p].push({
             text: i,
             date: date,
             sclass: sclass
           });
         }
-        if (this.dateRange[p].length < 42) {
-          const nextMonthNeed = 42 - this.dateRange[p].length;
+        if (dateRange[p].length < 42) {
+          const nextMonthNeed = 42 - dateRange[p].length;
           const nextMonth = this.getYearMonth(time.year, time.month + 1);
           for (let i = 1; i <= nextMonthNeed; i++) {
-            this.dateRange[p].push({
+            dateRange[p].push({
               text: i,
               date: new Date(nextMonth.year, nextMonth.month, i),
               sclass: "datepicker-item-gray"
@@ -827,14 +710,16 @@ export default {
           }
         }
       }
+      this.dateRange = dateRange;
+      this.decadeRange = decadeRange;
     }
   }
 };
 </script>
 
 <style lang="css">/*!
- * vue2-calendar v2.2.5
- * (c) 2019 Terry <gidcai@gmail.com>
+ * vue3-calendar v3.0.1
+ * (c) 2023 Terry <gidcai@gmail.com>
  * https://github.com/icai/vue2-calendar#readme
  */
 .datepicker {
@@ -1023,38 +908,25 @@ input.datepicker-input.with-reset-button {
 }
 .datepicker-preBtn {
   left: 2px;
-  font-size: 18px;
+  width: 20px !important;
+  height: 20px !important;
+  background-repeat: no-repeat;
+  background-size: 18px;
 }
 .datepicker-nextBtn {
   right: 2px;
-  font-size: 18px;
+  width: 20px !important;
+  height: 20px !important;
+  background-repeat: no-repeat;
+  background-size: 18px;
 }
-@font-face {
-  font-family: "calendar";
-  src: url(data:application/vnd.ms-fontobject;base64,rAUAAAQFAAABAAIAAAAAAAAAAAAAAAAAAAABAJABAAAAAExQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAnWMjhgAAAAAAAAAAAAAAAAAAAAAAABAAYwBhAGwAZQBuAGQAYQByAAAADgBSAGUAZwB1AGwAYQByAAAAFgBWAGUAcgBzAGkAbwBuACAAMQAuADAAAAAQAGMAYQBsAGUAbgBkAGEAcgAAAAAAAAEAAAALAIAAAwAwT1MvMg+dCoQAAAC8AAAAYGNtYXAPUuKQAAABHAAAAFRnYXNwAAAAEAAAAXAAAAAIZ2x5ZrVRJOYAAAF4AAABNGhlYWQQzSHDAAACrAAAADZoaGVhBJsDOwAAAuQAAAAkaG10eAbbACEAAAMIAAAAGGxvY2EAwgBwAAADIAAAAA5tYXhwAAgAJwAAAzAAAAAgbmFtZWq4IzgAAANQAAABknBvc3QAAwAAAAAE5AAAACAAAwFuAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADxBQMz/zQAzAMzAMwAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAOAAAAAoACAACAAIAAQAg8QX//f//AAAAAAAg8QT//f//AAH/4w8AAAMAAQAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAABABr/4wFmAh0AJAAAARQGDwEXHgEVFAYPAQ4BIyImJwEuATU0NjcBPgEzMhYfAR4BFQFmAwLh4QIDAwIdAwcDBAcC/vUCAwMCAQsCBwQDBwMdAgMB7gQHAuHhAgcEAwcDHAMDAwMBCgIIAwMIAgEKAwMDAxwDBgQAAAAAAQAH/+MBVAIdACQAAAEUBgcBDgEjIiYvAS4BNTQ2PwEnLgE1NDY/AT4BMzIWFwEeARUBVAMD/vYDBwMEBwIdAgQEAuHhAgQEAh0CBwQDBwMBCgMDAQADCAL+9gMDAwMcAwYEBAcC4eECBwQDBwMcAwMDA/72AggDAAAAAAEAAAABAACGI2OdXw889QALBAAAAAAA2CPvYwAAAADYI+9jAAD/4wFmAh0AAAAIAAIAAAAAAAAAAQAAAzP/NAAABAAAAAAAAWYAAQAAAAAAAAAAAAAAAAAAAAYEAAAAAAAAAAAAAAAAAAAAAYAAGgFbAAcAAAAAAAoAFAAeAFwAmgAAAAEAAAAGACUAAQAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAOAK4AAQAAAAAAAQAIAAAAAQAAAAAAAgAHAGkAAQAAAAAAAwAIADkAAQAAAAAABAAIAH4AAQAAAAAABQALABgAAQAAAAAABgAIAFEAAQAAAAAACgAaAJYAAwABBAkAAQAQAAgAAwABBAkAAgAOAHAAAwABBAkAAwAQAEEAAwABBAkABAAQAIYAAwABBAkABQAWACMAAwABBAkABgAQAFkAAwABBAkACgA0ALBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJWZXJzaW9uIDEuMABWAGUAcgBzAGkAbwBuACAAMQAuADBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJSZWd1bGFyAFIAZQBnAHUAbABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJGb250IGdlbmVyYXRlZCBieSBJY29Nb29uLgBGAG8AbgB0ACAAZwBlAG4AZQByAGEAdABlAGQAIABiAHkAIABJAGMAbwBNAG8AbwBuAC4AAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA);
-  src: url(data:application/vnd.ms-fontobject;base64,rAUAAAQFAAABAAIAAAAAAAAAAAAAAAAAAAABAJABAAAAAExQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAnWMjhgAAAAAAAAAAAAAAAAAAAAAAABAAYwBhAGwAZQBuAGQAYQByAAAADgBSAGUAZwB1AGwAYQByAAAAFgBWAGUAcgBzAGkAbwBuACAAMQAuADAAAAAQAGMAYQBsAGUAbgBkAGEAcgAAAAAAAAEAAAALAIAAAwAwT1MvMg+dCoQAAAC8AAAAYGNtYXAPUuKQAAABHAAAAFRnYXNwAAAAEAAAAXAAAAAIZ2x5ZrVRJOYAAAF4AAABNGhlYWQQzSHDAAACrAAAADZoaGVhBJsDOwAAAuQAAAAkaG10eAbbACEAAAMIAAAAGGxvY2EAwgBwAAADIAAAAA5tYXhwAAgAJwAAAzAAAAAgbmFtZWq4IzgAAANQAAABknBvc3QAAwAAAAAE5AAAACAAAwFuAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADxBQMz/zQAzAMzAMwAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAOAAAAAoACAACAAIAAQAg8QX//f//AAAAAAAg8QT//f//AAH/4w8AAAMAAQAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAABABr/4wFmAh0AJAAAARQGDwEXHgEVFAYPAQ4BIyImJwEuATU0NjcBPgEzMhYfAR4BFQFmAwLh4QIDAwIdAwcDBAcC/vUCAwMCAQsCBwQDBwMdAgMB7gQHAuHhAgcEAwcDHAMDAwMBCgIIAwMIAgEKAwMDAxwDBgQAAAAAAQAH/+MBVAIdACQAAAEUBgcBDgEjIiYvAS4BNTQ2PwEnLgE1NDY/AT4BMzIWFwEeARUBVAMD/vYDBwMEBwIdAgQEAuHhAgQEAh0CBwQDBwMBCgMDAQADCAL+9gMDAwMcAwYEBAcC4eECBwQDBwMcAwMDA/72AggDAAAAAAEAAAABAACGI2OdXw889QALBAAAAAAA2CPvYwAAAADYI+9jAAD/4wFmAh0AAAAIAAIAAAAAAAAAAQAAAzP/NAAABAAAAAAAAWYAAQAAAAAAAAAAAAAAAAAAAAYEAAAAAAAAAAAAAAAAAAAAAYAAGgFbAAcAAAAAAAoAFAAeAFwAmgAAAAEAAAAGACUAAQAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAOAK4AAQAAAAAAAQAIAAAAAQAAAAAAAgAHAGkAAQAAAAAAAwAIADkAAQAAAAAABAAIAH4AAQAAAAAABQALABgAAQAAAAAABgAIAFEAAQAAAAAACgAaAJYAAwABBAkAAQAQAAgAAwABBAkAAgAOAHAAAwABBAkAAwAQAEEAAwABBAkABAAQAIYAAwABBAkABQAWACMAAwABBAkABgAQAFkAAwABBAkACgA0ALBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJWZXJzaW9uIDEuMABWAGUAcgBzAGkAbwBuACAAMQAuADBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJSZWd1bGFyAFIAZQBnAHUAbABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJGb250IGdlbmVyYXRlZCBieSBJY29Nb29uLgBGAG8AbgB0ACAAZwBlAG4AZQByAGEAdABlAGQAIABiAHkAIABJAGMAbwBNAG8AbwBuAC4AAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA#iefix) format("embedded-opentype"), url(data:font/ttf;base64,AAEAAAALAIAAAwAwT1MvMg+dCoQAAAC8AAAAYGNtYXAPUuKQAAABHAAAAFRnYXNwAAAAEAAAAXAAAAAIZ2x5ZrVRJOYAAAF4AAABNGhlYWQQzSHDAAACrAAAADZoaGVhBJsDOwAAAuQAAAAkaG10eAbbACEAAAMIAAAAGGxvY2EAwgBwAAADIAAAAA5tYXhwAAgAJwAAAzAAAAAgbmFtZWq4IzgAAANQAAABknBvc3QAAwAAAAAE5AAAACAAAwFuAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADxBQMz/zQAzAMzAMwAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAOAAAAAoACAACAAIAAQAg8QX//f//AAAAAAAg8QT//f//AAH/4w8AAAMAAQAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAABABr/4wFmAh0AJAAAARQGDwEXHgEVFAYPAQ4BIyImJwEuATU0NjcBPgEzMhYfAR4BFQFmAwLh4QIDAwIdAwcDBAcC/vUCAwMCAQsCBwQDBwMdAgMB7gQHAuHhAgcEAwcDHAMDAwMBCgIIAwMIAgEKAwMDAxwDBgQAAAAAAQAH/+MBVAIdACQAAAEUBgcBDgEjIiYvAS4BNTQ2PwEnLgE1NDY/AT4BMzIWFwEeARUBVAMD/vYDBwMEBwIdAgQEAuHhAgQEAh0CBwQDBwMBCgMDAQADCAL+9gMDAwMcAwYEBAcC4eECBwQDBwMcAwMDA/72AggDAAAAAAEAAAABAACGI2OdXw889QALBAAAAAAA2CPvYwAAAADYI+9jAAD/4wFmAh0AAAAIAAIAAAAAAAAAAQAAAzP/NAAABAAAAAAAAWYAAQAAAAAAAAAAAAAAAAAAAAYEAAAAAAAAAAAAAAAAAAAAAYAAGgFbAAcAAAAAAAoAFAAeAFwAmgAAAAEAAAAGACUAAQAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAOAK4AAQAAAAAAAQAIAAAAAQAAAAAAAgAHAGkAAQAAAAAAAwAIADkAAQAAAAAABAAIAH4AAQAAAAAABQALABgAAQAAAAAABgAIAFEAAQAAAAAACgAaAJYAAwABBAkAAQAQAAgAAwABBAkAAgAOAHAAAwABBAkAAwAQAEEAAwABBAkABAAQAIYAAwABBAkABQAWACMAAwABBAkABgAQAFkAAwABBAkACgA0ALBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJWZXJzaW9uIDEuMABWAGUAcgBzAGkAbwBuACAAMQAuADBjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJSZWd1bGFyAFIAZQBnAHUAbABhAHJjYWxlbmRhcgBjAGEAbABlAG4AZABhAHJGb250IGdlbmVyYXRlZCBieSBJY29Nb29uLgBGAG8AbgB0ACAAZwBlAG4AZQByAGEAdABlAGQAIABiAHkAIABJAGMAbwBNAG8AbwBuAC4AAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA) format("truetype"), url(data:font/woff;base64,d09GRgABAAAAAAVQAAsAAAAABQQAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABPUy8yAAABCAAAAGAAAABgD50KhGNtYXAAAAFoAAAAVAAAAFQPUuKQZ2FzcAAAAbwAAAAIAAAACAAAABBnbHlmAAABxAAAATQAAAE0tVEk5mhlYWQAAAL4AAAANgAAADYQzSHDaGhlYQAAAzAAAAAkAAAAJASbAztobXR4AAADVAAAABgAAAAYBtsAIWxvY2EAAANsAAAADgAAAA4AwgBwbWF4cAAAA3wAAAAgAAAAIAAIACduYW1lAAADnAAAAZIAAAGSargjOHBvc3QAAAUwAAAAIAAAACAAAwAAAAMBbgGQAAUAAAKZAswAAACPApkCzAAAAesAMwEJAAAAAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAQAAA8QUDM/80AMwDMwDMAAAAAQAAAAAAAAAAAAAAIAAAAAAAAwAAAAMAAAAcAAEAAwAAABwAAwABAAAAHAAEADgAAAAKAAgAAgACAAEAIPEF//3//wAAAAAAIPEE//3//wAB/+MPAAADAAEAAAAAAAAAAAAAAAEAAf//AA8AAQAAAAAAAAAAAAIAADc5AQAAAAABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAa/+MBZgIdACQAAAEUBg8BFx4BFRQGDwEOASMiJicBLgE1NDY3AT4BMzIWHwEeARUBZgMC4eECAwMCHQMHAwQHAv71AgMDAgELAgcEAwcDHQIDAe4EBwLh4QIHBAMHAxwDAwMDAQoCCAMDCAIBCgMDAwMcAwYEAAAAAAEAB//jAVQCHQAkAAABFAYHAQ4BIyImLwEuATU0Nj8BJy4BNTQ2PwE+ATMyFhcBHgEVAVQDA/72AwcDBAcCHQIEBALh4QIEBAIdAgcEAwcDAQoDAwEAAwgC/vYDAwMDHAMGBAQHAuHhAgcEAwcDHAMDAwP+9gIIAwAAAAABAAAAAQAAhiNjnV8PPPUACwQAAAAAANgj72MAAAAA2CPvYwAA/+MBZgIdAAAACAACAAAAAAAAAAEAAAMz/zQAAAQAAAAAAAFmAAEAAAAAAAAAAAAAAAAAAAAGBAAAAAAAAAAAAAAAAAAAAAGAABoBWwAHAAAAAAAKABQAHgBcAJoAAAABAAAABgAlAAEAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAADgCuAAEAAAAAAAEACAAAAAEAAAAAAAIABwBpAAEAAAAAAAMACAA5AAEAAAAAAAQACAB+AAEAAAAAAAUACwAYAAEAAAAAAAYACABRAAEAAAAAAAoAGgCWAAMAAQQJAAEAEAAIAAMAAQQJAAIADgBwAAMAAQQJAAMAEABBAAMAAQQJAAQAEACGAAMAAQQJAAUAFgAjAAMAAQQJAAYAEABZAAMAAQQJAAoANACwY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByVmVyc2lvbiAxLjAAVgBlAHIAcwBpAG8AbgAgADEALgAwY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByUmVndWxhcgBSAGUAZwB1AGwAYQByY2FsZW5kYXIAYwBhAGwAZQBuAGQAYQByRm9udCBnZW5lcmF0ZWQgYnkgSWNvTW9vbi4ARgBvAG4AdAAgAGcAZQBuAGUAcgBhAHQAZQBkACAAYgB5ACAASQBjAG8ATQBvAG8AbgAuAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==) format("woff"), url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiID4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8bWV0YWRhdGE+R2VuZXJhdGVkIGJ5IEljb01vb248L21ldGFkYXRhPgo8ZGVmcz4KPGZvbnQgaWQ9ImNhbGVuZGFyIiBob3Jpei1hZHYteD0iMTAyNCI+Cjxmb250LWZhY2UgdW5pdHMtcGVyLWVtPSIxMDI0IiBhc2NlbnQ9IjgxOS4yIiBkZXNjZW50PSItMjA0LjgiIC8+CjxtaXNzaW5nLWdseXBoIGhvcml6LWFkdi14PSIxMDI0IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4MjA7IiBob3Jpei1hZHYteD0iMCIgZD0iIiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZjEwNDsiIGdseXBoLW5hbWU9ImFuZ2xlLWxlZnQiIGhvcml6LWFkdi14PSIzODQiIGQ9Ik0zNTguMjg2IDQ5My43MTRjMC00LjU3MS0yLjI4Ni05LjcxNC01LjcxNC0xMy4xNDNsLTIyNC41NzEtMjI0LjU3MSAyMjQuNTcxLTIyNC41NzFjMy40MjktMy40MjkgNS43MTQtOC41NzEgNS43MTQtMTMuMTQzcy0yLjI4Ni05LjcxNC01LjcxNC0xMy4xNDNsLTI4LjU3MS0yOC41NzFjLTMuNDI5LTMuNDI5LTguNTcxLTUuNzE0LTEzLjE0My01LjcxNHMtOS43MTQgMi4yODYtMTMuMTQzIDUuNzE0bC0yNjYuMjg2IDI2Ni4yODZjLTMuNDI5IDMuNDI5LTUuNzE0IDguNTcxLTUuNzE0IDEzLjE0M3MyLjI4NiA5LjcxNCA1LjcxNCAxMy4xNDNsMjY2LjI4NiAyNjYuMjg2YzMuNDI5IDMuNDI5IDguNTcxIDUuNzE0IDEzLjE0MyA1LjcxNHM5LjcxNC0yLjI4NiAxMy4xNDMtNS43MTRsMjguNTcxLTI4LjU3MWMzLjQyOS0zLjQyOSA1LjcxNC04IDUuNzE0LTEzLjE0M3oiIC8+CjxnbHlwaCB1bmljb2RlPSImI3hmMTA1OyIgZ2x5cGgtbmFtZT0iYW5nbGUtcmlnaHQiIGhvcml6LWFkdi14PSIzNDciIGQ9Ik0zNDAgMjU2YzAtNC41NzEtMi4yODYtOS43MTQtNS43MTQtMTMuMTQzbC0yNjYuMjg2LTI2Ni4yODZjLTMuNDI5LTMuNDI5LTguNTcxLTUuNzE0LTEzLjE0My01LjcxNHMtOS43MTQgMi4yODYtMTMuMTQzIDUuNzE0bC0yOC41NzEgMjguNTcxYy0zLjQyOSAzLjQyOS01LjcxNCA4LTUuNzE0IDEzLjE0MyAwIDQuNTcxIDIuMjg2IDkuNzE0IDUuNzE0IDEzLjE0M2wyMjQuNTcxIDIyNC41NzEtMjI0LjU3MSAyMjQuNTcxYy0zLjQyOSAzLjQyOS01LjcxNCA4LjU3MS01LjcxNCAxMy4xNDNzMi4yODYgOS43MTQgNS43MTQgMTMuMTQzbDI4LjU3MSAyOC41NzFjMy40MjkgMy40MjkgOC41NzEgNS43MTQgMTMuMTQzIDUuNzE0czkuNzE0LTIuMjg2IDEzLjE0My01LjcxNGwyNjYuMjg2LTI2Ni4yODZjMy40MjktMy40MjkgNS43MTQtOC41NzEgNS43MTQtMTMuMTQzeiIgLz4KPC9mb250PjwvZGVmcz48L3N2Zz4=#calendar) format("svg");
-  font-weight: normal;
-  font-style: normal;
+.calendaricon-angle-left {
+  top: 10px;
+  background-image: url(data:image/svg+xml;base64,PCEtLSBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAtLT4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMjQiIGhlaWdodD0iMTAyNCIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCI+Cjx0aXRsZT48L3RpdGxlPgo8ZyBpZD0iaWNvbW9vbi1pZ25vcmUiPgo8L2c+CjxwYXRoIGQ9Ik03MTcuMjc2IDIxOC41NTFjMCA1LjY1NC0yLjgyOCAxMS45OS03LjA2MiAxNi4yMTNsLTI3Ny4yMTMgMjc3LjIxMyAyNzcuMjEzIDI3Ny4yMTNjNC4yNDQgNC4yNDQgNy4wNjIgMTAuNTgyIDcuMDYyIDE2LjIxM3MtMi44MjggMTEuOTktNy4wNjIgMTYuMjEzbC0zNS4yNjUgMzUuMjY1Yy00LjI0NCA0LjI0NC0xMC41ODIgNy4wNjItMTYuMjEzIDcuMDYycy0xMS45OS0yLjgyOC0xNi4yMTMtNy4wNjJsLTMyOC43MTQtMzI4LjcxNGMtNC4yNDQtNC4yNDQtNy4wNjItMTAuNTgyLTcuMDYyLTE2LjIxM3MyLjgyOC0xMS45OSA3LjA2Mi0xNi4yMTNsMzI4LjcxNC0zMjguNzE0YzQuMjQ0LTQuMjQ0IDEwLjU4Mi03LjA2MiAxNi4yMTMtNy4wNjJzMTEuOTkgMi44MjggMTYuMjEzIDcuMDYybDM1LjI2NSAzNS4yNjVjNC4yNDQgNC4yNDQgNy4wNjIgOS44NzggNy4wNjIgMTYuMjEzeiI+PC9wYXRoPgo8L3N2Zz4K);
 }
-[class^="calendaricon-"],
-[class*=" calendaricon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: "calendar" !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.calendaricon-angle-left:before {
-  content: "\F104";
-}
-.calendaricon-angle-right:before {
-  content: "\F105";
+.calendaricon-angle-right {
+  top: 10px;
+  background-image: url(data:image/svg+xml;base64,PCEtLSBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAtLT4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMjQiIGhlaWdodD0iMTAyNCIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCI+Cjx0aXRsZT48L3RpdGxlPgo8ZyBpZD0iaWNvbW9vbi1pZ25vcmUiPgo8L2c+CjxwYXRoIGQ9Ik03MTcuMjc0IDUxMmMwIDUuNjUtMi44MjUgMTEuOTg5LTcuMDYyIDE2LjIxOGwtMzI4LjcyOCAzMjguNzI4Yy00LjIzOCA0LjIzOC0xMC41ODIgNy4wNjItMTYuMjE4IDcuMDYycy0xMS45ODktMi44MjUtMTYuMjE4LTcuMDYybC0zNS4yNjQtMzUuMjY0Yy00LjIzOC00LjIzOC03LjA2Mi05Ljg3OC03LjA2Mi0xNi4yMTggMC01LjY1IDIuODI1LTExLjk4OSA3LjA2Mi0xNi4yMThsMjc3LjIyMi0yNzcuMjIyLTI3Ny4yMjItMjc3LjIyMmMtNC4yMzgtNC4yMzgtNy4wNjItMTAuNTgyLTcuMDYyLTE2LjIxOHMyLjgyNS0xMS45ODkgNy4wNjItMTYuMjE4bDM1LjI2NC0zNS4yNjRjNC4yMzgtNC4yMzggMTAuNTgyLTcuMDYyIDE2LjIxOC03LjA2MnMxMS45ODkgMi44MjUgMTYuMjE4IDcuMDYybDMyOC43MjggMzI4LjcyOGM0LjIzOCA0LjIzOCA3LjA2MiAxMC41ODIgNy4wNjIgMTYuMjE4eiI+PC9wYXRoPgo8L3N2Zz4K);
 }
 
 </style>

@@ -9,7 +9,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
     />
-    <script src="https://vuejs.org/js/vue.js"></script>
     <link rel="stylesheet" href="../lib/calendar.min.css" />
     <script src="../lib/calendar.js"></script>
   </head>
@@ -26,22 +25,26 @@
         ></calendar>
       </div>
     </div>
-    <script>
-      new Vue({
-        el: "#app",
-        data: function() {
-          return {
-            disabled: [],
-            value: new Date(),
-            format: "yyyy-MM-dd",
-            clear: true,
-            placeholder: "Start Date"
-          };
-        },
-        components: {
-          calendar: Calendar
-        }
-      });
+    <script type="module">
+      import { createApp } from 'https://unpkg.com/vue@3.4.0/dist/vue.esm-browser.js'
+      const app = createApp({
+          setup() {
+            const disabled = [0, 6];
+            const value = new Date();
+            const format = "yyyy-MM-dd";
+            const clear = true;
+            const placeholder = "Start Date";
+            return {
+              disabled,
+              value,
+              format,
+              clear,
+              placeholder
+            };
+          }
+        })
+        app.component('calendar', Calendar)
+        app.mount('#app')
     </script>
   </body>
 </html>

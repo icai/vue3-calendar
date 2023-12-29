@@ -29,17 +29,17 @@
     <img src="https://img.shields.io/github/contributors/icai/vue2-calendar.svg?style=flat-square" alt="">
   </a>
   <br>
-  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
-    <img src="https://img.shields.io/npm/l/vue3-slot-calendar.svg?style=flat-square" alt="">
+  <a href="https://www.npmjs.com/package/vue2-slot-calendar">
+    <img src="https://img.shields.io/npm/l/vue2-slot-calendar.svg?style=flat-square" alt="">
   </a>
-  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
-    <img src="https://img.shields.io/npm/v/vue3-slot-calendar.svg?style=flat-square" alt="">
+  <a href="https://www.npmjs.com/package/vue2-slot-calendar">
+    <img src="https://img.shields.io/npm/v/vue2-slot-calendar.svg?style=flat-square" alt="">
   </a>
-  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
-    <img src="https://img.shields.io/npm/dm/vue3-slot-calendar.svg?style=flat-square" alt="">
+  <a href="https://www.npmjs.com/package/vue2-slot-calendar">
+    <img src="https://img.shields.io/npm/dm/vue2-slot-calendar.svg?style=flat-square" alt="">
   </a>
-  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
-    <img src="https://img.shields.io/npm/dt/vue3-slot-calendar.svg?style=flat-square" alt="">
+  <a href="https://www.npmjs.com/package/vue2-slot-calendar">
+    <img src="https://img.shields.io/npm/dt/vue2-slot-calendar.svg?style=flat-square" alt="">
   </a>
   <br>
   <br>
@@ -56,9 +56,20 @@
 
 ## Install
 
+
+vue 2.x
+
 ```bash
-$ npm install vue3-slot-calendar
+$ pnpm i vue2-slot-calendar@2.x.x --save
 ```
+
+vue 3.x
+
+
+```bash
+$ pnpm i vue3-slot-calendar@3.x.x --save
+```
+
 
 ### Import using module
 
@@ -70,14 +81,9 @@ import 'vue3-slot-calendar/lib/calendar.min.css';
 import calendar from 'vue3-slot-calendar/lib/calendar';
 
 // vue file
-// in ES6 modules
 import Calendar from 'vue3-slot-calendar';
 
-// in CommonJS
-const Calendar = require('vue3-slot-calendar');
 
-// in Global variable
-const VueCalendar = Calendar;
 ```
 
 ### Import using script tag
@@ -126,6 +132,16 @@ currently, provide `window.VueCalendarLang` function hook to change your lang
   },
 ```
 
+### locale files
+
+```
+import cn from 'vue3-slot-calendar/lib/locale/zh-CN'
+import en from 'vue3-slot-calendar/lib/locale/en-US'
+import tw from 'vue3-slot-calendar/lib/locale/zh-TW'
+
+```
+
+
 
 ## Build Setup
 
@@ -154,7 +170,7 @@ npm test
 
 ```html
 <calendar
-  :value="value"
+  v-model="value"
   :disabled-days-of-week="disabled"
   :format="format"
   :clear-button="clear"
@@ -171,7 +187,7 @@ npm test
 ```html
 <calendar
   class="event-calendar"
-  :value="value"
+  v-model="value"
   :disabled-days-of-week="disabled"
   :format="format"
   :clear-button="clear"
@@ -191,7 +207,7 @@ npm test
 
 ```html
 <calendar
-  :value="value"
+  v-model="value"
   :disabled-days-of-week="disabled"
   :format="format"
   :clear-button="clear"
@@ -202,7 +218,7 @@ npm test
 ></calendar>
 
 <calendar
-  :value="value"
+  v-model="value"
   :disabled-days-of-week="disabled"
   :format="format"
   :clear-button="clear"
@@ -243,7 +259,8 @@ Options/Props
 
 | Name     | Description                      |
 | -------- | -------------------------------- |
-| drawdate | drawdate Event like `onDrawDate` |
+| drawDate | drawDate Event                   |
+
 
 ```javascript
   props: {
@@ -318,10 +335,10 @@ Options/Props
       type: Number,
       default: 0
     },
-    onDrawDate: {
-      type: Function,
-      default () {}
-    },
+    // onDrawDate: {
+    //   type: Function,
+    //   default () {}
+    // },
     maxDate: {
       type: String
     },
@@ -339,6 +356,42 @@ Options/Props
     elementId: [String]
   }
 ```
+
+### Methods
+
+
+
+#### eventbus
+```
+import { eventbus } from 'vue3-slot-calendar/lib/utils/event'
+
+eventbus.$on('drawDate', (date) => {
+  console.log(date)
+})
+
+```
+
+
+#### transfer directive
+
+transfer directive like `<Teleport>`
+
+```
+import transfer from 'vue3-slot-calendar/lib/directives/transfer'
+
+directives: {
+  transfer
+}
+```
+
+
+
+
+
+
+
+
+
 
 ## Credits
 

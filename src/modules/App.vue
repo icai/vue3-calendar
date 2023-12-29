@@ -2,7 +2,7 @@
 
   <div id="app">
     <logo></logo>
-    <!-- <calendar v-model="value"  :firstDayOfWeek="1" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" ></calendar> -->
+    <calendar v-model="value"  :firstDayOfWeek="1" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" ></calendar>
     <hello :show-link="true" ></hello>
     <div :class="'markdown'">
       <div class="markdown-body" v-html="html">

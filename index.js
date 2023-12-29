@@ -1,1 +1,3 @@
-module.exports = require('./lib/Calendar.vue')
+import Calendar from './lib/Calendar.vue';
+export default Calendar;
+

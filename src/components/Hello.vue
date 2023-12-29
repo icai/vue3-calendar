@@ -12,20 +12,12 @@
     </div>
 </template>
 
-<script>
-export default {
-  name: 'hello',
-  props: ['msg', 'showLink'],
-  data () {
-    return {
-      message: this.msg || 'Welcome to Vue Calendar Component',
-      link: this.showLink || false
-    }
-  }
-}
+<script setup>
+import { ref } from 'vue'
+const props = defineProps(['msg', 'showLink'])
+const message = ref(props.msg || 'Welcome to Vue Calendar Component')
+const link = ref(props.showLink || false)
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1, h2 {
   font-weight: normal;

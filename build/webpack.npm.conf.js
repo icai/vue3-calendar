@@ -11,6 +11,10 @@ import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
 import pp from "../package.json" assert {type:'json'};
 import fs from "fs";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
 
 
 const banner = [
@@ -70,21 +74,44 @@ let webpackConfig = merge(baseWebpackConfig, {
           new CssMinimizerPlugin({})
         ]
       },
+      externals: {
+        vue: 'Vue'
+      },
       plugins: [
-        new CopyWebpackPlugin([{
-          from: "./src/components/Calendar.vue",
-          transform (content) {
-            const cssfile = fs.readFileSync(path.resolve(__dirname, './../lib/calendar.css'));
-            return content.toString().replace(/<(style)[^>]*?>[\s\S]+<\/\1>/, (all, $1)=> {
-              return `<${$1} lang="css">${cssfile}</${$1}>`
-            })
-          }
-        }])
+        new CopyWebpackPlugin({
+          patterns: [{
+            from: "./src/components/Calendar.vue",
+            transform (content) {
+              const cssfile = fs.readFileSync(path.resolve(__dirname, './../lib/calendar.css'));
+              // @/directives/transfer replace to ./directives/transfer
+              return content.toString()
+              .replace(/@\/directives\/transfer/g, './directives/transfer')
+              .replace(/<(style)[^>]*?>[\s\S]+<\/\1>/, (all, $1)=> {
+                return `<${$1} lang="css">${cssfile}</${$1}>`
+              })
+            }
+          }, {
+            // copy uitls
+            from: "./src/utils",
+            to: "./utils",
+            info: { minimized: false },
+          }, {
+            // copy lang
+            from: "./src/locale",
+            to: "./locale",
+            info: { minimized: false },
+          }, {
+            // copy directives
+            from: "./src/directives",
+            to: "./directives",
+            info: { minimized: false },
+          }]
+        })
       ]
     });
   }
   return webpackConfig;
 }
 
-export default [build("calendar.js"), build("calendar.min.js")]
+export default [build("calendar.min.js"), build("calendar.js")]
 
