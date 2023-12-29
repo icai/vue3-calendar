@@ -350,7 +350,9 @@ export default {
       }
       this.$emit("drawDate", e);
     },
-    getItemClasses(d) {
+    getItemClasses(e) {
+      // unporxy
+      const d = { ...e }
       d.allowSelect = true;
       this.__OnDrawDate(d);
       const clazz = [];
