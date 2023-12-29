@@ -220,7 +220,6 @@ export default {
     }
     if (this.rangeStatus) {
       this.eventbus = this.rangeBus();
-      console.log(this.eventbus);
       if (typeof this.eventbus === "object" && !this.eventbus.$on) {
         console.warn("Calendar rangeBus doesn't exist");
         this.rangeStatus = 0;

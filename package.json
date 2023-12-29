@@ -1,7 +1,7 @@
 {
   "name": "vue3-slot-calendar",
   "aliasName": "vue3-calendar",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "vue3 bootstrap style calendar",
   "author": "Terry <gidcai@gmail.com>",
   "scripts": {

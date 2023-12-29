@@ -1,11 +1,13 @@
 <template>
   <div class="datepicker" ref="el">
     <template v-if="hasInput">
-      <input :id="elementId" class="form-control datepicker-input" :class="classes" type="text" :placeholder="placeholder"
+      <slot name="input" :elementId="elementId" :inputClick="inputClick" :inputValue="inputValue" >
+        <input :id="elementId" class="form-control datepicker-input" :class="classes" type="text" :placeholder="placeholder"
         :style="{ width: width }" @click="inputClick" v-model="inputValue">
-      <button v-if="clearButton && value" type="button" class="close" @click="inputValue = ''">
-        <span>&times;</span>
-      </button>
+        <button v-if="clearButton && modelValue" type="button" class="close" @click="inputValue = ''">
+          <span>&times;</span>
+        </button>
+      </slot>
     </template>
     <div :class="{
       'datepicker-wrapper': true,
@@ -218,7 +220,6 @@ export default {
     }
     if (this.rangeStatus) {
       this.eventbus = this.rangeBus();
-      console.log(this.eventbus);
       if (typeof this.eventbus === "object" && !this.eventbus.$on) {
         console.warn("Calendar rangeBus doesn't exist");
         this.rangeStatus = 0;
@@ -608,7 +609,7 @@ export default {
         let date;
         if (
           str.length === 10 &&
-          (this.dateFormat === "dd-MM-yyyy" || this.dateFormat === "dd/MM/yyyy")
+          (this.dateFormat === 'dd.MM.yyyy' || this.dateFormat === "dd-MM-yyyy" || this.dateFormat === "dd/MM/yyyy")
         ) {
           date = new Date(
             str.substring(6, 10),
@@ -720,9 +721,9 @@ export default {
 </script>
 
 <style lang="css">/*!
- * vue3-calendar v3.0.1
+ * vue3-calendar v3.0.3
  * (c) 2023 Terry <gidcai@gmail.com>
- * https://github.com/icai/vue2-calendar#readme
+ * https://github.com/icai/vue3-calendar#readme
  */
 .datepicker {
   font-size: 14px;
