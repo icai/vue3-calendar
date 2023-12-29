@@ -54,6 +54,11 @@
 - Community feedback
 
 
+## vue 2.x version readme
+
+[vue2-slot-calendar](https://github.com/icai/vue3-calendar/tree/2.x)
+
+
 
 
 ## Install
