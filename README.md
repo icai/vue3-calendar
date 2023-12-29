@@ -42,6 +42,19 @@
     <img src="https://img.shields.io/npm/dt/vue2-slot-calendar.svg?style=flat-square" alt="">
   </a>
   <br>
+  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
+    <img src="https://img.shields.io/npm/l/vue3-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
+    <img src="https://img.shields.io/npm/v/vue3-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
+    <img src="https://img.shields.io/npm/dm/vue3-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
+    <img src="https://img.shields.io/npm/dt/vue3-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <br>
   <br>
 </p>
 
@@ -54,7 +67,7 @@
 - Community feedback
 
 
-## vue 2.x version readme
+## vue 2.x version
 
 [vue2-slot-calendar](https://github.com/icai/vue3-calendar/tree/2.x)
 
@@ -75,6 +88,7 @@ vue 3.x
 
 
 ```bash
+
 $ pnpm i vue3-slot-calendar@3.x.x --save
 ```
 
