@@ -33,7 +33,7 @@ Object.keys(proxyTable).forEach((context) => {
 const staticPath = path.posix.join(config.doc.assetsPublicPath, config.doc.assetsSubDirectory);
 
 app.use(staticPath, express.static('./docs/static'));
-app.use('/vue2-calendar/static', express.static('./docs/static'));
+app.use('/vue3-calendar/static', express.static('./docs/static'));
 
 app.get('*', (req, res, next) => {
   console.log(req.url);

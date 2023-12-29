@@ -1,32 +1,32 @@
-# vue2-calendar
+# vue3-calendar
 
 > vue 3 calendar, datepicker component which supported lunar or date event
 
 <p align="center">
-  <a href="http://blog.w3cub.com/vue2-calendar/?x-page=github">
+  <a href="http://blog.w3cub.com/vue3-calendar/?x-page=github">
     Live Demo >>
   </a>
   <br>
   <br>
-  <a href="https://github.com/icai/vue2-calendar">
-    <img src="https://img.shields.io/github/stars/icai/vue2-calendar.svg?style=social&label=Star" alt="">
+  <a href="https://github.com/icai/vue3-calendar">
+    <img src="https://img.shields.io/github/stars/icai/vue3-calendar.svg?style=social&label=Star" alt="">
   </a>
-  <a href="https://github.com/icai/vue2-calendar">
-    <img src="https://img.shields.io/github/forks/icai/vue2-calendar.svg?style=social&label=Fork" alt="">
+  <a href="https://github.com/icai/vue3-calendar">
+    <img src="https://img.shields.io/github/forks/icai/vue3-calendar.svg?style=social&label=Fork" alt="">
   </a>
-  <a href="https://github.com/icai/vue2-calendar">
-    <img src="https://img.shields.io/github/watchers/icai/vue2-calendar.svg?style=social&label=Watch" alt="">
+  <a href="https://github.com/icai/vue3-calendar">
+    <img src="https://img.shields.io/github/watchers/icai/vue3-calendar.svg?style=social&label=Watch" alt="">
   </a>
   <br>
   <br>
-  <a href="https://github.com/icai/vue2-calendar/issues">
-    <img src="https://img.shields.io/github/issues/icai/vue2-calendar.svg?style=flat-square" alt="">
+  <a href="https://github.com/icai/vue3-calendar/issues">
+    <img src="https://img.shields.io/github/issues/icai/vue3-calendar.svg?style=flat-square" alt="">
   </a>
-  <a href="https://github.com/icai/vue2-calendar/issues">
-    <img src="http://isitmaintained.com/badge/resolution/icai/vue2-calendar.svg?style=flat-square" alt="">
+  <a href="https://github.com/icai/vue3-calendar/issues">
+    <img src="http://isitmaintained.com/badge/resolution/icai/vue3-calendar.svg?style=flat-square" alt="">
   </a>
-  <a href="https://github.com/icai/vue2-calendar/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/icai/vue2-calendar.svg?style=flat-square" alt="">
+  <a href="https://github.com/icai/vue3-calendar/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/icai/vue3-calendar.svg?style=flat-square" alt="">
   </a>
   <br>
   <a href="https://www.npmjs.com/package/vue2-slot-calendar">
@@ -54,6 +54,8 @@
 - Community feedback
 
 
+
+
 ## Install
 
 
@@ -61,6 +63,7 @@ vue 2.x
 
 ```bash
 $ pnpm i vue2-slot-calendar@2.x.x --save
+
 ```
 
 vue 3.x
@@ -164,7 +167,7 @@ npm test
 
 ## Screenshot
 
-![](https://raw.githubusercontent.com/icai/vue2-calendar/master/src/assets/demo.gif?1477232397)
+![](https://raw.githubusercontent.com/icai/vue3-calendar/master/src/assets/demo.gif?1477232397)
 
 ## Usage
 
