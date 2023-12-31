@@ -1,14 +1,16 @@
+import path from 'path'
+import pp from '../package.json' assert {type:'json'}
+import prodEnv from './prod.env.js'
+import devEnv from './dev.env.js'
+import npmEnv from './npm.env.js'
+import {fileURLToPath} from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
 
-'use strict'
-// Template version: 1.1.1
-// see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require('path')
-const pp = require('../package')
-
-module.exports = {
+export default {
   build: {
-    env: require('./prod.env'),
+    env: prodEnv,
     index: path.resolve(__dirname, '../dist/index.html'),
     demo: path.resolve(__dirname, '../dist/demo/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
@@ -28,7 +30,7 @@ module.exports = {
     bundleAnalyzerReport: process.env.npm_config_report
   },
   dev: {
-    env: require('./dev.env'),
+    env: devEnv,
     index: path.resolve(__dirname, '../dist/index.html'),
     demo: path.resolve(__dirname, '../dist/demo/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
@@ -45,12 +47,12 @@ module.exports = {
     cssSourceMap: false
   },
   npm: {
-    env: require('./npm.env'),
+    env: npmEnv,
     assetsRoot: path.resolve(__dirname, '../lib'),
     productionSourceMap: true
   },
   doc: {
-    env: require('./prod.env'),
+    env: prodEnv,
     index: path.resolve(__dirname, '../docs/index.html'),
     demo: path.resolve(__dirname, '../docs/demo/index.html'),
     assetsRoot: path.resolve(__dirname, '../docs'),

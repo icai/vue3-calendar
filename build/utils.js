@@ -1,9 +1,8 @@
-"use strict";
-const path = require("path");
-const config = require("../config");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+import path from "path";
+import config from "../config/index.js";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
-exports.assetsPath = function(_path) {
+export const assetsPath = function(_path) {
   const assetsSubDirectory =
     process.env.NODE_ENV === "production"
       ? config.build.assetsSubDirectory
@@ -11,7 +10,7 @@ exports.assetsPath = function(_path) {
   return path.posix.join(assetsSubDirectory, _path);
 };
 
-exports.cssLoaders = function(options, minimize) {
+export const cssLoaders = function(options, minimize) {
   options = options || {};
   // if (typeof minimize === "undefined") {
   //   minimize = process.env.NODE_ENV === "production";
@@ -19,8 +18,7 @@ exports.cssLoaders = function(options, minimize) {
   const cssLoader = {
     loader: "css-loader",
     options: {
-      minimize: minimize,
-      sourceMap: options.sourceMap
+      importLoaders: 1
     }
   };
 
@@ -36,21 +34,11 @@ exports.cssLoaders = function(options, minimize) {
       });
     }
 
-    // Extract CSS when that option is specified
-    // (which is the case during production build)
-    // ,
-    // { loader: MiniCssExtractPlugin.loader, options: {} }
 
     if (options.extract) {
-      // return ExtractTextPlugin.extract({
-      //   use: loaders,
-      //   fallback: 'vue-style-loader'
-      // })
-
-      // "vue-style-loader"
-      return [ "vue-style-loader", MiniCssExtractPlugin.loader].concat(loaders);
+      return [MiniCssExtractPlugin.loader].concat(loaders);
     } else {
-      return ["vue-style-loader"].concat(loaders);
+      return ['vue-style-loader'].concat(loaders);
     }
   }
 
@@ -67,9 +55,9 @@ exports.cssLoaders = function(options, minimize) {
 };
 
 // Generate loaders for standalone style files (outside of .vue)
-exports.styleLoaders = function(options, minimize) {
+export const styleLoaders = function(options, minimize) {
   const output = [];
-  const loaders = exports.cssLoaders(options, minimize);
+  const loaders = cssLoaders(options, minimize);
   for (const extension in loaders) {
     const loader = loaders[extension];
     output.push({

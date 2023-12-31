@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './modules/App'
 import Docs from './modules/Docs'
-import 'bootstrap-sass'
-import pp from '../package.json'
+// import 'bootstrap-sass'
+import pp from '../package.json' assert {type:'json'}
 
 const routemaps = {
   '/': function () {

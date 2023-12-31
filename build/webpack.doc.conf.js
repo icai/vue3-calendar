@@ -1,21 +1,25 @@
-"use strict";
-const path = require("path");
-const utils = require("./utils");
-const webpack = require("webpack");
-const config = require("../config");
-const merge = require("webpack-merge");
-const baseWebpackConfig = require("./webpack.base.conf");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
-const VueLoaderPlugin = require("vue-loader/lib/plugin");
+// esm
+import path from "path";
+import * as utils from "./utils.js";
+import config from "../config/index.js";
+import { merge } from "webpack-merge";
+import baseWebpackConfig from "./webpack.base.conf.js";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import { VueLoaderPlugin } from "vue-loader";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import webpack from "webpack";
 
-const pp = require("../package");
-const env =
-  process.env.NODE_ENV === "testing"
-    ? require("../config/test.env")
-    : config.doc.env;
+import BundleAnalyzer from "webpack-bundle-analyzer";
+import pp from "../package.json" assert {type:'json'};
+import testEnv from "../config/test.env.js";
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
+
+
+const env = process.env.NODE_ENV === "testing" ? testEnv : config.doc.env;
 
 const webpackConfig = merge(baseWebpackConfig, {
   mode: "production",
@@ -25,7 +29,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       extract: true
     })
   },
-  devtool: config.doc.productionSourceMap ? "#source-map" : false,
+  devtool: config.doc.productionSourceMap ? "source-map" : false,
   output: {
     path: config.doc.assetsRoot,
     filename: utils.assetsPath("js/[name].[chunkhash].js"),
@@ -42,7 +46,8 @@ const webpackConfig = merge(baseWebpackConfig, {
           chunks: "all"
         }
       }
-    }
+    },
+    minimizer: [new CssMinimizerPlugin()]
   },
   plugins: [
     new VueLoaderPlugin(),
@@ -50,25 +55,10 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       "process.env": env
     }),
-
-    // UglifyJs do not support ES6+, you can also use babel-minify for better treeshaking: https://github.com/babel/minify
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   },
-    //   sourceMap: true
-    // }),
     // extract css into its own file
     new MiniCssExtractPlugin({
       filename: utils.assetsPath("css/[name].[contenthash].css"), //utils.assetsPath('css/[name].[contenthash].css')
       chunkFilename: utils.assetsPath("css/[name].[contenthash].css")
-    }),
-    // Compress extracted CSS. We are using this plugin so that possible
-    // duplicated CSS from different components can be deduped.
-    new OptimizeCSSPlugin({
-      cssProcessorOptions: {
-        safe: true
-      }
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
@@ -87,7 +77,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       chunks: ["vendor", "manifest", "index"],
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: "dependency"
+      chunksSortMode: "auto"
     }),
     new HtmlWebpackPlugin({
       filename:
@@ -103,38 +93,24 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       chunks: ["vendor", "manifest", "demo/index"],
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: "dependency"
+      chunksSortMode: "auto"
       // Allows to control how chunks should be sorted before they are included to the html.
       // Allowed values: 'none' | 'auto' | 'dependency' |'manual' | {function} - default: 'auto'
     }),
     // keep module.id stable when vender modules does not change
-    new webpack.HashedModuleIdsPlugin(),
-    // split vendor js into its own file
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: "vendor",
-    //   minChunks: function(module) {
-    //     // any required modules inside node_modules are extracted to vendor
-    //     return (
-    //       module.resource &&
-    //       /\.js$/.test(module.resource) &&
-    //       module.resource.indexOf(path.join(__dirname, "../node_modules")) === 0
-    //     );
-    //   }
-    // }),
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: "manifest",
-    //   chunks: ["vendor"]
-    // }),
-    // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, "../static"),
-        to: config.doc.assetsSubDirectory,
-        ignore: [".*"]
-      }
-    ])
+    new webpack.ids.HashedModuleIdsPlugin(),
+
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, '../static'),
+          to: config.doc.assetsSubDirectory,
+          globOptions: {
+            ignore: ['.*']
+          }
+        }
+      ]
+    })
   ]
 });
 
@@ -155,9 +131,8 @@ if (config.doc.productionGzip) {
 }
 
 if (config.doc.bundleAnalyzerReport) {
-  const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-    .BundleAnalyzerPlugin;
+  const BundleAnalyzerPlugin = BundleAnalyzer.BundleAnalyzerPlugin;
   webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 
-module.exports = webpackConfig;
+export default webpackConfig;

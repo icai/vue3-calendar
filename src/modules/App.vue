@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import Logo from 'components/Logo'
-import Hello from 'components/Hello'
-import Calendar from 'components/Calendar'
-import html from 'root/README.md'
+import Logo from '@/components/Logo'
+import Hello from '@/components/Hello'
+import Calendar from '@/components/Calendar'
+import html from '@root/README.md'
 export default {
   name: 'app',
   data () {

@@ -4,31 +4,35 @@
   <div class="container">
     <logo></logo>
     <hello :msg="msg" :show-link="false" ></hello>
-    <calendar v-model="value" showDateOnly :onDrawDate="onDrawDate" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
+    <calendar v-model="value" showDateOnly @drawDate="onDrawDate" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
+    <lorem :len="5"></lorem>
+    <calendar v-model="value" showDateOnly @drawDate="onDrawDate" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder">
+      <template #input="scope">
+        <div class="mb-1">
+          <label for="exampleFormControlInput1" class="form-label">Input slot focus to trigger</label>
+          <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1"  @focus="scope.inputClick" v-model="scope.inputValue" placeholder="focus to trigger">
+        </div>
+      </template>
+    </calendar>
     <lorem :len="5"></lorem>
 
-    <calendar v-model="value" showDateOnly minDate="2017-12-29" maxDate="2018-01-27" @drawdate="onDrawDate2" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
+    <calendar v-model="value" showDateOnly minDate="2017-12-29" maxDate="2018-01-27" @drawDate="onDrawDate2" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
     <lorem :len="5"></lorem>
 
     <div class="col-sm-offset-8">
-      <form class="form-horizontal">
-        <div class="form-group">
-          <label for="abcd" class="col-sm-5 control-label">Start Date:</label>
-          <div class="col-sm-5">
-            <calendar class="pull-left" element-id="abcd" v-model="value" :transfer="true"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2"></calendar>
-          </div>
+
+      <div class="mb-3 row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Start Date:</label>
+        <div class="col-sm-10">
+          <calendar class="pull-left" element-id="abcd" v-model="value" :transfer="true"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2"></calendar>
         </div>
-      </form>
-    </div>
-    <div class="col-sm-offset-8x">
-      <form class="form-horizontal">
-        <div class="form-group">
-          <label for="abcdd" class="col-sm-5 control-label">Start Date:</label>
-          <div class="col-sm-5">
-            <calendar class="pull-left" element-id="abcdd" v-model="value" :transfer="true"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2"></calendar>
-          </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">End Date:</label>
+        <div class="col-sm-10">
+          <calendar class="pull-left" element-id="abcdd" v-model="value" :transfer="true"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2"></calendar>
         </div>
-      </form>
+      </div>
     </div>
 
     <lorem :len="10"></lorem>
@@ -41,7 +45,7 @@
     <div style="height: 300px;">
     <!-- range-bus example -->
       <calendar v-model="value"   :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :range-bus="getBus" :range-status="1"></calendar>
-       <calendar v-model="value2" :value="value2"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :range-bus="getBus" :range-status="2"></calendar>
+       <calendar v-model="value2" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :range-bus="getBus" :range-status="2"></calendar>
     </div>
     <lorem :len="3"></lorem>
 
@@ -72,19 +76,19 @@
 
     <lorem :len="6"></lorem>
     <div class="text-center">
-      Happy 1024!
+      Happy New Year!
     </div>
     <p class="lorem">consectetur adipisicing elit,</p>
   </div>
   </div>
 </template>
 <script>
-import Vue from 'vue'
-import Logo from 'components/Logo'
-import Hello from 'components/Hello'
-import Lorem from 'components/Lorem'
-import Calendar from 'components/Calendar'
-import lunar from 'utils/lunar'
+import Logo from '@/components/Logo'
+import Hello from '@/components/Hello'
+import Lorem from '@/components/Lorem'
+import Calendar from '@/components/Calendar'
+import lunar from '@/utils/lunar'
+import { eventbus } from '@/utils/event'
 export default {
   name: 'docs',
   data () {
@@ -135,7 +139,7 @@ export default {
     Calendar
   },
   created () {
-    this.bus = new Vue()
+    this.bus = eventbus
   },
   mounted () {
 
@@ -335,6 +339,9 @@ export default {
 }
 .lorem{
   visibility: hidden;
+}
+.datepicker {
+  text-align: left;
 }
 .event-calendar {
   .datepicker-inner{

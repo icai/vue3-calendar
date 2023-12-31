@@ -6,7 +6,7 @@ fi
 export TRAVIS_COMMIT_MSG="[deploy] $(git log --format='%h - %B' --no-merges -n 1)"
 mkdir temp_web
 
-git clone --depth 1 -b gh-pages --single-branch git@github.com:icai/vue2-calendar.git temp_web
+git clone --depth 1 -b gh-pages --single-branch git@github.com:icai/vue3-calendar.git temp_web
 
 cp -rf docs/**  temp_web/
 

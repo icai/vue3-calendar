@@ -1,13 +1,13 @@
 // https://github.com/shelljs/shelljs
-require('shelljs/global')
-env.NODE_ENV = 'production'
 
-var package = require('../package');
-var path = require('path')
-var config = require('../config')
-var ora = require('ora')
-var webpack = require('webpack')
-var webpackConfig = require('./webpack.doc.conf')
+await import('shelljs/global.js')
+env.NODE_ENV = 'production'
+import path from 'path';
+import config from '../config/index.js';
+import ora from 'ora';
+import webpack from 'webpack';
+import webpackConfig from './webpack.doc.conf.js';
+
 
 console.log(
   '  Tip:\n' +

@@ -1,10 +1,10 @@
-'use strict'
-const chalk = require('chalk')
-const semver = require('semver')
-const packageConfig = require('../package.json')
-const shell = require('shelljs')
+import chalk from 'chalk'
+import semver from 'semver'
+import packageConfig from '../package.json' assert {type:'json'}
+import shell from 'shelljs'
+import child from 'child_process'
 function exec (cmd) {
-  return require('child_process').execSync(cmd).toString().trim()
+  return child.execSync(cmd).toString().trim()
 }
 
 const versionRequirements = [
@@ -12,8 +12,8 @@ const versionRequirements = [
     name: 'node',
     currentVersion: semver.clean(process.version),
     versionRequirement: packageConfig.engines.node
-  }
-]
+  },
+];
 
 if (shell.which('npm')) {
   versionRequirements.push({
@@ -23,10 +23,11 @@ if (shell.which('npm')) {
   })
 }
 
-module.exports = function () {
-  const warnings = []
-  for (let i = 0; i < versionRequirements.length; i++) {
-    const mod = versionRequirements[i]
+export default function () {
+  let i;
+  const warnings = [];
+  for (i = 0; i < versionRequirements.length; i++) {
+    const mod = versionRequirements[i];
     if (!semver.satisfies(mod.currentVersion, mod.versionRequirement)) {
       warnings.push(mod.name + ': ' +
         chalk.red(mod.currentVersion) + ' should be ' +
@@ -39,8 +40,8 @@ module.exports = function () {
     console.log('')
     console.log(chalk.yellow('To use this template, you must update following to modules:'))
     console.log()
-    for (let i = 0; i < warnings.length; i++) {
-      const warning = warnings[i]
+    for (i = 0; i < warnings.length; i++) {
+      const warning = warnings[i];
       console.log('  ' + warning)
     }
     console.log()

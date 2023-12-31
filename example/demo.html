@@ -9,7 +9,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
     />
-    <script src="https://vuejs.org/js/vue.js"></script>
     <link rel="stylesheet" href="../lib/calendar.min.css" />
     <script src="../lib/calendar.js"></script>
   </head>
@@ -26,7 +25,8 @@
         ></calendar>
       </div>
     </div>
-    <script>
+    <script type="module">
+      import Vue from "https://unpkg.com/vue@2.7.16/dist/vue.esm.browser.js";
       new Vue({
         el: "#app",
         data: function() {

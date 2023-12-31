@@ -8,7 +8,7 @@ export default {
   name: 'logo',
   data () {
     return {
-      link: document.domain === 'localhost' ? '/' : '/vue2-calendar/'
+      link: document.domain === 'localhost' ? '/' : '/vue3-calendar/'
     }
   }
 }

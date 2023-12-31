@@ -1,32 +1,32 @@
-# vue2-calendar
+# vue3-calendar
 
-> vue 2 calendar, datepicker component which supported lunar or date event
+> vue 3 calendar, datepicker component which supported lunar or date event
 
 <p align="center">
-  <a href="http://blog.w3cub.com/vue2-calendar/?x-page=github">
+  <a href="http://blog.w3cub.com/vue3-calendar/?x-page=github">
     Live Demo >>
   </a>
   <br>
   <br>
-  <a href="https://github.com/icai/vue2-calendar">
-    <img src="https://img.shields.io/github/stars/icai/vue2-calendar.svg?style=social&label=Star" alt="">
+  <a href="https://github.com/icai/vue3-calendar">
+    <img src="https://img.shields.io/github/stars/icai/vue3-calendar.svg?style=social&label=Star" alt="">
   </a>
-  <a href="https://github.com/icai/vue2-calendar">
-    <img src="https://img.shields.io/github/forks/icai/vue2-calendar.svg?style=social&label=Fork" alt="">
+  <a href="https://github.com/icai/vue3-calendar">
+    <img src="https://img.shields.io/github/forks/icai/vue3-calendar.svg?style=social&label=Fork" alt="">
   </a>
-  <a href="https://github.com/icai/vue2-calendar">
-    <img src="https://img.shields.io/github/watchers/icai/vue2-calendar.svg?style=social&label=Watch" alt="">
+  <a href="https://github.com/icai/vue3-calendar">
+    <img src="https://img.shields.io/github/watchers/icai/vue3-calendar.svg?style=social&label=Watch" alt="">
   </a>
   <br>
   <br>
-  <a href="https://github.com/icai/vue2-calendar/issues">
-    <img src="https://img.shields.io/github/issues/icai/vue2-calendar.svg?style=flat-square" alt="">
+  <a href="https://github.com/icai/vue3-calendar/issues">
+    <img src="https://img.shields.io/github/issues/icai/vue3-calendar.svg?style=flat-square" alt="">
   </a>
-  <a href="https://github.com/icai/vue2-calendar/issues">
-    <img src="http://isitmaintained.com/badge/resolution/icai/vue2-calendar.svg?style=flat-square" alt="">
+  <a href="https://github.com/icai/vue3-calendar/issues">
+    <img src="http://isitmaintained.com/badge/resolution/icai/vue3-calendar.svg?style=flat-square" alt="">
   </a>
-  <a href="https://github.com/icai/vue2-calendar/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/icai/vue2-calendar.svg?style=flat-square" alt="">
+  <a href="https://github.com/icai/vue3-calendar/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/icai/vue3-calendar.svg?style=flat-square" alt="">
   </a>
   <br>
   <a href="https://www.npmjs.com/package/vue2-slot-calendar">
@@ -42,6 +42,19 @@
     <img src="https://img.shields.io/npm/dt/vue2-slot-calendar.svg?style=flat-square" alt="">
   </a>
   <br>
+  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
+    <img src="https://img.shields.io/npm/l/vue3-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
+    <img src="https://img.shields.io/npm/v/vue3-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
+    <img src="https://img.shields.io/npm/dm/vue3-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <a href="https://www.npmjs.com/package/vue3-slot-calendar">
+    <img src="https://img.shields.io/npm/dt/vue3-slot-calendar.svg?style=flat-square" alt="">
+  </a>
+  <br>
   <br>
 </p>
 
@@ -54,11 +67,31 @@
 - Community feedback
 
 
+## vue 2.x version
+
+[vue2-slot-calendar](https://github.com/icai/vue3-calendar/tree/2.x)
+
+
+
+
 ## Install
 
+
+vue 2.x
+
 ```bash
-$ npm install vue2-slot-calendar
+$ pnpm i vue2-slot-calendar@2.x.x --save
+
 ```
+
+vue 3.x
+
+
+```bash
+
+$ pnpm i vue3-slot-calendar@3.x.x --save
+```
+
 
 ### Import using module
 
@@ -66,26 +99,21 @@ $ npm install vue2-slot-calendar
 
 
 // js file
-import 'vue2-slot-calendar/lib/calendar.min.css';
-import calendar from 'vue2-slot-calendar/lib/calendar';
+import 'vue3-slot-calendar/lib/calendar.min.css';
+import calendar from 'vue3-slot-calendar/lib/calendar';
 
 // vue file
-// in ES6 modules
-import Calendar from 'vue2-slot-calendar';
+import Calendar from 'vue3-slot-calendar';
 
-// in CommonJS
-const Calendar = require('vue2-slot-calendar');
 
-// in Global variable
-const VueCalendar = Calendar;
 ```
 
 ### Import using script tag
 
 ```HTML
 
-<link rel="stylesheet" href="../node_modules/vue2-slot-calendar/lib/calendar.min.css" >
-<script src="../node_modules/vue2-slot-calendar/lib/calendar.min.js"></script>
+<link rel="stylesheet" href="../node_modules/vue3-slot-calendar/lib/calendar.min.css" >
+<script src="../node_modules/vue3-slot-calendar/lib/calendar.min.js"></script>
 ```
 
 Also see the demo file, `example/demo.html`
@@ -126,6 +154,16 @@ currently, provide `window.VueCalendarLang` function hook to change your lang
   },
 ```
 
+### locale files
+
+```
+import cn from 'vue3-slot-calendar/lib/locale/zh-CN'
+import en from 'vue3-slot-calendar/lib/locale/en-US'
+import tw from 'vue3-slot-calendar/lib/locale/zh-TW'
+
+```
+
+
 
 ## Build Setup
 
@@ -148,13 +186,13 @@ npm test
 
 ## Screenshot
 
-![](https://raw.githubusercontent.com/icai/vue2-calendar/master/src/assets/demo.gif?1477232397)
+![](https://raw.githubusercontent.com/icai/vue3-calendar/master/src/assets/demo.gif?1477232397)
 
 ## Usage
 
 ```html
 <calendar
-  :value="value"
+  v-model="value"
   :disabled-days-of-week="disabled"
   :format="format"
   :clear-button="clear"
@@ -171,7 +209,7 @@ npm test
 ```html
 <calendar
   class="event-calendar"
-  :value="value"
+  v-model="value"
   :disabled-days-of-week="disabled"
   :format="format"
   :clear-button="clear"
@@ -191,7 +229,7 @@ npm test
 
 ```html
 <calendar
-  :value="value"
+  v-model="value"
   :disabled-days-of-week="disabled"
   :format="format"
   :clear-button="clear"
@@ -202,7 +240,7 @@ npm test
 ></calendar>
 
 <calendar
-  :value="value"
+  v-model="value"
   :disabled-days-of-week="disabled"
   :format="format"
   :clear-button="clear"
@@ -213,13 +251,26 @@ npm test
 ></calendar>
 ```
 
+### Input Slot
+
+```html
+    <calendar v-model="value" showDateOnly @drawDate="onDrawDate" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder">
+      <template #input="scope">
+        <div class="mb-1">
+          <label for="exampleFormControlInput1" class="form-label">Input slot focus to trigger</label>
+          <input type="text" class="form-control form-control-lg" id="exampleFormControlInput1"  @focus="scope.inputClick" v-model="scope.inputValue" placeholder="focus to trigger">
+        </div>
+      </template>
+    </calendar>
+```
+
 ### Props
 
 Options/Props
 
 | Name                  | Type       | Default        | Description                                                                                                                 |
 | --------------------- | ---------- | -------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| value                 | `String`   | ''             | Value of the input DOM                                                                                                      |
+| v-model                 | `String`   | ''             | Value of the input DOM                                                                                                      |
 | width                 | `String`   | '200px'        | Width of the input DOM                                                                                                      |
 | format                | `String`   | `MMMM/dd/yyyy` | The date format, combination of d, dd, M, MM, MMM, MMMM, yyyy.                                                              |
 | disabled-days-of-week | `Array`    |                | Days of the week that should be disabled. Values are 0 (Sunday) to 6 (Saturday). Multiple values should be comma-separated. |
@@ -243,7 +294,8 @@ Options/Props
 
 | Name     | Description                      |
 | -------- | -------------------------------- |
-| drawdate | drawdate Event like `onDrawDate` |
+| drawDate | drawDate Event                   |
+
 
 ```javascript
   props: {
@@ -318,10 +370,10 @@ Options/Props
       type: Number,
       default: 0
     },
-    onDrawDate: {
-      type: Function,
-      default () {}
-    },
+    // onDrawDate: {
+    //   type: Function,
+    //   default () {}
+    // },
     maxDate: {
       type: String
     },
@@ -339,6 +391,42 @@ Options/Props
     elementId: [String]
   }
 ```
+
+### Methods
+
+
+
+#### eventbus
+```
+import { eventbus } from 'vue3-slot-calendar/lib/utils/event'
+
+eventbus.$on('drawDate', (date) => {
+  console.log(date)
+})
+
+```
+
+
+#### transfer directive
+
+transfer directive like `<Teleport>`
+
+```
+import transfer from 'vue3-slot-calendar/lib/directives/transfer'
+
+directives: {
+  transfer
+}
+```
+
+
+
+
+
+
+
+
+
 
 ## Credits
 

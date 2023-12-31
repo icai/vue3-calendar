@@ -1,17 +1,21 @@
-"use strict";
-const path = require("path");
-const webpack = require("webpack");
-const utils = require("./utils");
-const config = require("../config");
-const merge = require("webpack-merge");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const baseWebpackConfig = require("./webpack.base.conf");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const VueLoaderPlugin = require("vue-loader/lib/plugin");
-// @ts-ignore
-const pp = require("../package");
+import path from "path";
+import * as utils from "./utils.js";
+import config from "../config/index.js";
+import { merge } from "webpack-merge";
+import baseWebpackConfig from "./webpack.base.conf.js";
+import { VueLoaderPlugin } from "vue-loader";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
+import webpack from "webpack";
+import pp from "../package.json" assert {type:'json'};
+import fs from "fs";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
+
 
 const banner = [
   pp.aliasName + " v" + pp.version,
@@ -64,48 +68,50 @@ let webpackConfig = merge(baseWebpackConfig, {
   if (minimize) {
     webpackConfig = merge(webpackConfig, {
       optimization: {
+        minimize: true,
         minimizer: [
-          new UglifyJsPlugin({
-            cache: true,
-            parallel: true,
-            sourceMap: true // set to true if you want JS source maps
-          }),
-          new OptimizeCSSPlugin({})
+          new TerserPlugin(),
+          new CssMinimizerPlugin({})
         ]
       },
+      externals: {
+        vue: 'Vue'
+      },
       plugins: [
-        new OptimizeCSSPlugin({
-          cssProcessorOptions: {
-            safe: true
-          }
-        }),
-        new CopyWebpackPlugin([{
-          from: "./src/components/Calendar.vue",
-          transform (content) {
-            const fs = require('fs');
-            const cssfile = fs.readFileSync(path.resolve(__dirname, './../lib/calendar.css'));
-            return content.toString().replace(/<(style)[^>]*?>[\s\S]+<\/\1>/, (all, $1)=> {
-              return `<${$1} lang="css">${cssfile}</${$1}>`
-            }).replace(/~assets\/fonts/g, './fonts')
-          }
-        },{
-          from: "./src/components/Calendar.vue",
-          to: "[name].scss.[ext]",
-          transform (content) {
-            return content.toString().replace(/~assets\/fonts/g, './fonts')
-          }
-        },{
-          from: "./src/assets/fonts/*",
-          to: "fonts/",
-          // @ts-ignore
-          transformPath (targetPath, absolutePath) {
-            return targetPath.replace('src/assets/fonts/', '');
-          }
-        }])
+        new CopyWebpackPlugin({
+          patterns: [{
+            from: "./src/components/Calendar.vue",
+            transform (content) {
+              const cssfile = fs.readFileSync(path.resolve(__dirname, './../lib/calendar.css'));
+              // @/directives/transfer replace to ./directives/transfer
+              return content.toString()
+              .replace(/@\/directives\/transfer/g, './directives/transfer')
+              .replace(/<(style)[^>]*?>[\s\S]+<\/\1>/, (all, $1)=> {
+                return `<${$1} lang="css">${cssfile}</${$1}>`
+              })
+            }
+          }, {
+            // copy uitls
+            from: "./src/utils",
+            to: "./utils",
+            info: { minimized: false },
+          }, {
+            // copy lang
+            from: "./src/locale",
+            to: "./locale",
+            info: { minimized: false },
+          }, {
+            // copy directives
+            from: "./src/directives",
+            to: "./directives",
+            info: { minimized: false },
+          }]
+        })
       ]
     });
   }
   return webpackConfig;
 }
 
-module.exports =  [build("calendar.js"), build("calendar.min.js")];
+export default [build("calendar.min.js"), build("calendar.js")]
+

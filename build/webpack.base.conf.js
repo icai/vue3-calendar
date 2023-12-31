@@ -1,16 +1,19 @@
-'use strict'
-const path = require('path')
-const utils = require('./utils')
-const config = require('../config')
-const vueLoaderConfig = require('./vue-loader.conf')
+import { fileURLToPath } from 'url';
+
+import path from 'path'
+import * as utils from './utils.js'
+import config from '../config/index.js'
+import vueLoaderConfig from './vue-loader.conf.js'
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
 
-
-module.exports = {
+export default {
   entry: {
     'index': './src/views/index.js',
     'demo/index': './src/views/demo/index.js'
@@ -25,44 +28,45 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
-      'root': resolve(''),
+      '@root': resolve(''),
       '@': resolve('src'),
-      'src': resolve('src'),
-      'utils': resolve('src/utils'),
       'assets': resolve('src/assets'),
-      'components': resolve('src/components'),
-      "bootstrap-sass$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss"),
-      "bootstrap-sprockets$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap-sprockets.scss")
+      // 'vue$': 'vue/dist/vue.esm-browser.js',
+      'vue$': 'vue/dist/vue.esm.js',
+      // "bootstrap-sass$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss"),
+      // "bootstrap-sprockets$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap-sprockets.scss")
     }
   },
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
+      // {
+      //   test: /\.(js|vue)$/,
+      //   loader: 'eslint-loader',
+      //   enforce: 'pre',
+      //   include: [resolve('src'), resolve('test')],
+      //   options: {
+      //     formatter: require('eslint-friendly-formatter')
+      //   }
+      // },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
+        exclude: /node_modules/,
         options: vueLoaderConfig
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'), resolve('test')],
+        exclude: /node_modules/,
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('img/[name].[hash:7].[ext]'),
+          esModule: false
         }
       },
       {
@@ -70,7 +74,8 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('media/[name].[hash:7].[ext]')
+          name: utils.assetsPath('media/[name].[hash:7].[ext]'),
+          esModule: false
         }
       },
       {
@@ -78,21 +83,22 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+          name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+          esModule: false
         }
       },
       {
         test: /\.md$/,
         use: [
-            {
-                loader: "html-loader"
-            },
-            {
-                loader: "markdown-loader",
-                options: {
-                    /* your options here */
-                }
+          {
+            loader: "html-loader"
+          },
+          {
+            loader: "markdown-loader",
+            options: {
+                /* your options here */
             }
+          }
         ]
       }
     ]
